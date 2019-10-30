@@ -2,7 +2,7 @@ CC = gcc
 CCFLAGS = -Iinc -std=c11 -Wall -Wextra -pedantic -fsanitize=address
 
 debug : virtues.o generator.o debug.o
-	$(CC) $(CCFLAGS) virtues.o generator.o debug.o -o debug
+	$(CC) $(CCFLAGS) virtues.o generator.o debug.o -o a.out
 
 debug.o : debug.c
 	$(CC) $(CCFLAGS) -c debug.c

@@ -14,7 +14,7 @@ enum virtue_list
 };
 
 #define VIRTUE_NAME_SIZE   12
-#define VIRTUE_ABBR_SIZE    9
+#define VIRTUE_ABBR_SIZE    4
 #define VIRTUE_SYMBOL_SIZE  5
 
 typedef struct virtue

@@ -15,7 +15,10 @@ int main()
 	printf("\n");
 	
 	init_virtues();
-	Virtue *fireman = ptr_virtues[FIRE];
-	printf("ID: %d %s %s\n", fireman->id, fireman->symbol, fireman->name);
 	
+	for (int i = 0; i < 25; ++i)
+	{
+		Virtue *member = ptr_virtues[i];
+		printf("%2d %s %s\n", member->id, member->symbol, member->name);
+	}
 }
