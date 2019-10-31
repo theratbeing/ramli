@@ -1,8 +1,14 @@
 CC = gcc
 CCFLAGS = -Iinc -std=c11 -Wall -Wextra -pedantic -fsanitize=address
 
+default : objects.o generator.o main.o
+	$(CC) $(CCFLAGS) -lncursesw objects.o generator.o main.o -o ramli
+
 debug : objects.o generator.o debug.o
 	$(CC) $(CCFLAGS) objects.o generator.o debug.o -o a.out
+
+main.o : main.c
+	$(CC) $(CCFLAGS) -c main.c
 
 debug.o : debug.c
 	$(CC) $(CCFLAGS) -c debug.c

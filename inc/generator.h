@@ -21,7 +21,6 @@ typedef struct chart
 	unsigned	flags;
 	int			querent;
 	int			quesited;
-	char		timestamp[21];
 	Figure		*figures[16];
 } Chart;
 
