@@ -15,7 +15,7 @@ void draw_chart_info(Chart *chart, int mode)
 	
 	wattron(winbox, A_UNDERLINE);
 	int mid_x = (33 - strlen(mode_label[mode])) / 2;
-	mvwprintw(winbox, 1, mid_x, "%s", mode_label[mode]);
+	mvwaddstr(winbox, 1, mid_x, mode_label[mode]);
 	wattroff(winbox, A_UNDERLINE);
 	
 	for (int i = 0; i < 16; i++)
@@ -25,8 +25,9 @@ void draw_chart_info(Chart *chart, int mode)
 		
 		mvwprintw(winbox, i+2, 1, "%2d. ", i+1);
 		wattron(winbox, COLOR_PAIR(vrt->color));
-		mvwprintw(winbox, i+2, 5, "%s", fgr->name);
-		mvwprintw(winbox, i+2, 21, "%s %s", vrt->symbol, vrt->name);
+		mvwaddstr(winbox, i+2, 5, fgr->name);
+		//mvwaddstr(winbox, i+2, 21, vrt->symbol);
+		mvwaddstr(winbox, i+2, 21, vrt->name);
 		wattroff(winbox, COLOR_PAIR(vrt->color));
 	}
 	
