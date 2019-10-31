@@ -1,6 +1,12 @@
 #ifndef NEZUMIN_20191030_1756
 #define NEZUMIN_20191030_1756
 
+enum color_list
+{
+	NONE, WHITE, BLACK, BLUE, RED,
+	YELLOW, GREEN, ORANGE, MAGENTA, CYAN
+};
+
 /* ============================================== *
  * Virtues
  * ============================================== */
@@ -27,6 +33,7 @@ typedef struct virtue
 	char name[VIRTUE_NAME_SIZE];
 	char abbr[VIRTUE_ABBR_SIZE];
 	char symbol[VIRTUE_SYMBOL_SIZE];
+	enum color_list color;
 } Virtue;
 
 extern Virtue *ptr_virtues[25];

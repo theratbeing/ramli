@@ -4,33 +4,33 @@
  * Virtue data
  * ============================================== */
 
-Virtue fire  = { FIRE,  "Fire",  "Fir", "♣" };
-Virtue air   = { AIR,   "Air",   "Air", "♠" };
-Virtue water = { WATER, "Water", "Wat", "♥" };
-Virtue earth = { EARTH, "Earth", "Ear", "♦" };
+Virtue fire  = { FIRE,  "Fire",  "Fir", "♣", RED };
+Virtue air   = { AIR,   "Air",   "Air", "♠", YELLOW };
+Virtue water = { WATER, "Water", "Wat", "♥", BLUE };
+Virtue earth = { EARTH, "Earth", "Ear", "♦", GREEN };
 
-Virtue saturn  = { SATURN,  "Saturn",	  "Sat", "♄" };
-Virtue jupiter = { JUPITER, "Jupiter",	  "Jup", "♃" };
-Virtue mars    = { MARS,    "Mars",		  "Mar", "♂" };
-Virtue sun     = { SUN,     "Sun",		  "Sun", "☉" };
-Virtue venus   = { VENUS,   "Venus",	  "Ven", "♀" };
-Virtue mercury = { MERCURY, "Mercury",	  "Mer", "☿" };
-Virtue moon    = { MOON,    "Moon",		  "Mon", "☽" };
-Virtue north_n = { NORTH_N, "North Node", "Nor", "☊" };
-Virtue south_n = { SOUTH_N, "South Node", "Sou", "☋" };
+Virtue saturn  = { SATURN,  "Saturn",	  "Sat", "♄", BLACK };
+Virtue jupiter = { JUPITER, "Jupiter",	  "Jup", "♃", BLUE };
+Virtue mars    = { MARS,    "Mars",		  "Mar", "♂", RED };
+Virtue sun     = { SUN,     "Sun",		  "Sun", "☉", YELLOW };
+Virtue venus   = { VENUS,   "Venus",	  "Ven", "♀", GREEN };
+Virtue mercury = { MERCURY, "Mercury",	  "Mer", "☿", ORANGE };
+Virtue moon    = { MOON,    "Moon",		  "Mon", "☽", MAGENTA };
+Virtue north_n = { NORTH_N, "North Node", "Nor", "☊", WHITE };
+Virtue south_n = { SOUTH_N, "South Node", "Sou", "☋", WHITE };
 
-Virtue aries	   = { ARIES,		"Aries",		"Ari", "♈" };
-Virtue taurus	   = { TAURUS,		"Taurus",		"Tau", "♉" };
-Virtue gemini	   = { GEMINI,		"Gemini",		"Gem", "♊" };
-Virtue cancer	   = { CANCER,		"Cancer",		"Can", "♋" };
-Virtue leo		   = { LEO,			"Leo",			"Leo", "♌" };
-Virtue virgo	   = { VIRGO,		"Virgo",		"Vir", "♍" };
-Virtue libra	   = { LIBRA,		"Libra",		"Lib", "♎" };
-Virtue scorpio	   = { SCORPIO,		"Scorpio",		"Sco", "♏" };
-Virtue sagittarius = { SAGITTARIUS, "Sagittarius",  "Sag", "♐" };
-Virtue capricorn   = { CAPRICORN,	"Capricorn",	"Cap", "♑" };
-Virtue aquarius    = { AQUARIUS,	"Aquarius",		"Aqu", "♒" };
-Virtue pisces	   = { PISCES,		"Pisces",		"Pis", "♓" };
+Virtue aries	   = { ARIES,		"Aries",		"Ari", "♈", RED };
+Virtue taurus	   = { TAURUS,		"Taurus",		"Tau", "♉", GREEN };
+Virtue gemini	   = { GEMINI,		"Gemini",		"Gem", "♊", YELLOW };
+Virtue cancer	   = { CANCER,		"Cancer",		"Can", "♋", BLUE };
+Virtue leo		   = { LEO,			"Leo",			"Leo", "♌", RED };
+Virtue virgo	   = { VIRGO,		"Virgo",		"Vir", "♍", GREEN };
+Virtue libra	   = { LIBRA,		"Libra",		"Lib", "♎", YELLOW };
+Virtue scorpio	   = { SCORPIO,		"Scorpio",		"Sco", "♏", BLUE };
+Virtue sagittarius = { SAGITTARIUS, "Sagittarius",  "Sag", "♐", RED };
+Virtue capricorn   = { CAPRICORN,	"Capricorn",	"Cap", "♑", GREEN };
+Virtue aquarius    = { AQUARIUS,	"Aquarius",		"Aqu", "♒", YELLOW };
+Virtue pisces	   = { PISCES,		"Pisces",		"Pis", "♓", BLUE };
 
 Virtue *ptr_virtues[25] =
 {
@@ -158,4 +158,4 @@ Figure *ptr_figures_alphabetic[16] =
 	&carcer, &cauda_d, &conjunctio, &f_major,
 	&f_minor, &laetitia, &populus, &puella,
 	&puer, &rubeus, &tristitia, &via
-}
+};
