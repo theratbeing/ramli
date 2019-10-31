@@ -3,6 +3,14 @@
 #include <stdlib.h>
 #include <time.h>
 
+const unsigned FLAG_SHIELD	  = 1;
+const unsigned FLAG_HOUSE	  = 1 << 1;
+const unsigned FLAG_AGRIPPA   = 1 << 2;
+
+const unsigned FLAG_BY_RANDOM = 1 << 3;
+const unsigned FLAG_BY_FIGURE = 1 << 4;
+const unsigned FLAG_BY_LINE   = 1 << 5;
+
 unsigned identify_array(int *ar)
 {
 	/* Returns the enum of figure array.
@@ -54,6 +62,18 @@ void fill_array_random(int (*ar)[4])
 		for (int j = 0; j < 4; ++j)
 		{
 			ar[i][j] = rand();
+		}
+	}
+}
+
+void fill_array_figure(int (*ar)[4], unsigned *id)
+{
+	for (int i = 0; i < 4; ++i)
+	{
+		Figure *fsrc = ptr_figures[*(id + i)];
+		for (int j = 0; j < 4; ++j)
+		{
+			ar[i][j] = fsrc->lines[j];
 		}
 	}
 }

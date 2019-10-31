@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "generator.h"
-#include "objects.h"
 
 int main()
 {
@@ -26,8 +25,8 @@ int main()
 	arbsc[3][2] = 2;
 	arbsc[3][3] = 5;
 	
-	printf("Current array contents:\n");
 	int i;
+	printf("Current array contents:\n");
 	for (i = 0; i < 4; ++i)
 	{
 		printf("[%d, %d, %d, %d]\n",
@@ -53,7 +52,8 @@ int main()
 		}
 	}
 	
-	fill_array_random(arbsc);
+	unsigned arfid[4] = {2, 7, 4, 9};
+	fill_array_figure(arbsc, arfid);
 	
 	printf("Current array contents:\n");
 	for (i = 0; i < 4; ++i)
@@ -80,4 +80,5 @@ int main()
 			printf("\n");
 		}
 	}
+	
 }
