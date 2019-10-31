@@ -5,7 +5,9 @@
 
 unsigned identify_array(int *ar)
 {
-	// Returns the enum of figure array
+	/* Returns the enum of figure array.
+	 * WARNING using this function on numbers other than 0 or 1
+	 * may result in segfault */
 	unsigned res = 0;
 	for (int i = 0; i < 4; ++i)
 	{

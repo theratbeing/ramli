@@ -1,8 +1,8 @@
 CC = gcc
 CCFLAGS = -Iinc -std=c11 -Wall -Wextra -pedantic -fsanitize=address
 
-debug : virtues.o generator.o debug.o
-	$(CC) $(CCFLAGS) virtues.o generator.o debug.o -o a.out
+debug : objects.o generator.o debug.o
+	$(CC) $(CCFLAGS) objects.o generator.o debug.o -o a.out
 
 debug.o : debug.c
 	$(CC) $(CCFLAGS) -c debug.c
@@ -10,8 +10,8 @@ debug.o : debug.c
 generator.o : src/generator.c inc/generator.h
 	$(CC) $(CCFLAGS) -c src/generator.c
 
-virtues.o : src/virtues.c inc/virtues.h
-	$(CC) $(CCFLAGS) -c src/virtues.c
+objects.o : src/objects.c inc/objects.h
+	$(CC) $(CCFLAGS) -c src/objects.c
 
 clean :
 	rm *.o

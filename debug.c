@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "generator.h"
-#include "virtues.h"
+#include "objects.h"
 
 int main()
 {
@@ -53,4 +53,31 @@ int main()
 		}
 	}
 	
+	fill_array_random(arbsc);
+	
+	printf("Current array contents:\n");
+	for (i = 0; i < 4; ++i)
+	{
+		printf("[%d, %d, %d, %d]\n",
+			   arbsc[i][0], arbsc[i][1], arbsc[i][2], arbsc[i][3]);
+	}
+	
+	process_array_arithmetics(arbsc);
+	
+	printf("\nCurrent array contents:\n");
+	for (i = 0; i < 16; ++i)
+	{
+		printf("[%d, %d, %d, %d] ",
+			   arbsc[i][0], arbsc[i][1], arbsc[i][2], arbsc[i][3]);
+		
+		unsigned f_id = identify_array(arbsc[i]);
+		Figure *iter  = ptr_figures[f_id];
+		
+		printf("%s\n", iter->name);
+		
+		if (! ((i+1) % 4))
+		{
+			printf("\n");
+		}
+	}
 }

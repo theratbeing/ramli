@@ -1,4 +1,4 @@
-#include "virtues.h"
+#include "objects.h"
 
 /* ============================================== *
  * Virtue data
