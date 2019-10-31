@@ -4,19 +4,46 @@
 
 int main()
 {
-	int array1[] = {3, 7, 5, 4, 2, 1, 1, 9, 5};
-	flatten_array(array1, sizeof(array1)/sizeof(int));
+	int arbsc[16][4];
 	
-	for (int i = 0; i < 9; ++i)
+	arbsc[0][0] = 5;
+	arbsc[0][1] = 8;
+	arbsc[0][2] = 9;
+	arbsc[0][3] = 2;
+	
+	arbsc[1][0] = 6;
+	arbsc[1][1] = 8;
+	arbsc[1][2] = 3;
+	arbsc[1][3] = 2;
+	
+	arbsc[2][0] = 1;
+	arbsc[2][1] = 4;
+	arbsc[2][2] = 5;
+	arbsc[2][3] = 7;
+	
+	arbsc[3][0] = 9;
+	arbsc[3][1] = 4;
+	arbsc[3][2] = 2;
+	arbsc[3][3] = 5;
+	
+	printf("Current array contents:\n");
+	for (int i = 0; i < 4; ++i)
 	{
-		printf("%2d ", array1[i]);
+		printf("[%d, %d, %d, %d]\n",
+			   arbsc[i][0], arbsc[i][1], arbsc[i][2], arbsc[i][3]);
 	}
 	
-	printf("\n");
+	process_array_arithmetics(arbsc);
 	
-	for (int i = 0; i < 25; ++i)
+	printf("Current array contents:\n");
+	for (int i = 0; i < 16; ++i)
 	{
-		Virtue *member = ptr_virtues[i];
-		printf("%2d %s %s\n", member->id, member->symbol, member->name);
+		printf("[%d, %d, %d, %d]\n",
+			   arbsc[i][0], arbsc[i][1], arbsc[i][2], arbsc[i][3]);
+		
+		if (! ((i+1) % 4))
+		{
+			printf("\n");
+		}
 	}
 }
