@@ -27,6 +27,4 @@ typedef struct virtue
 
 extern Virtue *ptr_virtues[25];
 
-void init_virtues(void);
-
 #endif
