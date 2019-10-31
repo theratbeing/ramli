@@ -1,6 +1,7 @@
 #include "generator.h"
 #include <ncurses.h>
 #include <locale.h>
+#include <string.h>
 
 #define TRANSPARENT	-1
 #define COLOR_ORANGE	208
@@ -25,8 +26,8 @@ int main()
 	init_pair(MAGENTA, COLOR_MAGENTA, TRANSPARENT);
 	init_pair(CYAN, COLOR_CYAN, TRANSPARENT);
 	
-	int row, col;
-	getmaxyx(stdscr, row, col);
+	//int row, col;
+	//getmaxyx(stdscr, row, col);
 	
 	/* ========================================== *
 	 * Actual program starts here
@@ -39,7 +40,7 @@ int main()
 	printw("2. Figure by figure.\n");
 	printw("3. Line by line.\n");
 	
-	while(key_ch = getch())
+	while((key_ch = getch()))
 	{
 		if (key_ch == '1')
 		{
@@ -57,6 +58,34 @@ int main()
 			break;
 		}
 	}
+	
+	int matrix[16][4];
+	
+	if (chart_flags & FLAG_BY_RANDOM)
+	{
+		fill_array_random(matrix);
+	}
+	else if (chart_flags & FLAG_BY_FIGURE)
+	{
+		unsigned figure_id[4] = {8, 4, 2, 7};
+		fill_array_figure(matrix, figure_id);
+	}
+	else if (chart_flags & FLAG_BY_LINE)
+	{
+		printw("Please randomly type something and press Enter .\n");
+		char line[80];
+		for (int i = 0; i < 4; ++i)
+		{
+			for (int j = 0; j < 4; ++j)
+			{
+				printw("%d:%d > ", i+1, j+1);
+				getstr(line);
+				matrix[i][j] = (int)strlen(line);
+			}
+		}
+	}
+	
+	process_array_arithmetics(matrix);
 	
 	endwin();
 }
