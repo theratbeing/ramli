@@ -14,8 +14,6 @@ int main()
 	
 	printf("\n");
 	
-	init_virtues();
-	
 	for (int i = 0; i < 25; ++i)
 	{
 		Virtue *member = ptr_virtues[i];
