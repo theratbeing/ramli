@@ -159,3 +159,23 @@ Figure *ptr_figures_alphabetic[16] =
 	&f_minor, &laetitia, &populus, &puella,
 	&puer, &rubeus, &tristitia, &via
 };
+
+const char *figure_meaning[16] =
+{
+	"Populus",
+	"Tristitia",
+	"Albus",
+	"F Major",
+	"Rubeus",
+	"Acquisitio",
+	"Conjunctio",
+	"Caput D",
+	"Laetitia",
+	"Carcer",
+	"Amissio",
+	"Puella",
+	"F Minor",
+	"Puer",
+	"Cauda D",
+	"Via"
+};

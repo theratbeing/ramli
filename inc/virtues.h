@@ -69,5 +69,6 @@ typedef struct figure
 
 extern Figure *ptr_figures[16];
 extern Figure *ptr_figures_alphabetic[16];
+extern const char *figure_meaning[16];
 
 #endif
