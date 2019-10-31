@@ -27,7 +27,8 @@ int main()
 	arbsc[3][3] = 5;
 	
 	printf("Current array contents:\n");
-	for (int i = 0; i < 4; ++i)
+	int i;
+	for (i = 0; i < 4; ++i)
 	{
 		printf("[%d, %d, %d, %d]\n",
 			   arbsc[i][0], arbsc[i][1], arbsc[i][2], arbsc[i][3]);
@@ -35,15 +36,21 @@ int main()
 	
 	process_array_arithmetics(arbsc);
 	
-	printf("Current array contents:\n");
-	for (int i = 0; i < 16; ++i)
+	printf("\nCurrent array contents:\n");
+	for (i = 0; i < 16; ++i)
 	{
-		printf("[%d, %d, %d, %d]\n",
+		printf("[%d, %d, %d, %d] ",
 			   arbsc[i][0], arbsc[i][1], arbsc[i][2], arbsc[i][3]);
+		
+		unsigned f_id = identify_array(arbsc[i]);
+		Figure *iter  = ptr_figures[f_id];
+		
+		printf("%s\n", iter->name);
 		
 		if (! ((i+1) % 4))
 		{
 			printf("\n");
 		}
 	}
+	
 }

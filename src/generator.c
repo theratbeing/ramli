@@ -1,5 +1,8 @@
 #include "generator.h"
 
+#include <stdlib.h>
+#include <time.h>
+
 unsigned identify_array(int *ar)
 {
 	// Returns the enum of figure array
@@ -38,5 +41,17 @@ void process_array_arithmetics(int (*ar)[4])
 	for (i = 0; i < 4; ++i)
 	{
 		ar[15][i] = ar[14][i] ^ ar[0][i];
+	}
+}
+
+void fill_array_random(int (*ar)[4])
+{
+	srand((unsigned)time(NULL));
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			ar[i][j] = rand();
+		}
 	}
 }
