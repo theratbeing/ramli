@@ -1,19 +1,32 @@
 #include "curses_window.h"
 #include <ncurses.h>
+#include <string.h>
 
 void draw_chart_info(Chart *chart, int mode)
 {
-	WINDOW *winbox = newwin(18, 33, 0, 0);
+	WINDOW *winbox = newwin(19, 33, 0, 0);
 	box(winbox, 0, 0);
+	
+	const char *mode_label[] =
+	{
+		"Elements (Modern)", "Elements (Traditional)", "Planetary",
+		"Zodiac (Agrippa)", "Zodiac (Gerard of Cremona)"
+	};
+	
+	wattron(winbox, A_UNDERLINE);
+	int mid_x = (33 - strlen(mode_label[mode])) / 2;
+	mvwprintw(winbox, 1, mid_x, "%s", mode_label[mode]);
+	wattroff(winbox, A_UNDERLINE);
 	
 	for (int i = 0; i < 16; i++)
 	{
 		Figure *fgr = chart->figures[i];
 		Virtue *vrt = fgr->virtues[mode];
 		
-		mvwprintw(winbox, i+1, 1, "%2d. %s", i+1, fgr->name);
+		mvwprintw(winbox, i+2, 1, "%2d. ", i+1);
 		wattron(winbox, COLOR_PAIR(vrt->color));
-		mvwprintw(winbox, i+1, 21, "%s %s", vrt->symbol, vrt->name);
+		mvwprintw(winbox, i+2, 5, "%s", fgr->name);
+		mvwprintw(winbox, i+2, 21, "%s %s", vrt->symbol, vrt->name);
 		wattroff(winbox, COLOR_PAIR(vrt->color));
 	}
 	

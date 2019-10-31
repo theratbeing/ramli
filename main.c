@@ -8,7 +8,7 @@
 
 int main()
 {
-	setlocale(LC_CTYPE, "");
+	setlocale(LC_ALL, "");
 	initscr();
 	cbreak();
 	noecho();
@@ -87,7 +87,7 @@ int main()
 	
 	process_array_arithmetics(matrix);
 	
-	int color_set = ELEMENT_T;
+	int color_set = ZODIAC_A;
 	Chart basechart;
 	for (int i = 0; i < 16; ++i)
 	{
