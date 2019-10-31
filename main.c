@@ -1,4 +1,4 @@
-#include "generator.h"
+#include "curses_window.h"
 #include <ncurses.h>
 #include <locale.h>
 #include <string.h>
@@ -86,6 +86,17 @@ int main()
 	}
 	
 	process_array_arithmetics(matrix);
+	
+	int color_set = ELEMENT_T;
+	Chart basechart;
+	for (int i = 0; i < 16; ++i)
+	{
+		unsigned id = identify_array(matrix[i]);
+		basechart.figures[i] = ptr_figures[id];
+	}
+	
+	draw_chart_info(&basechart, color_set);
+	getch();
 	
 	endwin();
 }
