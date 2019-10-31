@@ -1,6 +1,5 @@
 #include "curses_window.h"
 #include <ncurses.h>
-#include <string.h>
 
 void draw_chart_info(Chart *chart, int mode)
 {
@@ -26,8 +25,8 @@ void draw_chart_info(Chart *chart, int mode)
 		mvwprintw(winbox, i+2, 1, "%2d. ", i+1);
 		wattron(winbox, COLOR_PAIR(vrt->color));
 		mvwaddstr(winbox, i+2, 5, fgr->name);
-		//mvwaddstr(winbox, i+2, 21, vrt->symbol);
-		mvwaddstr(winbox, i+2, 21, vrt->name);
+		//mvwaddwstr(winbox, i+2, 21, vrt->symbol);
+		mvwaddstr(winbox, i+2, 23, vrt->name);
 		wattroff(winbox, COLOR_PAIR(vrt->color));
 	}
 	
