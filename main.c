@@ -38,6 +38,25 @@ int main()
 	WINDOW *menu_win = newwin(10, 30, 0, 0);
 	
 	wprintw(menu_win, "Welcome to Ramli v0.1a\n");
+	wprintw(menu_win, "1. Create shield chart.\n");
+	wprintw(menu_win, "2. Create house chart.\n");
+	wrefresh(menu_win);
+	
+	while((key_ch = wgetch(menu_win)))
+	{
+		if (key_ch == '1')
+		{
+			chart_flags |= FLAG_SHIELD;
+			break;
+		}
+		else if (key_ch == '2')
+		{
+			chart_flags |= FLAG_HOUSE;
+			break;
+		}
+	}
+	
+	werase(menu_win);
 	wprintw(menu_win, "1. Create random chart.\n");
 	wprintw(menu_win, "2. Figure by figure.\n");
 	wprintw(menu_win, "3. Line by line.\n");
@@ -101,11 +120,14 @@ int main()
 		basechart.figures[i] = ptr_figures[id];
 	}
 	
-	//draw_chart_info(&basechart, color_set, 0, 0);
-	//draw_shield_chart(&basechart, color_set, 0, 0);
-	draw_house_chart(&basechart, color_set, 0, 0);
+	draw_chart_info(&basechart, color_set, 0, 0);
 	
-	WINDOW *input_box = newwin(1, 1, 23, 79);
+	if (chart_flags & FLAG_SHIELD)
+		draw_shield_chart(&basechart, color_set, 0, 33);
+	else if (chart_flags & FLAG_HOUSE)
+		draw_house_chart(&basechart, color_set, 0, 38);
+	
+	WINDOW *input_box = newwin(1, 1, 23, 0);
 	wgetch(input_box);
 	
 	endwin();
