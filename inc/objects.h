@@ -56,7 +56,7 @@ enum virtue_groups
 };
 
 #define FIGURE_NAME_SIZE   15
-#define FIGURE_ABBR_SIZE    9
+#define FIGURE_ABBR_SIZE   11
 
 typedef struct figure
 {

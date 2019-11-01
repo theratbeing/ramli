@@ -56,7 +56,7 @@ Figure populus =
 
 Figure tristitia =
 {
-	TRISTITIA, "Tristitia", "Tristit.", {0, 0, 0, 1},
+	TRISTITIA, "Tristitia", "Tristitia", {0, 0, 0, 1},
 	{&earth, &earth, &saturn, &aquarius, &scorpio}
 };
 
@@ -80,13 +80,13 @@ Figure rubeus =
 
 Figure acquisitio =
 {
-	ACQUISITIO, "Acquisitio", "Acquisi.", {0, 1, 0, 1},
+	ACQUISITIO, "Acquisitio", "Acquisitio", {0, 1, 0, 1},
 	{&air, &air, &jupiter, &sagittarius, &aries}
 };
 
 Figure conjunctio =
 {
-	CONJUNCTIO, "Conjunctio", "Conjunc.", {0, 1, 1, 0},
+	CONJUNCTIO, "Conjunctio", "Conjunctio", {0, 1, 1, 0},
 	{&air, &air, &mercury, &virgo, &virgo}
 };
 

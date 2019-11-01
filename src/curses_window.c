@@ -1,10 +1,12 @@
 #include "curses_window.h"
 #include <ncurses.h>
+#include <string.h>
 
 void draw_chart_info(Chart *chart, int mode)
 {
 	WINDOW *winbox = newwin(19, 33, 0, 0);
 	box(winbox, 0, 0);
+	wrefresh(winbox);	// prevents box outline misallignment
 	
 	const char *mode_label[] =
 	{
@@ -24,9 +26,7 @@ void draw_chart_info(Chart *chart, int mode)
 		
 		mvwprintw(winbox, i+2, 1, "%2d. ", i+1);
 		wattron(winbox, COLOR_PAIR(vrt->color));
-		mvwaddstr(winbox, i+2, 5, fgr->name);
-		//mvwaddwstr(winbox, i+2, 21, vrt->symbol);
-		mvwaddstr(winbox, i+2, 23, vrt->name);
+		mvwprintw(winbox, i+2, 5, "%-12s %s %s", fgr->abbr, vrt->symbol, vrt->name);
 		wattroff(winbox, COLOR_PAIR(vrt->color));
 	}
 	
