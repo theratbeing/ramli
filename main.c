@@ -26,8 +26,8 @@ int main()
 	init_pair(MAGENTA, COLOR_MAGENTA, TRANSPARENT);
 	init_pair(CYAN, COLOR_CYAN, TRANSPARENT);
 	
-	//int row, col;
-	//getmaxyx(stdscr, row, col);
+	//int max_row, max_col;
+	//getmaxyx(stdscr, max_row, max_col);
 	
 	/* ========================================== *
 	 * Actual program starts here
@@ -35,12 +35,15 @@ int main()
 	int			key_ch;
 	unsigned	chart_flags = 0;
 	
-	printw("Welcome to Ramli v0.1a\n");
-	printw("1. Create random chart.\n");
-	printw("2. Figure by figure.\n");
-	printw("3. Line by line.\n");
+	WINDOW *menu_win = newwin(10, 30, 0, 0);
 	
-	while((key_ch = getch()))
+	wprintw(menu_win, "Welcome to Ramli v0.1a\n");
+	wprintw(menu_win, "1. Create random chart.\n");
+	wprintw(menu_win, "2. Figure by figure.\n");
+	wprintw(menu_win, "3. Line by line.\n");
+	wrefresh(menu_win);
+	
+	while((key_ch = wgetch(menu_win)))
 	{
 		if (key_ch == '1')
 		{
@@ -58,6 +61,9 @@ int main()
 			break;
 		}
 	}
+	
+	werase(menu_win);
+	wrefresh(menu_win);
 	
 	int matrix[16][4];
 	
@@ -95,8 +101,11 @@ int main()
 		basechart.figures[i] = ptr_figures[id];
 	}
 	
-	draw_chart_info(&basechart, color_set);
-	getch();
+	//draw_chart_info(&basechart, color_set, 0, 0);
+	draw_shield_chart(&basechart, color_set, 0, 0);
+	
+	WINDOW *input_box = newwin(1, 1, 23, 79);
+	wgetch(input_box);
 	
 	endwin();
 }
