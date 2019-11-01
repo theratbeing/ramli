@@ -33,7 +33,50 @@ int main()
 	 * Actual program starts here
 	 * ========================================== */
 	int			key_ch;
-	unsigned	chart_flags = 0;
+	int			querent		= 1;
+	int			quesited	= 7;
+	int			color_set   = PLANETARY;
+	unsigned	chart_flags = FLAG_SHIELD | FLAG_BY_RANDOM;
+	
+	int selection = 0;
+	WINDOW *current_opt = newwin(12, 60, 0, 0);
+	wprintw(current_opt, "CURRENT CHART OPTIONS\n\n");
+	wprintw(current_opt, "  Chart type       :\n");
+	wprintw(current_opt, "  Generation method:\n");
+	wprintw(current_opt, "  Correspondence   :\n");
+	wprintw(current_opt, "  House of Querent : %d\n", querent);
+	wprintw(current_opt, "  House of Quesited: %d\n", quesited);
+	
+	if (chart_flags & FLAG_SHIELD)
+		mvwprintw(current_opt, 2, 21, "Shield chart");
+	else if (chart_flags & FLAG_HOUSE)
+		mvwprintw(current_opt, 2, 21, "House chart");
+	
+	if (chart_flags & FLAG_BY_RANDOM)
+		mvwprintw(current_opt, 3, 21, "Pseudo-random");
+	else if (chart_flags & FLAG_BY_FIGURE)
+		mvwprintw(current_opt, 3, 21, "Figure by figure");
+	else if (chart_flags & FLAG_BY_LINE)
+		mvwprintw(current_opt, 3, 21, "Line by line");
+	
+	if (color_set == ELEMENT_M)
+		mvwprintw(current_opt, 4, 21, "Elements (modern)");
+	else if (color_set == ELEMENT_T)
+		mvwprintw(current_opt, 4, 21, "Elements (traditional)");
+	else if (color_set == PLANETARY)
+		mvwprintw(current_opt, 4, 21, "Planetary");
+	else if (color_set == ZODIAC_A)
+		mvwprintw(current_opt, 4, 21, "Zodiacal (Agrippa)");
+	else if (color_set == ZODIAC_G)
+		mvwprintw(current_opt, 4, 21, "Zodiacal (Gerardus)");
+	
+	mvwaddch(current_opt, selection+2,  0, '>');
+	mvwaddch(current_opt, selection+2, 44, '<');
+	
+	wgetch(current_opt);
+	werase(current_opt);
+	wrefresh(current_opt);
+	delwin(current_opt);
 	
 	WINDOW *menu_win = newwin(10, 30, 0, 0);
 	
@@ -47,11 +90,13 @@ int main()
 		if (key_ch == '1')
 		{
 			chart_flags |= FLAG_SHIELD;
+			chart_flags &= ~FLAG_HOUSE;
 			break;
 		}
 		else if (key_ch == '2')
 		{
 			chart_flags |= FLAG_HOUSE;
+			chart_flags &= ~FLAG_SHIELD;
 			break;
 		}
 	}
@@ -67,22 +112,26 @@ int main()
 		if (key_ch == '1')
 		{
 			chart_flags |= FLAG_BY_RANDOM;
+			chart_flags &= ~(FLAG_BY_FIGURE | FLAG_BY_LINE);
 			break;
 		}
 		else if (key_ch == '2')
 		{
 			chart_flags |= FLAG_BY_FIGURE;
+			chart_flags &= ~(FLAG_BY_RANDOM | FLAG_BY_LINE);
 			break;
 		}
 		else if (key_ch == '3')
 		{
 			chart_flags |= FLAG_BY_LINE;
+			chart_flags &= ~(FLAG_BY_FIGURE | FLAG_BY_RANDOM);
 			break;
 		}
 	}
 	
 	werase(menu_win);
 	wrefresh(menu_win);
+	delwin(menu_win);
 	
 	int matrix[16][4];
 	
@@ -112,7 +161,6 @@ int main()
 	
 	process_array_arithmetics(matrix);
 	
-	int color_set = ZODIAC_A;
 	Chart basechart;
 	for (int i = 0; i < 16; ++i)
 	{
