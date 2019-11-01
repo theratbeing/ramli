@@ -58,6 +58,30 @@ void draw_shield_chart(Chart *chart, int mode, int y, int x)
 	}
 }
 
+void draw_house_chart(Chart *chart, int mode, int y, int x)
+{
+	int xpos[16] =
+	{
+		 0,  0,  6, 12, 18, 24,
+		24, 24, 18, 12,  6,  0,
+		34, 34, 34, 34
+	};
+	
+	int ypos[16] =
+	{
+		 9, 15, 18, 18, 18, 15,
+		 9,  3,  0,  0,  0,  3,
+		 0,  6, 12, 18
+	};
+	
+	for (int i = 0; i < 16; ++i)
+	{
+		ypos[i] += y;
+		xpos[i] += x;
+		draw_figure_box(chart->figures[i], mode, i, ypos[i], xpos[i]);
+	}
+}
+
 void draw_figure_box(Figure *fgr, int mode, int num, int y, int x)
 {
 	WINDOW *win = newwin(6, 5, y, x);

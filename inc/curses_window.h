@@ -5,6 +5,7 @@
 
 void draw_chart_info(Chart *chart, int mode, int y, int x);
 void draw_shield_chart(Chart *chart, int mode, int y, int x);
+void draw_house_chart(Chart *chart, int mode, int y, int x);
 
 void draw_figure_box(Figure *fgr, int mode, int num, int y, int x);
 

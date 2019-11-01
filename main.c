@@ -102,7 +102,8 @@ int main()
 	}
 	
 	//draw_chart_info(&basechart, color_set, 0, 0);
-	draw_shield_chart(&basechart, color_set, 0, 0);
+	//draw_shield_chart(&basechart, color_set, 0, 0);
+	draw_house_chart(&basechart, color_set, 0, 0);
 	
 	WINDOW *input_box = newwin(1, 1, 23, 79);
 	wgetch(input_box);
