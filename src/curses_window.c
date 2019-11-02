@@ -128,9 +128,9 @@ void draw_figure_box(Figure *fgr, int mode, int num, int y, int x)
  * Program menu/interface
  * ============================================== */
 
-MenuC * new_menu_child(char *name, size_t size, char **labels)
+MenuItem * new_menu_item(char *name, size_t size, char **labels)
 {
-	MenuC *ptr  = malloc(sizeof(MenuC));
+	MenuItem *ptr  = malloc(sizeof(MenuItem));
 	ptr->name   = name;
 	ptr->value  = 0;
 	ptr->size   = size;
@@ -139,29 +139,29 @@ MenuC * new_menu_child(char *name, size_t size, char **labels)
 	return ptr;
 }
 
-void del_menu_child(MenuC *menuc)
+void del_menu_item(MenuItem *menui)
 {
-	free(menuc->labels);
-	free(menuc);
+	free(menui->labels);
+	free(menui);
 }
 
-void draw_menu_child(MenuC *menuc, int len, int y, int x)
+void draw_menu_item(MenuItem *menui, int len, int y, int x)
 {
 	WINDOW *win = newwin(3, len, y, x);
 	box(win, 0, 0);
-	mvwaddstr(win, 0, 1, menuc->name);
+	mvwaddstr(win, 0, 1, menui->name);
 	wrefresh(win);
-	mvwprintw(win, 1, 1, "%*s", len-2, menuc->labels[menuc->value]);
+	mvwprintw(win, 1, 1, "%*s", len-2, menui->labels[menui->value]);
 	wrefresh(win);
 	delwin(win);
 }
 
-void shift_menu_child(MenuC *menuc, int diff)
+void shift_menu_item(MenuItem *menui, int diff)
 {
-	menuc->value += diff;
-	int size = (int) menuc->size;
-	if (menuc->value >= size)
-		menuc->value = menuc->value - size;
-	else if (menuc->value < 0)
-		menuc->value = size - menuc->value;
+	menui->value += diff;
+	int size = (int) menui->size;
+	if (menui->value >= size)
+		menui->value = menui->value - size;
+	else if (menui->value < 0)
+		menui->value = size - menui->value;
 }
