@@ -200,7 +200,7 @@ void ask_string(char *dest, int len, const char *prompt, int h, int w, int y, in
 	mvwgetnstr(dialbox, 1, 1, dest, len);
 	noecho();
 	
-	wclear(dialbox);
+	werase(dialbox);
 	wrefresh(dialbox);
 	delwin(dialbox);
 }
@@ -234,7 +234,7 @@ void ask_house(int *dest, const char *prompt, int h, int w, int y, int x)
 	}
 	
 	noecho();
-	wclear(dialbox);
+	werase(dialbox);
 	wrefresh(dialbox);
 	delwin(dialbox);
 }
