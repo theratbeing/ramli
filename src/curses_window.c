@@ -146,6 +146,16 @@ void set_item_attr(MenuItem *mi, int attr)
 	mi->attr = attr;
 }
 
+void shift_menu_item(MenuItem *menui, int diff)
+{
+	menui->value += diff;
+	int size = (int) menui->size;
+	if (menui->value >= size)
+		menui->value = 0;
+	else if (menui->value < 0)
+		menui->value = size - 1;
+}
+
 void del_menu_item(MenuItem *menui)
 {
 	free(menui->labels);
@@ -168,16 +178,6 @@ void refresh_wmi(WINDOW *win, MenuItem *menui)
 {
 	mvwprintw(win, 1, 1, "%*s", menui->length-1, menui->labels[menui->value]);
 	wrefresh(win);
-}
-
-void shift_menu_item(MenuItem *menui, int diff)
-{
-	menui->value += diff;
-	int size = (int) menui->size;
-	if (menui->value == size)
-		menui->value = 0;
-	else if (menui->value < 0)
-		menui->value = size - 1;
 }
 
 /* ============================================== *
