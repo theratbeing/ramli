@@ -1,10 +1,6 @@
 #include "curses_window.h"
-#include <ncurses.h>
 #include <locale.h>
 #include <string.h>
-
-#define TRANSPARENT	-1
-#define COLOR_ORANGE	208
 
 int main()
 {

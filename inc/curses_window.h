@@ -5,6 +5,9 @@
 #include <stddef.h>
 #include <ncurses.h>
 
+#define TRANSPARENT   -1
+#define COLOR_ORANGE 208
+
 /* ============================================== *
  * Visual representation of geomantic objects
  * ============================================== */
@@ -27,9 +30,11 @@ typedef struct menu_item
 	size_t	size;
 	char	**labels;
 	int		length;
+	int		attr;
 } MenuItem;
 
 MenuItem * new_menu_item(char *name, size_t size, char **labels, int length);
+void set_item_attr(MenuItem *mi, int attr);
 void del_menu_item(MenuItem *menui);
 
 WINDOW * window_menu_item(MenuItem *menui, int y, int x);

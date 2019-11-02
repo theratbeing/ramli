@@ -134,10 +134,16 @@ MenuItem * new_menu_item(char *name, size_t size, char **labels, int length)
 	ptr->name	= name;
 	ptr->value	= 0;
 	ptr->size	= size;
-	ptr->length = length;
 	ptr->labels = malloc(size * sizeof(char*));
+	ptr->length = length;
+	ptr->attr   = A_NORMAL;
 	memcpy(ptr->labels, labels, size * sizeof(char*));
 	return ptr;
+}
+
+void set_item_attr(MenuItem *mi, int attr)
+{
+	mi->attr = attr;
 }
 
 void del_menu_item(MenuItem *menui)
@@ -149,17 +155,18 @@ void del_menu_item(MenuItem *menui)
 WINDOW * window_menu_item(MenuItem *menui, int y, int x)
 {
 	WINDOW *win = newwin(3, menui->length+2, y, x);
+	wattron(win, menui->attr);
 	box(win, 0, 0);
 	mvwaddstr(win, 0, 1, menui->name);
-	wrefresh(win);
-	mvwprintw(win, 1, 1, "%*s", menui->length-2, menui->labels[menui->value]);
+	wattroff(win, menui->attr);
+	mvwprintw(win, 1, 1, "%*s", menui->length-1, menui->labels[menui->value]);
 	wrefresh(win);
 	return win;
 }
 
 void refresh_wmi(WINDOW *win, MenuItem *menui)
 {
-	mvwprintw(win, 1, 1, "%*s", menui->length-2, menui->labels[menui->value]);
+	mvwprintw(win, 1, 1, "%*s", menui->length-1, menui->labels[menui->value]);
 	wrefresh(win);
 }
 
