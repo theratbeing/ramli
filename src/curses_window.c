@@ -179,3 +179,28 @@ void shift_menu_item(MenuItem *menui, int diff)
 	else if (menui->value < 0)
 		menui->value = size - 1;
 }
+
+/* ============================================== *
+ * Dialogues
+ * ============================================== */
+
+void ask_string(char *dest, int len, const char *prompt, int h, int w, int y, int x)
+{
+	int textlen = (int) strlen(prompt);
+	if (w < textlen)
+		w = textlen;
+	
+	int mid_x = (w - textlen) / 2;
+
+	WINDOW *dialbox = newwin(h, w, y, x);
+	box(dialbox, 0, 0);
+	mvwaddstr(dialbox, 0, mid_x, prompt);
+	
+	echo();
+	mvwgetnstr(dialbox, 1, 1, dest, len);
+	noecho();
+	
+	wclear(dialbox);
+	wrefresh(dialbox);
+	delwin(dialbox);
+}

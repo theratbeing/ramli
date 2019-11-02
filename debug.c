@@ -28,6 +28,7 @@ int main()
 	
 	WINDOW *wmenui = window_menu_item(menui, 3, 3);
 	
+	char buffer[80];
 	int key = 0;
 	while ((key = wgetch(wmenui)) != 'q')
 	{
@@ -35,6 +36,8 @@ int main()
 			shift_menu_item(menui, -1);
 		else if (key == 'l')
 			shift_menu_item(menui, 1);
+		else if (key == 's')
+			ask_string(buffer, 79, "Please enter something", 3, 60, 10, 10);
 		
 		refresh_wmi(wmenui, menui);
 	}
@@ -43,6 +46,8 @@ int main()
 	endwin();
 	
 	del_menu_item(menui);
+	
+	puts(buffer);
 	
 	return 0;
 }

@@ -41,4 +41,6 @@ WINDOW * window_menu_item(MenuItem *menui, int y, int x);
 void refresh_wmi(WINDOW *win, MenuItem *menui);
 void shift_menu_item(MenuItem *menui, int diff);
 
+void ask_string(char *dest, int len, const char *prompt, int h, int w, int y, int x);
+
 #endif
