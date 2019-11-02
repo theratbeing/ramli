@@ -128,12 +128,13 @@ void draw_figure_box(Figure *fgr, int mode, int num, int y, int x)
  * Program menu/interface
  * ============================================== */
 
-MenuItem * new_menu_item(char *name, size_t size, char **labels)
+MenuItem * new_menu_item(char *name, size_t size, char **labels, int length)
 {
-	MenuItem *ptr  = malloc(sizeof(MenuItem));
-	ptr->name   = name;
-	ptr->value  = 0;
-	ptr->size   = size;
+	MenuItem *ptr   = malloc(sizeof(MenuItem));
+	ptr->name	= name;
+	ptr->value	= 0;
+	ptr->size	= size;
+	ptr->length = length;
 	ptr->labels = malloc(size * sizeof(char*));
 	memcpy(ptr->labels, labels, size * sizeof(char*));
 	return ptr;
@@ -145,23 +146,29 @@ void del_menu_item(MenuItem *menui)
 	free(menui);
 }
 
-void draw_menu_item(MenuItem *menui, int len, int y, int x)
+WINDOW * window_menu_item(MenuItem *menui, int y, int x)
 {
-	WINDOW *win = newwin(3, len, y, x);
+	WINDOW *win = newwin(3, menui->length+2, y, x);
 	box(win, 0, 0);
 	mvwaddstr(win, 0, 1, menui->name);
 	wrefresh(win);
-	mvwprintw(win, 1, 1, "%*s", len-2, menui->labels[menui->value]);
+	mvwprintw(win, 1, 1, "%*s", menui->length-2, menui->labels[menui->value]);
 	wrefresh(win);
-	delwin(win);
+	return win;
+}
+
+void refresh_wmi(WINDOW *win, MenuItem *menui)
+{
+	mvwprintw(win, 1, 1, "%*s", menui->length-2, menui->labels[menui->value]);
+	wrefresh(win);
 }
 
 void shift_menu_item(MenuItem *menui, int diff)
 {
 	menui->value += diff;
 	int size = (int) menui->size;
-	if (menui->value >= size)
-		menui->value = menui->value - size;
+	if (menui->value == size)
+		menui->value = 0;
 	else if (menui->value < 0)
-		menui->value = size - menui->value;
+		menui->value = size - 1;
 }

@@ -26,11 +26,14 @@ typedef struct menu_item
 	int		value;
 	size_t	size;
 	char	**labels;
+	int		length;
 } MenuItem;
 
-MenuItem * new_menu_item(char *name, size_t size, char **labels);
-void del_menu_item(MenuItem *menuc);
-void shift_menu_item(MenuItem *menuc, int diff);
-void draw_menu_item(MenuItem *menuc, int len, int y, int x);
+MenuItem * new_menu_item(char *name, size_t size, char **labels, int length);
+void del_menu_item(MenuItem *menui);
+
+WINDOW * window_menu_item(MenuItem *menui, int y, int x);
+void refresh_wmi(WINDOW *win, MenuItem *menui);
+void shift_menu_item(MenuItem *menui, int diff);
 
 #endif
