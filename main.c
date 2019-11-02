@@ -29,105 +29,92 @@ int main()
 	 * Actual program starts here
 	 * ========================================== */
 	int			key_ch;
-	int			querent		= 1;
-	int			quesited	= 7;
-	int			color_set   = PLANETARY;
-	unsigned	chart_flags = FLAG_SHIELD | FLAG_BY_RANDOM;
+	int			select		= 0;
+	//int			querent		= 1;
+	//int			quesited	= 7;
+	int			color_set   = 0;
+	unsigned	chart_flags = 0;
 	
-	int selection = 0;
-	WINDOW *current_opt = newwin(12, 60, 0, 0);
-	wprintw(current_opt, "CURRENT CHART OPTIONS\n\n");
-	wprintw(current_opt, "  Chart type       :\n");
-	wprintw(current_opt, "  Generation method:\n");
-	wprintw(current_opt, "  Correspondence   :\n");
-	wprintw(current_opt, "  House of Querent : %d\n", querent);
-	wprintw(current_opt, "  House of Quesited: %d\n", quesited);
+	char item_label_1[] = "Chart type";
+	char item_label_2[] = "Generation method";
+	char item_label_3[] = "Correspondence";
 	
-	if (chart_flags & FLAG_SHIELD)
-		mvwprintw(current_opt, 2, 21, "Shield chart");
-	else if (chart_flags & FLAG_HOUSE)
-		mvwprintw(current_opt, 2, 21, "House chart");
+	char *options_1[] = {"Shield chart", "House chart"};
+	char *options_2[] = {"Random", "Figure by figure", "Line by line"};
+	char *options_3[] = {"Elemental (modern)", "Elemental (traditional)",
+		"Planetary", "Zodiacal (Agrippa)", "Zodiacal (Gerardus)"};
 	
-	if (chart_flags & FLAG_BY_RANDOM)
-		mvwprintw(current_opt, 3, 21, "Pseudo-random");
-	else if (chart_flags & FLAG_BY_FIGURE)
-		mvwprintw(current_opt, 3, 21, "Figure by figure");
-	else if (chart_flags & FLAG_BY_LINE)
-		mvwprintw(current_opt, 3, 21, "Line by line");
+	int menu_y   = 3;
+	int menu_x   = 3;
+	int menu_len = 25;
 	
-	if (color_set == ELEMENT_M)
-		mvwprintw(current_opt, 4, 21, "Elements (modern)");
-	else if (color_set == ELEMENT_T)
-		mvwprintw(current_opt, 4, 21, "Elements (traditional)");
-	else if (color_set == PLANETARY)
-		mvwprintw(current_opt, 4, 21, "Planetary");
-	else if (color_set == ZODIAC_A)
-		mvwprintw(current_opt, 4, 21, "Zodiacal (Agrippa)");
-	else if (color_set == ZODIAC_G)
-		mvwprintw(current_opt, 4, 21, "Zodiacal (Gerardus)");
+	MenuItem *choices[3];
+	WINDOW   *windows[3];
 	
-	mvwaddch(current_opt, selection+2,  0, '>');
-	mvwaddch(current_opt, selection+2, 44, '<');
+	choices[0] = new_menu_item(item_label_1, 2, options_1, menu_len);
+	choices[1] = new_menu_item(item_label_2, 3, options_2, menu_len);
+	choices[2] = new_menu_item(item_label_3, 5, options_3, menu_len);
 	
-	wgetch(current_opt);
-	werase(current_opt);
-	wrefresh(current_opt);
-	delwin(current_opt);
-	
-	WINDOW *menu_win = newwin(10, 30, 0, 0);
-	
-	wprintw(menu_win, "Welcome to Ramli v0.1a\n");
-	wprintw(menu_win, "1. Create shield chart.\n");
-	wprintw(menu_win, "2. Create house chart.\n");
-	wrefresh(menu_win);
-	
-	while((key_ch = wgetch(menu_win)))
+	for (int i = 0; i < 3; ++i)
 	{
-		if (key_ch == '1')
-		{
-			chart_flags |= FLAG_SHIELD;
-			chart_flags &= ~FLAG_HOUSE;
-			break;
-		}
-		else if (key_ch == '2')
-		{
-			chart_flags |= FLAG_HOUSE;
-			chart_flags &= ~FLAG_SHIELD;
-			break;
-		}
+		set_item_attr(choices[i], COLOR_PAIR(GREEN));
+		windows[i] = window_menu_item(choices[i], i*3+menu_y, menu_x+3);
 	}
 	
-	werase(menu_win);
-	wprintw(menu_win, "1. Create random chart.\n");
-	wprintw(menu_win, "2. Figure by figure.\n");
-	wprintw(menu_win, "3. Line by line.\n");
-	wrefresh(menu_win);
+	WINDOW *cursorw = newwin(3*3, 3, menu_y, menu_x);
+	keypad(cursorw, TRUE);
 	
-	while((key_ch = wgetch(menu_win)))
+	while ((key_ch = wgetch(cursorw)) != '\n')
 	{
-		if (key_ch == '1')
-		{
-			chart_flags |= FLAG_BY_RANDOM;
-			chart_flags &= ~(FLAG_BY_FIGURE | FLAG_BY_LINE);
-			break;
-		}
-		else if (key_ch == '2')
-		{
-			chart_flags |= FLAG_BY_FIGURE;
-			chart_flags &= ~(FLAG_BY_RANDOM | FLAG_BY_LINE);
-			break;
-		}
-		else if (key_ch == '3')
-		{
-			chart_flags |= FLAG_BY_LINE;
-			chart_flags &= ~(FLAG_BY_FIGURE | FLAG_BY_RANDOM);
-			break;
-		}
+		if (key_ch == KEY_UP)
+			--select;
+		else if (key_ch == KEY_DOWN)
+			++select;
+		
+		if (select < 0)
+			select = 2;
+		else if (select > 2)
+			select = 0;
+		
+		if (key_ch == KEY_LEFT)
+			shift_menu_item(choices[select], -1);
+		else if (key_ch == KEY_RIGHT)
+			shift_menu_item(choices[select], 1);
+		
+		refresh_wmi(windows[select], choices[select]);
+		werase(cursorw);
+		mvwprintw(cursorw, select*3+1, 0, "(*)");
+		wrefresh(cursorw);
 	}
 	
-	werase(menu_win);
-	wrefresh(menu_win);
-	delwin(menu_win);
+	/* ========================================== *
+	 * Process values from input
+	 * ========================================== */
+	
+	if (choices[0]->value == 0)
+		chart_flags |= FLAG_SHIELD;
+	else if (choices[0]->value == 1)
+		chart_flags |= FLAG_HOUSE;
+	
+	if (choices[1]->value == 0)
+		chart_flags |= FLAG_BY_RANDOM;
+	else if (choices[1]->value == 1)
+		chart_flags |= FLAG_BY_FIGURE;
+	else if (choices[1]->value == 2)
+		chart_flags |= FLAG_BY_LINE;
+	
+	color_set = choices[2]->value;
+	
+	// no memory leaks
+	for (int i = 0; i < 3; ++i)
+	{
+		delwin(windows[i]);
+		del_menu_item(choices[i]);
+	}
+	
+	/* ========================================== *
+	 * Chart calculations start here
+	 * ========================================== */
 	
 	int matrix[16][4];
 	
@@ -142,13 +129,15 @@ int main()
 	}
 	else if (chart_flags & FLAG_BY_LINE)
 	{
-		printw("Please randomly type something and press Enter .\n");
+		erase();
+		refresh();
+		printw("Please randomly type something and press Enter.\n");
 		char line[80];
 		for (int i = 0; i < 4; ++i)
 		{
 			for (int j = 0; j < 4; ++j)
 			{
-				printw("%d:%d > ", i+1, j+1);
+				printw("%2d out of 16 > ", i*4 + j+1);
 				getstr(line);
 				matrix[i][j] = (int)strlen(line);
 			}
@@ -164,6 +153,8 @@ int main()
 		basechart.figures[i] = ptr_figures[id];
 	}
 	
+	erase();
+	refresh();
 	draw_chart_info(&basechart, color_set, 0, 0);
 	
 	if (chart_flags & FLAG_SHIELD)
