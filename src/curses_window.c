@@ -1,6 +1,11 @@
 #include "curses_window.h"
-#include <ncurses.h>
+#include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+
+/* ============================================== *
+ * Visual representation of geomantic objects
+ * ============================================== */
 
 void draw_chart_info(Chart *chart, int mode, int y, int x)
 {
@@ -117,4 +122,46 @@ void draw_figure_box(Figure *fgr, int mode, int num, int y, int x)
 	mvwprintw(win, 0, 2, "%d", num+1);
 	wrefresh(win);
 	delwin(win);
+}
+
+/* ============================================== *
+ * Program menu/interface
+ * ============================================== */
+
+MenuC * new_menu_child(char *name, size_t size, char **labels)
+{
+	MenuC *ptr  = malloc(sizeof(MenuC));
+	ptr->name   = name;
+	ptr->value  = 0;
+	ptr->size   = size;
+	ptr->labels = malloc(size * sizeof(char*));
+	memcpy(ptr->labels, labels, size * sizeof(char*));
+	return ptr;
+}
+
+void del_menu_child(MenuC *menuc)
+{
+	free(menuc->labels);
+	free(menuc);
+}
+
+void draw_menu_child(MenuC *menuc, int len, int y, int x)
+{
+	WINDOW *win = newwin(3, len, y, x);
+	box(win, 0, 0);
+	mvwaddstr(win, 0, 1, menuc->name);
+	wrefresh(win);
+	mvwprintw(win, 1, 1, "%*s", len-2, menuc->labels[menuc->value]);
+	wrefresh(win);
+	delwin(win);
+}
+
+void shift_menu_child(MenuC *menuc, int diff)
+{
+	menuc->value += diff;
+	int size = (int) menuc->size;
+	if (menuc->value >= size)
+		menuc->value = menuc->value - size;
+	else if (menuc->value < 0)
+		menuc->value = size - menuc->value;
 }

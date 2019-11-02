@@ -1,12 +1,12 @@
 CC = gcc
 CCFLAGS = -Iinc -std=c11 -Wall -Wextra -pedantic -fsanitize=address
-DEFOBJS = objects.o generator.o main.o curses_window.o
+DEFOBJS = objects.o generator.o curses_window.o
 
-default : $(DEFOBJS)
-	$(CC) $(CCFLAGS) -lncursesw $(DEFOBJS) -o ramli
+default : $(DEFOBJS) main.o
+	$(CC) $(CCFLAGS) -lncursesw $(DEFOBJS) main.o -o ramli
 
-debug : objects.o generator.o debug.o
-	$(CC) $(CCFLAGS) objects.o generator.o debug.o -o a.out
+test : $(DEFOBJS) debug.o
+	$(CC) $(CCFLAGS) -lncursesw $(DEFOBJS) debug.o -o a.out
 
 main.o : main.c
 	$(CC) $(CCFLAGS) -c main.c
