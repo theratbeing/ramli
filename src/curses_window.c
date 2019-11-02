@@ -204,3 +204,37 @@ void ask_string(char *dest, int len, const char *prompt, int h, int w, int y, in
 	wrefresh(dialbox);
 	delwin(dialbox);
 }
+
+void ask_house(int *dest, const char *prompt, int h, int w, int y, int x)
+{
+	// TODO draw a table of astrological houses for reference
+	
+	int textlen = (int) strlen(prompt);
+	if (w < textlen)
+		w = textlen;
+	
+	int  mid_x = (w - textlen) / 2;
+	char buffer[3];
+	int  result;
+	
+	WINDOW *dialbox = newwin(h, w, y, x);
+	box(dialbox, 0, 0);
+	mvwaddstr(dialbox, 0, mid_x, prompt);
+	echo();
+	
+	while (1) {
+		mvwgetnstr(dialbox, 1, 1, buffer, 2);
+		sscanf(buffer, "%d", &result);
+		
+		if (result > 0 && result < 13)
+		{
+			*dest = result;
+			break;
+		}
+	}
+	
+	noecho();
+	wclear(dialbox);
+	wrefresh(dialbox);
+	delwin(dialbox);
+}

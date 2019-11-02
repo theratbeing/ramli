@@ -29,7 +29,8 @@ int main()
 	WINDOW *wmenui = window_menu_item(menui, 3, 3);
 	
 	char buffer[80];
-	int key = 0;
+	int  key = 0;
+	int  num;
 	while ((key = wgetch(wmenui)) != 'q')
 	{
 		if (key == 'j')
@@ -38,6 +39,8 @@ int main()
 			shift_menu_item(menui, 1);
 		else if (key == 's')
 			ask_string(buffer, 79, "Please enter something", 3, 60, 10, 10);
+		else if (key == 'n')
+			ask_house(&num, "Enter two digit number", 3, 60, 10, 10);
 		
 		refresh_wmi(wmenui, menui);
 	}
@@ -47,7 +50,6 @@ int main()
 	
 	del_menu_item(menui);
 	
-	puts(buffer);
-	
+	printf("%s : %d\n", buffer, num);
 	return 0;
 }
