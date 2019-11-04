@@ -131,20 +131,17 @@ void draw_figure_box(Figure *fgr, int mode, int num, int y, int x)
 MenuItem * new_menu_item(char *name, size_t size, char **labels)
 {
 	MenuItem *ptr   = malloc(sizeof(MenuItem));
-	ptr->name	= name;
-	ptr->value	= 0;
-	ptr->size	= size;
-	ptr->labels = malloc(size * sizeof(char*));
-	ptr->length = 8;
-	ptr->attr   = A_NORMAL;
-	ptr->ptrwin = NULL;
+	ptr->name		= name;
+	ptr->value		= 0;
+	ptr->size		= size;
+	ptr->labels		= malloc(size * sizeof(char*));
+	ptr->selected	= false;
+	
+	ptr->length		= 8;
+	ptr->attr		= A_NORMAL;
+	ptr->ptrwin		= NULL;
 	memcpy(ptr->labels, labels, size * sizeof(char*));
 	return ptr;
-}
-
-void set_item_attr(MenuItem *mi, int attr)
-{
-	mi->attr = attr;
 }
 
 void shift_menu_item(MenuItem *menui, int diff)
@@ -155,6 +152,16 @@ void shift_menu_item(MenuItem *menui, int diff)
 		menui->value = 0;
 	else if (menui->value < 0)
 		menui->value = size - 1;
+}
+
+void select_menu_item(MenuItem *mi)
+{
+	mi->selected = true;
+}
+
+void unselect_menu_item(MenuItem *mi)
+{
+	mi->selected = false;
 }
 
 void del_menu_item(MenuItem *menui)
@@ -184,7 +191,15 @@ void draw_item_window(MenuItem *mi)
 	box(mi->ptrwin, 0, 0);
 	mvwaddstr(mi->ptrwin, 0, 1, mi->name);
 	wattroff(mi->ptrwin, mi->attr);
-	mvwprintw(mi->ptrwin, 1, 1, "%*s", mi->length-1, mi->labels[mi->value]);
+	
+	if (mi->selected)
+		wattron(mi->ptrwin, A_STANDOUT);
+	
+	mvwprintw(mi->ptrwin, 1, 1, "%*s", mi->length, mi->labels[mi->value]);
+	
+	if (mi->selected)
+		wattroff(mi->ptrwin, A_STANDOUT);
+	
 	wrefresh(mi->ptrwin);
 }
 
@@ -204,9 +219,11 @@ void ask_string(char *dest, int len, const char *prompt, int h, int w, int y, in
 	box(dialbox, 0, 0);
 	mvwaddstr(dialbox, 0, mid_x, prompt);
 	
+	curs_set(1);
 	echo();
 	mvwgetnstr(dialbox, 1, 1, dest, len);
 	noecho();
+	curs_set(0);
 	
 	werase(dialbox);
 	wrefresh(dialbox);
@@ -242,6 +259,7 @@ void ask_house(int *dest, const char *prompt, int y, int x)
 	WINDOW *dialbox = newwin(3, 50, y+14, x);
 	box(dialbox, 0, 0);
 	mvwaddstr(dialbox, 0, mid_x, prompt);
+	curs_set(1);
 	echo();
 
 	int  result = 0;
@@ -253,6 +271,7 @@ void ask_house(int *dest, const char *prompt, int y, int x)
 	
 	*dest = result;
 	noecho();
+	curs_set(0);
 	werase(refwin);
 	werase(dialbox);
 	wrefresh(refwin);

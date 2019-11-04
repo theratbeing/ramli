@@ -3,6 +3,7 @@
 
 #include "generator.h"
 #include <stddef.h>
+#include <stdbool.h>
 #include <ncurses.h>
 
 #define TRANSPARENT   -1
@@ -29,6 +30,7 @@ typedef struct menu_item
 	int		value;
 	size_t	size;
 	char	**labels;
+	bool	selected;
 	
 	// window data
 	int		length;
@@ -38,6 +40,8 @@ typedef struct menu_item
 
 MenuItem * new_menu_item(char *name, size_t size, char **labels);
 void set_item_window(MenuItem *mi, int length, int attr, int y, int x);
+void select_menu_item(MenuItem *mi);
+void unselect_menu_item(MenuItem *mi);
 void shift_menu_item(MenuItem *menui, int diff);
 void draw_item_window(MenuItem *mi);
 void del_menu_item(MenuItem *menui);

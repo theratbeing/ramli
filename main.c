@@ -56,19 +56,26 @@ int main()
 	
 	for (int i = 0; i < 3; ++i)
 	{
-		set_item_window(choices[i], menu_len, COLOR_PAIR(GREEN), i*3+menu_y, menu_x+3);
+		set_item_window(choices[i], menu_len, COLOR_PAIR(GREEN), i*3+menu_y, menu_x);
 		draw_item_window(choices[i]);
 	}
 	
-	WINDOW *cursorw = newwin(3*3, 3, menu_y, menu_x);
+	WINDOW *cursorw = newwin(1, 1, 23, 1);
 	keypad(cursorw, TRUE);
+	curs_set(0);
 	
 	while ((key_ch = wgetch(cursorw)) != '\n')
 	{
-		if (key_ch == KEY_UP)
+		if (key_ch == KEY_UP) {
+			unselect_menu_item(choices[select]);
+			draw_item_window(choices[select]);
 			--select;
-		else if (key_ch == KEY_DOWN)
+		}
+		else if (key_ch == KEY_DOWN) {
+			unselect_menu_item(choices[select]);
+			draw_item_window(choices[select]);
 			++select;
+		}
 		
 		if (select < 0)
 			select = 2;
@@ -80,10 +87,8 @@ int main()
 		else if (key_ch == KEY_RIGHT)
 			shift_menu_item(choices[select], 1);
 		
+		select_menu_item(choices[select]);
 		draw_item_window(choices[select]);
-		werase(cursorw);
-		mvwprintw(cursorw, select*3+1, 0, "(*)");
-		wrefresh(cursorw);
 	}
 	
 	/* ========================================== *
