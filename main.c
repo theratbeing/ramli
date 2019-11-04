@@ -30,8 +30,8 @@ int main()
 	 * ========================================== */
 	int			key_ch;
 	int			select		= 0;
-	//int			querent		= 1;
-	//int			quesited	= 7;
+	int			querent		= 1;
+	int			quesited	= 7;
 	int			color_set   = 0;
 	unsigned	chart_flags = 0;
 	
@@ -48,13 +48,14 @@ int main()
 	int menu_x   = 3;
 	int menu_len = 25;
 	
+	int choice_size = 3;
 	MenuItem *choices[3];
 	
 	choices[0] = new_menu_item(item_label_1, 2, options_1);
 	choices[1] = new_menu_item(item_label_2, 3, options_2);
 	choices[2] = new_menu_item(item_label_3, 5, options_3);
 	
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < choice_size; ++i)
 	{
 		set_item_window(choices[i], menu_len, COLOR_PAIR(GREEN), i*3+menu_y, menu_x);
 		draw_item_window(choices[i]);
@@ -66,15 +67,31 @@ int main()
 	
 	while ((key_ch = wgetch(cursorw)) != '\n')
 	{
-		if (key_ch == KEY_UP) {
+		if (key_ch == KEY_F(2))
+		{
+			ask_house(&querent, "Please enter the house of Querent", 3, 15);
+		}
+		else if (key_ch == KEY_F(3))
+		{
+			ask_house(&quesited, "Please enter the house of Quesited", 3, 15);
+		}
+		else if (key_ch == KEY_UP)
+		{
 			unselect_menu_item(choices[select]);
-			draw_item_window(choices[select]);
 			--select;
 		}
-		else if (key_ch == KEY_DOWN) {
+		else if (key_ch == KEY_DOWN)
+		{
 			unselect_menu_item(choices[select]);
-			draw_item_window(choices[select]);
 			++select;
+		}
+		else if (key_ch == KEY_LEFT)
+		{
+			shift_menu_item(choices[select], -1);
+		}
+		else if (key_ch == KEY_RIGHT)
+		{
+			shift_menu_item(choices[select], 1);
 		}
 		
 		if (select < 0)
@@ -82,13 +99,10 @@ int main()
 		else if (select > 2)
 			select = 0;
 		
-		if (key_ch == KEY_LEFT)
-			shift_menu_item(choices[select], -1);
-		else if (key_ch == KEY_RIGHT)
-			shift_menu_item(choices[select], 1);
-		
 		select_menu_item(choices[select]);
-		draw_item_window(choices[select]);
+		
+		for (int i = 0; i < choice_size; ++i)
+			draw_item_window(choices[i]);
 	}
 	
 	/* ========================================== *
