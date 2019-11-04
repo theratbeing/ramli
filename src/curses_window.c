@@ -232,23 +232,29 @@ void ask_string(char *dest, int len, const char *prompt, int h, int w, int y, in
 
 void ask_house(int *dest, const char *prompt, int y, int x)
 {
-	// TODO draw a table of astrological houses for reference
-	
 	WINDOW *refwin = newwin(14, 50, y, x);
+	
+	wattron(refwin, COLOR_PAIR(BLUE));
 	box(refwin, 0, 0);
-	mvwaddstr(refwin,  0, 18, "The 12 Houses");
+	wattroff(refwin, COLOR_PAIR(BLUE));
+	
 	mvwaddstr(refwin,  1,  1, " 1. The self.");
-	mvwaddstr(refwin,  2,  1, " 2. Money, moveable wealth.");
 	mvwaddstr(refwin,  3,  1, " 3. Communication, siblings, neighborhood.");
-	mvwaddstr(refwin,  4,  1, " 4. Land, house, agriculture, parents.");
 	mvwaddstr(refwin,  5,  1, " 5. Games, art, children.");
-	mvwaddstr(refwin,  6,  1, " 6. Employee, chores, sickness.");
 	mvwaddstr(refwin,  7,  1, " 7. Marriage, partnership, rivals.");
-	mvwaddstr(refwin,  8,  1, " 8. Death, inheritance, debt, occultism.");
 	mvwaddstr(refwin,  9,  1, " 9. Higher education, religion, spirituality.");
-	mvwaddstr(refwin, 10,  1, "10. Superiors, government, career.");
 	mvwaddstr(refwin, 11,  1, "11. Friends, luck, the unknown.");
+	
+	wattron(refwin, COLOR_PAIR(CYAN));
+	mvwaddstr(refwin,  0, 18, "The 12 Houses");
+	mvwaddstr(refwin,  2,  1, " 2. Money, moveable wealth.");
+	mvwaddstr(refwin,  4,  1, " 4. Land, house, agriculture, parents.");
+	mvwaddstr(refwin,  6,  1, " 6. Employee, chores, sickness.");
+	mvwaddstr(refwin,  8,  1, " 8. Death, inheritance, debt, occultism.");
+	mvwaddstr(refwin, 10,  1, "10. Superiors, government, career.");
 	mvwaddstr(refwin, 12,  1, "12. Imprisonment, conspiracy.");
+	wattroff(refwin, COLOR_PAIR(CYAN));
+	
 	wrefresh(refwin);
 	
 	int textlen = (int) strlen(prompt);
@@ -257,8 +263,10 @@ void ask_house(int *dest, const char *prompt, int y, int x)
 	char buffer[3];
 	
 	WINDOW *dialbox = newwin(3, 50, y+14, x);
+	wattron(dialbox, COLOR_PAIR(CYAN));
 	box(dialbox, 0, 0);
 	mvwaddstr(dialbox, 0, mid_x, prompt);
+	wattroff(dialbox, COLOR_PAIR(CYAN));
 	curs_set(1);
 	echo();
 

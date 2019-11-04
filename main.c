@@ -29,7 +29,6 @@ int main()
 	 * Actual program starts here
 	 * ========================================== */
 	int			key_ch;
-	int			select		= 0;
 	int			querent		= 1;
 	int			quesited	= 7;
 	int			color_set   = 0;
@@ -54,6 +53,9 @@ int main()
 	choices[0] = new_menu_item(item_label_1, 2, options_1);
 	choices[1] = new_menu_item(item_label_2, 3, options_2);
 	choices[2] = new_menu_item(item_label_3, 5, options_3);
+	
+	int select = 0;
+	select_menu_item(choices[select]);
 	
 	for (int i = 0; i < choice_size; ++i)
 	{
@@ -95,8 +97,8 @@ int main()
 		}
 		
 		if (select < 0)
-			select = 2;
-		else if (select > 2)
+			select = choice_size - 1;
+		else if (select > (choice_size - 1))
 			select = 0;
 		
 		select_menu_item(choices[select]);
