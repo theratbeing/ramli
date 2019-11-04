@@ -1,6 +1,7 @@
 #include "curses_window.h"
 #include <locale.h>
 #include <string.h>
+#include <time.h>
 
 int main()
 {
@@ -33,6 +34,9 @@ int main()
 	int			quesited	= 7;
 	int			color_set   = 0;
 	unsigned	chart_flags = 0;
+	
+	char user_name[40]  = "Anonymous";
+	char user_query[80] = "Not specified";
 	
 	char item_label_1[] = "Chart type";
 	char item_label_2[] = "Generation method";
@@ -71,11 +75,19 @@ int main()
 	{
 		if (key_ch == KEY_F(2))
 		{
-			ask_house(&querent, "Please enter the house of Querent", 3, 15);
+			ask_house(&querent, "Please enter the house of querent", 3, 15);
 		}
 		else if (key_ch == KEY_F(3))
 		{
-			ask_house(&quesited, "Please enter the house of Quesited", 3, 15);
+			ask_house(&quesited, "Please enter the house of quesited", 3, 15);
+		}
+		else if (key_ch == KEY_F(5))
+		{
+			ask_string(user_name, 39, "What is querent's name?", 3, 50, 10, 15);
+		}
+		else if (key_ch == KEY_F(6))
+		{
+			ask_string(user_query, 79, "What is the question?", 3, 50, 10, 15);
 		}
 		else if (key_ch == KEY_UP)
 		{
@@ -163,6 +175,13 @@ int main()
 		}
 	}
 	
+	// Get time info before processing the chart
+	time_t tstamp	  = time(NULL);
+	struct tm *dtdata = localtime(&tstamp); 
+	char   tstring[32];
+	strftime(tstring, 32, "%F %a %X", dtdata);
+	
+	// Continue processing
 	process_array_arithmetics(matrix);
 	
 	Chart basechart;
@@ -174,7 +193,7 @@ int main()
 	
 	erase();
 	refresh();
-	draw_chart_info(&basechart, color_set, 0, 0);
+	draw_chart_info(&basechart, color_set, tstring, 0, 0);
 	
 	if (chart_flags & FLAG_SHIELD)
 		draw_shield_chart(&basechart, color_set, 0, 33);

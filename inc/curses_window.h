@@ -13,7 +13,7 @@
  * Visual representation of geomantic objects
  * ============================================== */
 
-void draw_chart_info(Chart *chart, int mode, int y, int x);
+void draw_chart_info(Chart *chart, int mode, const char *dtstr, int y, int x);
 void draw_shield_chart(Chart *chart, int mode, int y, int x);
 void draw_house_chart(Chart *chart, int mode, int y, int x);
 
