@@ -29,19 +29,20 @@ typedef struct menu_item
 	int		value;
 	size_t	size;
 	char	**labels;
+	
+	// window data
 	int		length;
 	int		attr;
+	WINDOW	*ptrwin;
 } MenuItem;
 
-MenuItem * new_menu_item(char *name, size_t size, char **labels, int length);
-void set_item_attr(MenuItem *mi, int attr);
+MenuItem * new_menu_item(char *name, size_t size, char **labels);
+void set_item_window(MenuItem *mi, int length, int attr, int y, int x);
+void shift_menu_item(MenuItem *menui, int diff);
+void draw_item_window(MenuItem *mi);
 void del_menu_item(MenuItem *menui);
 
-WINDOW * window_menu_item(MenuItem *menui, int y, int x);
-void refresh_wmi(WINDOW *win, MenuItem *menui);
-void shift_menu_item(MenuItem *menui, int diff);
-
 void ask_string(char *dest, int len, const char *prompt, int h, int w, int y, int x);
-void ask_house(int *dest, const char *prompt, int h, int w, int y, int x);
+void ask_house(int *dest, const char *prompt, int y, int x);
 
 #endif

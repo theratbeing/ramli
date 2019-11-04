@@ -128,15 +128,16 @@ void draw_figure_box(Figure *fgr, int mode, int num, int y, int x)
  * Program menu/interface
  * ============================================== */
 
-MenuItem * new_menu_item(char *name, size_t size, char **labels, int length)
+MenuItem * new_menu_item(char *name, size_t size, char **labels)
 {
 	MenuItem *ptr   = malloc(sizeof(MenuItem));
 	ptr->name	= name;
 	ptr->value	= 0;
 	ptr->size	= size;
 	ptr->labels = malloc(size * sizeof(char*));
-	ptr->length = length;
+	ptr->length = 8;
 	ptr->attr   = A_NORMAL;
+	ptr->ptrwin = NULL;
 	memcpy(ptr->labels, labels, size * sizeof(char*));
 	return ptr;
 }
@@ -159,25 +160,32 @@ void shift_menu_item(MenuItem *menui, int diff)
 void del_menu_item(MenuItem *menui)
 {
 	free(menui->labels);
+	
+	if (menui->ptrwin)
+		delwin(menui->ptrwin);
+	
 	free(menui);
 }
 
-WINDOW * window_menu_item(MenuItem *menui, int y, int x)
+void set_item_window(MenuItem *mi, int length, int attr, int y, int x)
 {
-	WINDOW *win = newwin(3, menui->length+2, y, x);
-	wattron(win, menui->attr);
-	box(win, 0, 0);
-	mvwaddstr(win, 0, 1, menui->name);
-	wattroff(win, menui->attr);
-	mvwprintw(win, 1, 1, "%*s", menui->length-1, menui->labels[menui->value]);
-	wrefresh(win);
-	return win;
+	mi->attr   = attr;
+	mi->length = length;
+	
+	if (mi->ptrwin)
+		delwin(mi->ptrwin);
+	
+	mi->ptrwin = newwin(3, mi->length+2, y, x);
 }
 
-void refresh_wmi(WINDOW *win, MenuItem *menui)
+void draw_item_window(MenuItem *mi)
 {
-	mvwprintw(win, 1, 1, "%*s", menui->length-1, menui->labels[menui->value]);
-	wrefresh(win);
+	wattron(mi->ptrwin, mi->attr);
+	box(mi->ptrwin, 0, 0);
+	mvwaddstr(mi->ptrwin, 0, 1, mi->name);
+	wattroff(mi->ptrwin, mi->attr);
+	mvwprintw(mi->ptrwin, 1, 1, "%*s", mi->length-1, mi->labels[mi->value]);
+	wrefresh(mi->ptrwin);
 }
 
 /* ============================================== *
@@ -205,36 +213,50 @@ void ask_string(char *dest, int len, const char *prompt, int h, int w, int y, in
 	delwin(dialbox);
 }
 
-void ask_house(int *dest, const char *prompt, int h, int w, int y, int x)
+void ask_house(int *dest, const char *prompt, int y, int x)
 {
 	// TODO draw a table of astrological houses for reference
 	
+	WINDOW *refwin = newwin(14, 50, y, x);
+	box(refwin, 0, 0);
+	mvwaddstr(refwin,  0, 18, "The 12 Houses");
+	mvwaddstr(refwin,  1,  1, " 1. The self.");
+	mvwaddstr(refwin,  2,  1, " 2. Money, moveable wealth.");
+	mvwaddstr(refwin,  3,  1, " 3. Communication, siblings, neighborhood.");
+	mvwaddstr(refwin,  4,  1, " 4. Land, house, agriculture, parents.");
+	mvwaddstr(refwin,  5,  1, " 5. Games, art, children.");
+	mvwaddstr(refwin,  6,  1, " 6. Employee, chores, sickness.");
+	mvwaddstr(refwin,  7,  1, " 7. Marriage, partnership, rivals.");
+	mvwaddstr(refwin,  8,  1, " 8. Death, inheritance, debt, occultism.");
+	mvwaddstr(refwin,  9,  1, " 9. Higher education, religion, spirituality.");
+	mvwaddstr(refwin, 10,  1, "10. Superiors, government, career.");
+	mvwaddstr(refwin, 11,  1, "11. Friends, luck, the unknown.");
+	mvwaddstr(refwin, 12,  1, "12. Imprisonment, conspiracy.");
+	wrefresh(refwin);
+	
 	int textlen = (int) strlen(prompt);
-	if (w < textlen)
-		w = textlen;
 	
-	int  mid_x = (w - textlen) / 2;
+	int  mid_x = (50 - textlen) / 2;
 	char buffer[3];
-	int  result;
 	
-	WINDOW *dialbox = newwin(h, w, y, x);
+	WINDOW *dialbox = newwin(3, 50, y+14, x);
 	box(dialbox, 0, 0);
 	mvwaddstr(dialbox, 0, mid_x, prompt);
 	echo();
-	
-	while (1) {
+
+	int  result = 0;
+	while (result < 1 || result > 13)
+	{
 		mvwgetnstr(dialbox, 1, 1, buffer, 2);
 		sscanf(buffer, "%d", &result);
-		
-		if (result > 0 && result < 13)
-		{
-			*dest = result;
-			break;
-		}
 	}
 	
+	*dest = result;
 	noecho();
+	werase(refwin);
 	werase(dialbox);
+	wrefresh(refwin);
 	wrefresh(dialbox);
+	delwin(refwin);
 	delwin(dialbox);
 }

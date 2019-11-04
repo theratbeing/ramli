@@ -23,15 +23,14 @@ int main()
 	char name[]   = "Test";
 	char *label[] = {"Item 1", "Item 2", "Item 3", "Item 4"};
 	
-	MenuItem *menui = new_menu_item(name, 4, label, 15);
-	menui->attr = COLOR_PAIR(GREEN);
-	
-	WINDOW *wmenui = window_menu_item(menui, 3, 3);
+	MenuItem *menui = new_menu_item(name, 4, label);
+	set_item_window(menui, 15, COLOR_PAIR(GREEN), 3, 3);
+	draw_item_window(menui);
 	
 	char buffer[80];
 	int  key = 0;
 	int  num;
-	while ((key = wgetch(wmenui)) != 'q')
+	while ((key = wgetch(menui->ptrwin)) != 'q')
 	{
 		if (key == 'j')
 			shift_menu_item(menui, -1);
@@ -40,15 +39,13 @@ int main()
 		else if (key == 's')
 			ask_string(buffer, 79, "Please enter something", 3, 60, 10, 10);
 		else if (key == 'n')
-			ask_house(&num, "Enter two digit number", 3, 60, 10, 10);
+			ask_house(&num, "Enter two digit number", 3, 15);
 		
-		refresh_wmi(wmenui, menui);
+		draw_item_window(menui);
 	}
 	
-	delwin(wmenui);
-	endwin();
-	
 	del_menu_item(menui);
+	endwin();
 	
 	printf("%s : %d\n", buffer, num);
 	return 0;

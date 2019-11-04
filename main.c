@@ -49,16 +49,15 @@ int main()
 	int menu_len = 25;
 	
 	MenuItem *choices[3];
-	WINDOW   *windows[3];
 	
-	choices[0] = new_menu_item(item_label_1, 2, options_1, menu_len);
-	choices[1] = new_menu_item(item_label_2, 3, options_2, menu_len);
-	choices[2] = new_menu_item(item_label_3, 5, options_3, menu_len);
+	choices[0] = new_menu_item(item_label_1, 2, options_1);
+	choices[1] = new_menu_item(item_label_2, 3, options_2);
+	choices[2] = new_menu_item(item_label_3, 5, options_3);
 	
 	for (int i = 0; i < 3; ++i)
 	{
-		set_item_attr(choices[i], COLOR_PAIR(GREEN));
-		windows[i] = window_menu_item(choices[i], i*3+menu_y, menu_x+3);
+		set_item_window(choices[i], menu_len, COLOR_PAIR(GREEN), i*3+menu_y, menu_x+3);
+		draw_item_window(choices[i]);
 	}
 	
 	WINDOW *cursorw = newwin(3*3, 3, menu_y, menu_x);
@@ -81,7 +80,7 @@ int main()
 		else if (key_ch == KEY_RIGHT)
 			shift_menu_item(choices[select], 1);
 		
-		refresh_wmi(windows[select], choices[select]);
+		draw_item_window(choices[select]);
 		werase(cursorw);
 		mvwprintw(cursorw, select*3+1, 0, "(*)");
 		wrefresh(cursorw);
@@ -108,7 +107,6 @@ int main()
 	// no memory leaks
 	for (int i = 0; i < 3; ++i)
 	{
-		delwin(windows[i]);
 		del_menu_item(choices[i]);
 	}
 	
