@@ -42,4 +42,25 @@ void	link_pnodes(PNode *pn, PNode *right, PNode *left);
 void	link_pnodes_array(PNode *ar[]);
 void	trace_line(PNode *pn, int line, int comp);
 
+/* ============================================== *
+ * House chart system and analysis
+ * ============================================== */
+
+typedef struct house_node
+{
+	int					number;
+	Figure				*figure;
+	struct house_node	*next;
+	struct house_node	*prev;
+	
+	// Aspects
+	struct house_node	*opposite;
+	struct house_node	*trines[2];
+	struct house_node	*squares[2];
+	struct house_node	*sextiles[2];
+} House;
+
+House * new_house(Figure *pf);
+void	link_houses(House *ar[]);
+
 #endif

@@ -62,33 +62,28 @@ int main()
 		basechart.figures[i] = ptr_figures[id];
 	}
 	
-	PNode *via_puncti[16];
-	for (int i = 0; i < 16; ++i)
+	House *wheel[12];
+	for (int i = 0; i < 12; ++i)
 	{
-		via_puncti[i] = new_pnode(basechart.figures[i]);
+		wheel[i] = new_house(basechart.figures[i]);
 	}
-	link_pnodes_array(via_puncti);
+	link_houses(wheel);
 	
-	trace_line(via_puncti[14], 0, via_puncti[14]->figure->lines[0]);
-	
-	for (int i = 0; i < 16; ++i)
+	for (int i = 0; i < 12; ++i)
 	{
-		printf("Node number %d has figure %s\n", i+1, via_puncti[i]->figure->name);
-		
-		if (via_puncti[i]->is_valid)
-			printf("\tIt checks out!\n");
-		
-		if (via_puncti[i]->right)
-			printf("\tThe right branch is %s\n", via_puncti[i]->right->figure->name);
-		
-		if (via_puncti[i]->left)
-			printf("\tThe left branch is %s\n", via_puncti[i]->left->figure->name);
-	
+		printf("House %d is %s\n", i+1, wheel[i]->figure->name);
+		printf("Opposite: %2d %s\n", wheel[i]->opposite->number, wheel[i]->opposite->figure->name);
+		printf("Trine  1: %2d %s\n", wheel[i]->trines[0]->number, wheel[i]->trines[0]->figure->name);
+		printf("Trine  2: %2d %s\n", wheel[i]->trines[1]->number, wheel[i]->trines[1]->figure->name);
+		printf("Square 1: %2d %s\n", wheel[i]->squares[0]->number, wheel[i]->squares[0]->figure->name);
+		printf("Square 2: %2d %s\n", wheel[i]->squares[1]->number, wheel[i]->squares[1]->figure->name);
+		printf("Sextile1: %2d %s\n", wheel[i]->sextiles[0]->number, wheel[i]->sextiles[0]->figure->name);
+		printf("Sextile2: %2d %s\n", wheel[i]->sextiles[1]->number, wheel[i]->sextiles[1]->figure->name);
 		printf("\n");
 	}
 	
-	for (int i = 0; i < 16; ++i)
-		free(via_puncti[i]);
+	for (int i = 0; i < 12; ++i)
+		free(wheel[i]);
 	
 	return 0;
 }

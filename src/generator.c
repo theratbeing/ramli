@@ -97,7 +97,7 @@ PNode * new_pnode(Figure *pf)
 		ptr->figure   = pf;
 		ptr->right	  = NULL;
 		ptr->left	  = NULL;
-		ptr->is_valid = NULL;
+		ptr->is_valid = false;
 	}
 	
 	return ptr;
@@ -130,4 +130,80 @@ void trace_line(PNode *pn, int line, int comp)
 	
 	if (pn->left)
 		trace_line(pn->left, line, comp);
+}
+
+/* ============================================== *
+ * Houses
+ * ============================================== */
+
+House * new_house(Figure *pf)
+{
+	House *ptr  = malloc(sizeof(House));
+	
+	if (ptr)
+	{
+		ptr->number = 0;
+		ptr->figure = pf;
+		ptr->prev   = NULL;
+		ptr->next   = NULL;
+	}
+	
+	return ptr;
+}
+
+void link_houses(House *ar[])
+{
+	for (int i = 0; i < 12; ++i)
+	{
+		ar[i]->number = i+1;
+		
+		if (i == 0)
+			ar[i]->prev = ar[11];
+		else
+			ar[i]->prev = ar[i-1];
+		
+		if (i == 11)
+			ar[i]->next = ar[0];
+		else
+			ar[i]->next = ar[i+1];
+		
+		// Opposition: 12/2 = 6
+		if (i < 6)
+			ar[i]->opposite = ar[i+6];
+		else
+			ar[i]->opposite = ar[i-6];
+		
+		// Trine: 12/3 = 4
+		if (i < 4)
+			ar[i]->trines[0] = ar[(i-4)+12];
+		else
+			ar[i]->trines[0] = ar[i-4];
+		
+		if (i > 7)
+			ar[i]->trines[1] = ar[(i+4)-12];
+		else
+			ar[i]->trines[1] = ar[i+4];
+		
+		// Square: 12/4 = 3
+		if (i < 3)
+			ar[i]->squares[0] = ar[(i-3)+12];
+		else
+			ar[i]->squares[0] = ar[i-3];
+		
+		if (i > 8)
+			ar[i]->squares[1] = ar[(i+3)-12];
+		else
+			ar[i]->squares[1] = ar[i+3];
+		
+		// Sextile: 12/6 = 2
+		if (i < 2)
+			ar[i]->sextiles[0] = ar[(i-2)+12];
+		else
+			ar[i]->sextiles[0] = ar[i-2];
+		
+		if (i > 9)
+			ar[i]->sextiles[1] = ar[(i+2)-12];
+		else
+			ar[i]->sextiles[1] = ar[i+2];
+	}
 }
