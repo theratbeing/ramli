@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "curses_window.h"
 
 int main()
@@ -48,5 +49,46 @@ int main()
 	endwin();
 	
 	printf("%s : %d\n", buffer, num);
+	
+	int matrix[16][4];
+	unsigned figure_id[4] = {8, 4, 2, 7};
+	fill_array_figure(matrix, figure_id);
+	process_array_arithmetics(matrix);
+	
+	Chart basechart;
+	for (int i = 0; i < 16; ++i)
+	{
+		unsigned id = identify_array(matrix[i]);
+		basechart.figures[i] = ptr_figures[id];
+	}
+	
+	PNode *via_puncti[16];
+	for (int i = 0; i < 16; ++i)
+	{
+		via_puncti[i] = new_pnode(basechart.figures[i]);
+	}
+	link_pnodes_array(via_puncti);
+	
+	trace_line(via_puncti[14], 0, via_puncti[14]->figure->lines[0]);
+	
+	for (int i = 0; i < 16; ++i)
+	{
+		printf("Node number %d has figure %s\n", i+1, via_puncti[i]->figure->name);
+		
+		if (via_puncti[i]->is_valid)
+			printf("\tIt checks out!\n");
+		
+		if (via_puncti[i]->right)
+			printf("\tThe right branch is %s\n", via_puncti[i]->right->figure->name);
+		
+		if (via_puncti[i]->left)
+			printf("\tThe left branch is %s\n", via_puncti[i]->left->figure->name);
+	
+		printf("\n");
+	}
+	
+	for (int i = 0; i < 16; ++i)
+		free(via_puncti[i]);
+	
 	return 0;
 }

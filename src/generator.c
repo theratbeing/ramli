@@ -77,3 +77,57 @@ void fill_array_figure(int (*ar)[4], unsigned *id)
 		}
 	}
 }
+
+/* ============================================== *
+ * Via Puncti
+ * ============================================== */
+
+enum shield_positions
+{
+	SP_M1, SP_M2, SP_M3, SP_M4, SP_F1, SP_F2, SP_F3, SP_F4,
+	SP_N1, SP_N2, SP_N3, SP_N4, SP_W1, SP_W2, SP_JJ, SP_RR
+};
+
+PNode * new_pnode(Figure *pf)
+{
+	PNode *ptr = malloc(sizeof(PNode));
+	
+	if (ptr)
+	{
+		ptr->figure   = pf;
+		ptr->right	  = NULL;
+		ptr->left	  = NULL;
+		ptr->is_valid = NULL;
+	}
+	
+	return ptr;
+}
+
+void link_pnodes(PNode *pn, PNode *right, PNode *left)
+{
+	pn->right = right;
+	pn->left  = left;
+}
+
+void link_pnodes_array(PNode *ar[])
+{
+	for (int i = 0; i < 7; ++i)
+	{
+		ar[SP_N1+i]->right = ar[i*2];
+		ar[SP_N1+i]->left  = ar[i*2+1];
+	}
+}
+
+void trace_line(PNode *pn, int line, int comp)
+{
+	if (pn->figure->lines[line] == comp)
+		pn->is_valid = true;
+	else
+		return;
+	
+	if (pn->right)
+		trace_line(pn->right, line, comp);
+	
+	if (pn->left)
+		trace_line(pn->left, line, comp);
+}
