@@ -4,10 +4,10 @@
 #include "objects.h"
 #include <stdbool.h>
 
-unsigned	identify_array(int *ar);
-void		process_array_arithmetics(int (*ar)[4]);
-void		fill_array_random(int (*ar)[4]);
-void		fill_array_figure(int (*ar)[4], unsigned *id);
+unsigned	identify_array(int ar[4]);
+void		process_array_arithmetics(int ar[16][4]);
+void		fill_array_random(int ar[16][4]);
+void		fill_array_figure(int ar[16][4], unsigned id[4]);
 
 extern const unsigned FLAG_SHIELD;
 extern const unsigned FLAG_HOUSE;
@@ -38,10 +38,10 @@ typedef struct puncti_node
 } PNode;
 
 PNode * new_pnode(Figure *pf);
-void	link_pnodes(PNode *pn, PNode *right, PNode *left);
-void	link_pnodes_array(PNode *ar[]);
+void	link_pnodes_array(PNode *ar[15]);
 void	trace_line(PNode *pn, int line, int comp);
-void	delete_pnodes(PNode *ar[]);
+void	retrace_array(PNode *ar[15], int line);
+void	delete_pnodes(PNode *ar[15]);
 
 /* ============================================== *
  * House chart system and analysis
@@ -62,6 +62,7 @@ typedef struct house_node
 } House;
 
 House * new_house(Figure *pf);
-void	link_houses(House *ar[]);
+void	link_houses(House *ar[12]);
+void	delete_houses(House *ar[12]);
 
 #endif

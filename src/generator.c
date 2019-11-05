@@ -11,7 +11,7 @@ const unsigned FLAG_BY_RANDOM = 1 << 3;
 const unsigned FLAG_BY_FIGURE = 1 << 4;
 const unsigned FLAG_BY_LINE   = 1 << 5;
 
-unsigned identify_array(int *ar)
+unsigned identify_array(int ar[4])
 {
 	/* Returns the enum of figure array.
 	 * WARNING using this function on numbers other than 0 or 1
@@ -25,7 +25,7 @@ unsigned identify_array(int *ar)
 	return res;
 }
 
-void process_array_arithmetics(int (*ar)[4])
+void process_array_arithmetics(int ar[16][4])
 {
 	int i, j;
 	for (i = 0; i < 4; ++i)
@@ -54,7 +54,7 @@ void process_array_arithmetics(int (*ar)[4])
 	}
 }
 
-void fill_array_random(int (*ar)[4])
+void fill_array_random(int ar[16][4])
 {
 	srand((unsigned)time(NULL));
 	for (int i = 0; i < 4; ++i)
@@ -66,7 +66,7 @@ void fill_array_random(int (*ar)[4])
 	}
 }
 
-void fill_array_figure(int (*ar)[4], unsigned *id)
+void fill_array_figure(int ar[16][4], unsigned id[4])
 {
 	for (int i = 0; i < 4; ++i)
 	{
@@ -103,13 +103,7 @@ PNode * new_pnode(Figure *pf)
 	return ptr;
 }
 
-void link_pnodes(PNode *pn, PNode *right, PNode *left)
-{
-	pn->right = right;
-	pn->left  = left;
-}
-
-void link_pnodes_array(PNode *ar[])
+void link_pnodes_array(PNode *ar[15])
 {
 	for (int i = 0; i < 7; ++i)
 	{
@@ -132,10 +126,23 @@ void trace_line(PNode *pn, int line, int comp)
 		trace_line(pn->left, line, comp);
 }
 
-void delete_pnodes(PNode *ar[])
+void retrace_array(PNode *ar[15], int line)
 {
 	for (int i = 0; i < 15; ++i)
+	{
+		ar[i]->is_valid = false;
+	}
+	
+	trace_line(ar[14], line, ar[14]->figure->lines[line]);
+}
+
+void delete_pnodes(PNode *ar[15])
+{
+	for (int i = 0; i < 15; ++i)
+	{
 		free(ar[i]);
+		ar[i] = NULL;
+	}
 }
 
 /* ============================================== *
@@ -157,7 +164,7 @@ House * new_house(Figure *pf)
 	return ptr;
 }
 
-void link_houses(House *ar[])
+void link_houses(House *ar[12])
 {
 	for (int i = 0; i < 12; ++i)
 	{
@@ -211,5 +218,14 @@ void link_houses(House *ar[])
 			ar[i]->sextiles[1] = ar[(i+2)-12];
 		else
 			ar[i]->sextiles[1] = ar[i+2];
+	}
+}
+
+void delete_houses(House *ar[12])
+{
+	for (int i = 0; i < 12; ++i)
+	{
+		free(ar[i]);
+		ar[i] = NULL;
 	}
 }
