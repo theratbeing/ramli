@@ -6,6 +6,8 @@
 /* ============================================== *
  * Visual representation of geomantic objects
  * ============================================== */
+#define INFOBOX_H 20
+#define INFOBOX_W 33
 
 void draw_chart_info(Chart *chart, int mode, const char *dtstr, int y, int x)
 {
@@ -15,7 +17,7 @@ void draw_chart_info(Chart *chart, int mode, const char *dtstr, int y, int x)
 		"Zodiac (Agrippa)", "Zodiac (Gerard of Cremona)"
 	};
 	
-	WINDOW *winbox = newwin(20, 33, y, x);
+	WINDOW *winbox = newwin(INFOBOX_H, INFOBOX_W, y, x);
 	
 	int attributes = A_REVERSE;
 	if (mode == ELEMENT_M || mode == ELEMENT_T)
@@ -30,19 +32,19 @@ void draw_chart_info(Chart *chart, int mode, const char *dtstr, int y, int x)
 	wattron(winbox, attributes);
 
 	// Color ribbons
-	for (int i = 0; i < 33; ++i) {
+	for (int i = 0; i < INFOBOX_W; ++i) {
 		mvwaddch(winbox, 0, i, ' ');
 		mvwaddch(winbox, 19, i, ' ');
 	}
 	
 	int mid_x;
 	// Correspondence
-	mid_x = (33 - strlen(mode_label[mode])) / 2;
+	mid_x = (INFOBOX_W - strlen(mode_label[mode])) / 2;
 	mvwaddstr(winbox, 0, mid_x, mode_label[mode]);
 	
 	// Date and time
-	mid_x = (33 - strlen(dtstr)) / 2;
-	mvwaddstr(winbox, 19, mid_x, dtstr);
+	mid_x = (INFOBOX_W - strlen(dtstr)) / 2;
+	mvwaddstr(winbox, INFOBOX_H-1, mid_x, dtstr);
 
 	wattroff(winbox, attributes);
 	
@@ -62,27 +64,97 @@ void draw_chart_info(Chart *chart, int mode, const char *dtstr, int y, int x)
 	delwin(winbox);
 }
 
+int shield_ypos[16] =
+{
+	0, 0, 0, 0,  0,  0,  0,  0,
+	6, 6, 6, 6, 12, 12, 18, 18
+};
+
+int shield_xpos[16] =
+{
+	42, 36, 30, 24, 18, 12,  6,  0,
+	39, 27, 15,  3, 33,  9, 21, 42
+};
+
 void draw_shield_chart(Chart *chart, int mode, int y, int x)
 {
-	int xpos[16] =
-	{
-		// 0,  6, 12, 18, 24, 30, 36, 42,
-		42, 36, 30, 24, 18, 12,  6,  0,
-		// 3, 15, 27, 39,  9, 33, 21, 42
-		39, 27, 15,  3, 33,  9, 21, 42
-	};
-	
-	int ypos[16] =
-	{
-		0, 0, 0, 0,  0,  0,  0,  0,
-		6, 6, 6, 6, 12, 12, 18, 18
-	};
-	
 	for (int i = 0; i < 16; ++i)
 	{
-		ypos[i] += y;
-		xpos[i] += x;
-		draw_figure_box(chart->figures[i], mode, i, ypos[i], xpos[i]);
+		int ypos = shield_ypos[i] + y;
+		int xpos = shield_xpos[i] + x;
+		draw_figure_box(chart->figures[i], mode, i, ypos, xpos);
+	}
+}
+
+static void draw_line(int y, int x, char type)
+{
+	WINDOW *lnbox;
+	
+	if (type == 'l')
+	{
+		lnbox = newwin(2, 1, y, x+2);
+		mvwaddch(lnbox, 0, 0, ACS_VLINE);
+		mvwaddch(lnbox, 1, 0, ACS_LLCORNER);
+	}
+	else if (type == 'r')
+	{
+		lnbox = newwin(2, 1, y, x+2);
+		mvwaddch(lnbox, 0, 0, ACS_VLINE);
+		mvwaddch(lnbox, 1, 0, ACS_LRCORNER);
+	}
+	else if (type == 'L')
+	{
+		lnbox = newwin(2, 4, y, x+2);
+		mvwaddch(lnbox, 0, 0, ACS_VLINE);
+		mvwaddch(lnbox, 1, 0, ACS_LLCORNER);
+		mvwaddch(lnbox, 1, 1, ACS_HLINE);
+		mvwaddch(lnbox, 1, 2, ACS_HLINE);
+		mvwaddch(lnbox, 1, 3, ACS_HLINE);
+	}
+	else if (type == 'R')
+	{
+		lnbox = newwin(2, 4, y, x-1);
+		mvwaddch(lnbox, 0, 3, ACS_VLINE);
+		mvwaddch(lnbox, 1, 3, ACS_LRCORNER);
+		mvwaddch(lnbox, 1, 2, ACS_HLINE);
+		mvwaddch(lnbox, 1, 1, ACS_HLINE);
+		mvwaddch(lnbox, 1, 0, ACS_HLINE);
+	}
+	else if (type == '<')
+	{
+		lnbox = newwin(2, 10, y, x+2);
+		mvwaddch(lnbox, 0, 0, ACS_VLINE);
+		mvwaddch(lnbox, 1, 0, ACS_LLCORNER);
+		
+		for (int i = 1; i < 10; ++i)
+			mvwaddch(lnbox, 1, i, ACS_HLINE);
+	}
+	else if (type == '>')
+	{
+		lnbox = newwin(2, 10, y, x-7);
+		mvwaddch(lnbox, 0, 9, ACS_VLINE);
+		mvwaddch(lnbox, 1, 9, ACS_LRCORNER);
+		
+		for (int i = 0; i < 9; ++i)
+			mvwaddch(lnbox, 1, i, ACS_HLINE);
+	}
+	
+	wrefresh(lnbox);
+	delwin(lnbox);
+}
+
+void draw_via_puncti(PNode *nodes[], int y, int x)
+{
+	int wy, wx;
+	char tptbl[] = "rlrlrlrlRLRL><";
+	
+	for (int i = 0; i < 14; ++i)
+	{
+		wy = shield_ypos[i] + y + 6;
+		wx = shield_xpos[i] + x;
+		
+		if (nodes[i]->is_valid)
+			draw_line(wy, wx, tptbl[i]);
 	}
 }
 

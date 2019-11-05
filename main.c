@@ -196,9 +196,23 @@ int main()
 	draw_chart_info(&basechart, color_set, tstring, 0, 0);
 	
 	if (chart_flags & FLAG_SHIELD)
+	{
 		draw_shield_chart(&basechart, color_set, 0, 33);
+		
+		PNode *puncti[15];
+		for (int i = 0; i < 15; ++i)
+		{
+			puncti[i] = new_pnode(basechart.figures[i]);
+		}
+		link_pnodes_array(puncti);
+		trace_line(puncti[14], 0, puncti[14]->figure->lines[0]);
+		draw_via_puncti(puncti, 0, 33);
+		delete_pnodes(puncti);
+	}
 	else if (chart_flags & FLAG_HOUSE)
+	{
 		draw_house_chart(&basechart, color_set, 0, 38);
+	}
 	
 	WINDOW *input_box = newwin(1, 1, 23, 0);
 	wgetch(input_box);

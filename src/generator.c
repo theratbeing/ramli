@@ -132,6 +132,12 @@ void trace_line(PNode *pn, int line, int comp)
 		trace_line(pn->left, line, comp);
 }
 
+void delete_pnodes(PNode *ar[])
+{
+	for (int i = 0; i < 15; ++i)
+		free(ar[i]);
+}
+
 /* ============================================== *
  * Houses
  * ============================================== */

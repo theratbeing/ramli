@@ -41,6 +41,7 @@ PNode * new_pnode(Figure *pf);
 void	link_pnodes(PNode *pn, PNode *right, PNode *left);
 void	link_pnodes_array(PNode *ar[]);
 void	trace_line(PNode *pn, int line, int comp);
+void	delete_pnodes(PNode *ar[]);
 
 /* ============================================== *
  * House chart system and analysis
