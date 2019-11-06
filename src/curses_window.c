@@ -143,7 +143,7 @@ static void draw_line(int y, int x, char type)
 	delwin(lnbox);
 }
 
-void draw_via_puncti(PNode *nodes[], int y, int x)
+void draw_via_puncti(PNode nodes[15], int y, int x)
 {
 	int wy, wx;
 	char tptbl[] = "rlrlrlrlRLRL><";
@@ -153,7 +153,7 @@ void draw_via_puncti(PNode *nodes[], int y, int x)
 		wy = shield_ypos[i] + y + 6;
 		wx = shield_xpos[i] + x;
 		
-		if (nodes[i]->is_valid)
+		if (nodes[i].is_valid)
 			draw_line(wy, wx, tptbl[i]);
 	}
 }

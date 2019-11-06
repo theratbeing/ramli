@@ -199,15 +199,10 @@ int main()
 	{
 		draw_shield_chart(&basechart, color_set, 0, 33);
 		
-		PNode *puncti[15];
-		for (int i = 0; i < 15; ++i)
-		{
-			puncti[i] = new_pnode(basechart.figures[i]);
-		}
-		link_pnodes_array(puncti);
-		trace_line(puncti[14], 0, puncti[14]->figure->lines[0]);
+		PNode puncti[15];
+		init_pnodes(puncti, basechart.figures);
+		retrace_pnodes(puncti, 0);
 		draw_via_puncti(puncti, 0, 33);
-		delete_pnodes(puncti);
 	}
 	else if (chart_flags & FLAG_HOUSE)
 	{

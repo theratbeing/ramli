@@ -38,11 +38,9 @@ typedef struct puncti_node
 	bool				is_valid;
 } PNode;
 
-PNode * new_pnode(Figure *pf);
-void	link_pnodes_array(PNode *ar[15]);
+void	init_pnodes(PNode target[15], Figure *source[16]);
 void	trace_line(PNode *pn, int line, int comp);
-void	retrace_array(PNode *ar[15], int line);
-void	delete_pnodes(PNode *ar[15]);
+void	retrace_pnodes(PNode ar[15], int line);
 
 /* ============================================== *
  * House chart system and analysis
@@ -62,9 +60,7 @@ typedef struct house_node
 	struct house_node	*sextiles[2];
 } House;
 
-House * new_house(Figure *pf);
-void	link_houses(House *ar[12]);
-void	delete_houses(House *ar[12]);
+void	init_houses(House target[12], Figure *source[]);
 
 // Analysis data containers
 
@@ -87,5 +83,6 @@ void delete_vecpair(VecPair *vec);
 
 // Algorithms
 
+void check_occupation(VecPair *target, House src[12]);
 
 #endif

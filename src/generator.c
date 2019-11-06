@@ -82,27 +82,20 @@ enum shield_positions
 	SP_N1, SP_N2, SP_N3, SP_N4, SP_W1, SP_W2, SP_JJ, SP_RR
 };
 
-PNode * new_pnode(Figure *pf)
+void init_pnodes(PNode target[15], Figure *source[16])
 {
-	PNode *ptr = malloc(sizeof(PNode));
-	
-	if (ptr)
+	for (int i = 0; i < 15; ++i)
 	{
-		ptr->figure   = pf;
-		ptr->right	  = NULL;
-		ptr->left	  = NULL;
-		ptr->is_valid = false;
+		target[i].figure	= source[i];
+		target[i].right		= NULL;
+		target[i].left		= NULL;
+		target[i].is_valid  = false;
 	}
 	
-	return ptr;
-}
-
-void link_pnodes_array(PNode *ar[15])
-{
 	for (int i = 0; i < 7; ++i)
 	{
-		ar[SP_N1+i]->right = ar[i*2];
-		ar[SP_N1+i]->left  = ar[i*2+1];
+		target[SP_N1+i].right = target + (i * 2);
+		target[SP_N1+i].left  = target + (i * 2 + 1);
 	}
 }
 
@@ -120,109 +113,81 @@ void trace_line(PNode *pn, int line, int comp)
 		trace_line(pn->left, line, comp);
 }
 
-void retrace_array(PNode *ar[15], int line)
+void retrace_pnodes(PNode ar[15], int line)
 {
 	for (int i = 0; i < 15; ++i)
 	{
-		ar[i]->is_valid = false;
+		ar[i].is_valid = false;
 	}
 	
-	trace_line(ar[14], line, ar[14]->figure->lines[line]);
-}
-
-void delete_pnodes(PNode *ar[15])
-{
-	for (int i = 0; i < 15; ++i)
-	{
-		free(ar[i]);
-		ar[i] = NULL;
-	}
+	trace_line((ar + 14), line, ar[14].figure->lines[line]);
 }
 
 /* ============================================== *
  * Houses
  * ============================================== */
 
-House * new_house(Figure *pf)
-{
-	House *ptr  = malloc(sizeof(House));
-	
-	if (ptr)
-	{
-		ptr->number = 0;
-		ptr->figure = pf;
-		ptr->prev   = NULL;
-		ptr->next   = NULL;
-	}
-	
-	return ptr;
-}
-
-void link_houses(House *ar[12])
+void init_houses(House target[12], Figure *source[])
 {
 	for (int i = 0; i < 12; ++i)
 	{
-		ar[i]->number = i+1;
+		target[i].number = i + 1;
+		target[i].figure = source[i];
 		
 		if (i == 0)
-			ar[i]->prev = ar[11];
+			target[i].prev = target + 11;
 		else
-			ar[i]->prev = ar[i-1];
+			target[i].prev = target + (i - 1);
 		
 		if (i == 11)
-			ar[i]->next = ar[0];
+			target[i].next = target;
 		else
-			ar[i]->next = ar[i+1];
+			target[i].next = target + (i + 1);
 		
 		// Opposition: 12/2 = 6
 		if (i < 6)
-			ar[i]->opposite = ar[i+6];
+			target[i].opposite = target + (i + 6);
 		else
-			ar[i]->opposite = ar[i-6];
+			target[i].opposite = target + (i - 6);
 		
 		// Trine: 12/3 = 4
 		if (i < 4)
-			ar[i]->trines[0] = ar[(i-4)+12];
+			target[i].trines[0] = target + (i - 4 + 12);
 		else
-			ar[i]->trines[0] = ar[i-4];
+			target[i].trines[0] = target + (i - 4);
 		
 		if (i > 7)
-			ar[i]->trines[1] = ar[(i+4)-12];
+			target[i].trines[1] = target + (i + 4 - 12);
 		else
-			ar[i]->trines[1] = ar[i+4];
+			target[i].trines[1] = target + (i + 4);
 		
 		// Square: 12/4 = 3
 		if (i < 3)
-			ar[i]->squares[0] = ar[(i-3)+12];
+			target[i].squares[0] = target + (i - 3 + 12);
 		else
-			ar[i]->squares[0] = ar[i-3];
+			target[i].squares[0] = target + (i - 3);
 		
 		if (i > 8)
-			ar[i]->squares[1] = ar[(i+3)-12];
+			target[i].squares[1] = target + (i + 3 - 12);
 		else
-			ar[i]->squares[1] = ar[i+3];
+			target[i].squares[1] = target + (i + 3);
 		
 		// Sextile: 12/6 = 2
 		if (i < 2)
-			ar[i]->sextiles[0] = ar[(i-2)+12];
+			target[i].sextiles[0] = target + (i - 2 + 12);
 		else
-			ar[i]->sextiles[0] = ar[i-2];
+			target[i].sextiles[0] = target + (i - 2);
 		
 		if (i > 9)
-			ar[i]->sextiles[1] = ar[(i+2)-12];
+			target[i].sextiles[1] = target + (i + 2 - 12);
 		else
-			ar[i]->sextiles[1] = ar[i+2];
+			target[i].sextiles[1] = target + (i + 2);
 	}
 }
 
-void delete_houses(House *ar[12])
-{
-	for (int i = 0; i < 12; ++i)
-	{
-		free(ar[i]);
-		ar[i] = NULL;
-	}
-}
+/* ---------------------------------------------- *
+ * Vectors
+ * ---------------------------------------------- */
 
 void init_vecpair(VecPair *vec, size_t size)
 {

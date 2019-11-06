@@ -62,16 +62,12 @@ int main()
 		basechart.figures[i] = ptr_figures[id];
 	}
 	
-	House *wheel[12];
-	for (int i = 0; i < 12; ++i)
-	{
-		wheel[i] = new_house(basechart.figures[i]);
-	}
-	link_houses(wheel);
+	House wheel[12];
+	init_houses(wheel, basechart.figures);
 	
 	for (int i = 0; i < 12; ++i)
 	{
-		printf("House %d is %s\n", i+1, wheel[i]->figure->name);
+		printf("House %d is %s\n", i+1, wheel[i].figure->name);
 	}
 	
 	VecPair testvec;
@@ -81,7 +77,7 @@ int main()
 	
 	for (int i = 0; i < 6; ++i)
 	{
-		HPair hp = {wheel[i*2], wheel[i*2+1]};
+		HPair hp = {(wheel+(i*2)), (wheel+(i*2)+1)};
 		append_vecpair(&testvec, hp);
 		printf("testvec has %d of %zu space occupied.\n", testvec.used, testvec.capacity);
 	}
@@ -93,9 +89,6 @@ int main()
 	}
 	
 	delete_vecpair(&testvec);
-	
-	for (int i = 0; i < 12; ++i)
-		free(wheel[i]);
 	
 	return 0;
 }
