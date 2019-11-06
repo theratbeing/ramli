@@ -17,17 +17,20 @@ unsigned identify_array(int ar[4])
 	 * WARNING using this function on numbers other than 0 or 1
 	 * may result in segfault */
 	unsigned res = 0;
+	
 	for (int i = 0; i < 4; ++i)
 	{
 		res = res << 1;
 		res |= ar[i];
 	}
+	
 	return res;
 }
 
 void process_array_arithmetics(int ar[16][4])
 {
 	int i, j;
+	
 	for (i = 0; i < 4; ++i)
 	{
 		for (j = 0; j < 4; ++j)
@@ -40,26 +43,21 @@ void process_array_arithmetics(int ar[16][4])
 	for (i = 0; i < 7; ++i)
 	{
 		for (j = 0; j < 4; ++j)
-		{
 			ar[i+8][j] = ar[i*2][j] ^ ar[i*2+1][j];
-		}
 	}
 	
 	for (i = 0; i < 4; ++i)
-	{
 		ar[15][i] = ar[14][i] ^ ar[0][i];
-	}
 }
 
 void fill_array_random(int ar[16][4])
 {
 	srand((unsigned)time(NULL));
+	
 	for (int i = 0; i < 4; ++i)
 	{
 		for (int j = 0; j < 4; ++j)
-		{
 			ar[i][j] = rand() / (RAND_MAX / 8 + 1);
-		}
 	}
 }
 
@@ -68,10 +66,9 @@ void fill_array_figure(int ar[16][4], unsigned id[4])
 	for (int i = 0; i < 4; ++i)
 	{
 		Figure *fsrc = ptr_figures[*(id + i)];
+		
 		for (int j = 0; j < 4; ++j)
-		{
 			ar[i][j] = fsrc->lines[j];
-		}
 	}
 }
 
