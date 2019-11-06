@@ -229,3 +229,36 @@ void delete_houses(House *ar[12])
 		ar[i] = NULL;
 	}
 }
+
+void init_vecpair(VecPair *vec, size_t size)
+{
+	if (vec)
+	{
+		vec->used	  = 0;
+		vec->capacity = size;
+		vec->array	  = malloc(size * sizeof(HPair));
+	}
+}
+
+void append_vecpair(VecPair *vec, HPair pair)
+{
+	if (vec->used == vec->capacity)
+	{
+		vec->capacity  *= 2;
+		HPair *temp		= realloc(vec->array, vec->capacity * sizeof(HPair));
+		if (temp)
+		{
+			vec->array	= temp;
+			temp		= NULL;
+		}
+	}
+	
+	vec->array[vec->used] = pair;
+	vec->used += 1;
+}
+
+void delete_vecpair(VecPair *vec)
+{
+	free(vec->array);
+	vec->array = NULL;
+}

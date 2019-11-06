@@ -4,6 +4,7 @@
 
 int main()
 {
+	/*
 	initscr();
 	noecho();
 	cbreak();
@@ -47,8 +48,7 @@ int main()
 	
 	del_menu_item(menui);
 	endwin();
-	
-	printf("%s : %d\n", buffer, num);
+	*/
 	
 	int matrix[16][4];
 	unsigned figure_id[4] = {8, 4, 2, 7};
@@ -72,15 +72,27 @@ int main()
 	for (int i = 0; i < 12; ++i)
 	{
 		printf("House %d is %s\n", i+1, wheel[i]->figure->name);
-		printf("Opposite: %2d %s\n", wheel[i]->opposite->number, wheel[i]->opposite->figure->name);
-		printf("Trine  1: %2d %s\n", wheel[i]->trines[0]->number, wheel[i]->trines[0]->figure->name);
-		printf("Trine  2: %2d %s\n", wheel[i]->trines[1]->number, wheel[i]->trines[1]->figure->name);
-		printf("Square 1: %2d %s\n", wheel[i]->squares[0]->number, wheel[i]->squares[0]->figure->name);
-		printf("Square 2: %2d %s\n", wheel[i]->squares[1]->number, wheel[i]->squares[1]->figure->name);
-		printf("Sextile1: %2d %s\n", wheel[i]->sextiles[0]->number, wheel[i]->sextiles[0]->figure->name);
-		printf("Sextile2: %2d %s\n", wheel[i]->sextiles[1]->number, wheel[i]->sextiles[1]->figure->name);
-		printf("\n");
 	}
+	
+	VecPair testvec;
+	init_vecpair(&testvec, 4);
+	
+	printf("testvec has %d of %zu space occupied.\n", testvec.used, testvec.capacity);
+	
+	for (int i = 0; i < 6; ++i)
+	{
+		HPair hp = {wheel[i*2], wheel[i*2+1]};
+		append_vecpair(&testvec, hp);
+		printf("testvec has %d of %zu space occupied.\n", testvec.used, testvec.capacity);
+	}
+	
+	for (unsigned i = 0; i < testvec.used; ++i)
+	{
+		printf("Item index %d has houses %d and %d.\n",
+			   i, testvec.array[i].first->number, testvec.array[i].second->number);
+	}
+	
+	delete_vecpair(&testvec);
 	
 	for (int i = 0; i < 12; ++i)
 		free(wheel[i]);

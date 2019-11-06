@@ -3,6 +3,7 @@
 
 #include "objects.h"
 #include <stdbool.h>
+#include <stddef.h>
 
 unsigned	identify_array(int ar[4]);
 void		process_array_arithmetics(int ar[16][4]);
@@ -64,5 +65,27 @@ typedef struct house_node
 House * new_house(Figure *pf);
 void	link_houses(House *ar[12]);
 void	delete_houses(House *ar[12]);
+
+// Analysis data containers
+
+typedef struct house_pair
+{
+	House *first;
+	House *second;
+} HPair;
+
+typedef struct hpair_vector
+{
+	size_t   capacity;
+	unsigned used;
+	HPair	 *array;
+} VecPair;
+
+void init_vecpair(VecPair *vec, size_t size);
+void append_vecpair(VecPair *vec, HPair pair);
+void delete_vecpair(VecPair *vec);
+
+// Algorithms
+
 
 #endif
