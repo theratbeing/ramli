@@ -39,12 +39,9 @@ void process_array_arithmetics(int ar[16][4])
 	
 	for (i = 0; i < 7; ++i)
 	{
-		int sa = i * 2;
-		int sb = i * 2 + 1;
-		
 		for (j = 0; j < 4; ++j)
 		{
-			ar[i+8][j] = ar[sa][j] ^ ar[sb][j];
+			ar[i+8][j] = ar[i*2][j] ^ ar[i*2+1][j];
 		}
 	}
 	
@@ -61,7 +58,7 @@ void fill_array_random(int ar[16][4])
 	{
 		for (int j = 0; j < 4; ++j)
 		{
-			ar[i][j] = rand();
+			ar[i][j] = rand() / (RAND_MAX / 8 + 1);
 		}
 	}
 }
