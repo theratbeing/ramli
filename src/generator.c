@@ -221,3 +221,116 @@ void delete_vecpair(VecPair *vec)
 	free(vec->array);
 	vec->array = NULL;
 }
+
+/* ---------------------------------------------- *
+ * Analysis
+ * ---------------------------------------------- */
+
+bool is_occupied(House *querent, House *quesited)
+{
+	return (querent->figure == quesited->figure
+		&& querent->number != quesited->number);
+}
+
+void check_conjunction(VecPair *vec, House *querent, House *quesited)
+{
+	HPair pair;
+	
+	// These conditions happen independently of each other, hence multiple ifs.
+	
+	// Quesited moves to querent
+	if (querent->next->figure == quesited->figure)
+	{
+		pair.first  = quesited;
+		pair.second = querent->next;
+		append_vecpair(vec, pair);
+	}
+	
+	if (querent->prev->figure == quesited->figure)
+	{
+		pair.first  = quesited;
+		pair.second = querent->prev;
+		append_vecpair(vec, pair);
+	}
+	
+	// Querent moves to quesited
+	if (quesited->next->figure == querent->figure)
+	{
+		pair.first  = querent;
+		pair.second = quesited->next;
+		append_vecpair(vec, pair);
+	}
+	
+	if (quesited->prev->figure == querent->figure)
+	{
+		pair.first  = querent;
+		pair.second = quesited->prev;
+		append_vecpair(vec, pair);
+	}
+}
+
+void check_translation(VecPair *vec, House *querent, House *quesited)
+{
+	HPair pair;
+	
+	// Compare querent's right side
+	if (querent->next->figure == quesited->next->figure
+		&& querent->next->figure != quesited->figure
+		&& querent->next->figure != querent->figure)
+	{
+		pair.first  = querent->next;
+		pair.second = quesited->next;
+		append_vecpair(vec, pair);
+	}
+	
+	if (querent->next->figure == quesited->prev->figure
+		&& querent->next->figure != quesited->figure
+		&& querent->next->figure != querent->figure)
+	{
+		pair.first  = querent->next;
+		pair.second = quesited->prev;
+		append_vecpair(vec, pair);
+	}
+	
+	// Compare querent's left side
+	if (querent->prev->figure == quesited->next->figure
+		&& querent->prev->figure != quesited->figure
+		&& querent->prev->figure != querent->figure)
+	{
+		pair.first  = querent->prev;
+		pair.second = quesited->next;
+		append_vecpair(vec, pair);
+	}
+	
+	if (querent->prev->figure == quesited->prev->figure
+		&& querent->prev->figure != quesited->figure
+		&& querent->prev->figure != querent->figure)
+	{
+		pair.first  = querent->prev;
+		pair.second = quesited->prev;
+		append_vecpair(vec, pair);
+	}
+}
+
+void check_mutation(VecPair *vec, House *candidate, House *querent, House *quesited)
+{
+	HPair pair;
+	
+	if (candidate->figure == querent->figure
+		&& candidate->number != querent->number)
+	{
+		if (candidate->prev->figure == quesited->figure)
+		{
+			pair.first  = candidate->prev;
+			pair.second = candidate;
+			append_vecpair(vec, pair);
+		}
+		
+		if (candidate->next->figure == quesited->figure)
+		{
+			pair.first  = candidate;
+			pair.second = candidate->next;
+			append_vecpair(vec, pair);
+		}
+	}
+}

@@ -83,6 +83,9 @@ void delete_vecpair(VecPair *vec);
 
 // Algorithms
 
-void check_occupation(VecPair *target, House src[12]);
+bool is_occupied(House *querent, House *quesited);
+void check_conjunction(VecPair *vec, House *querent, House *quesited);
+void check_mutation(VecPair *vec, House *candidate, House *querent, House *quesited);
+void check_translation(VecPair *vec, House *querent, House *quesited);
 
 #endif
