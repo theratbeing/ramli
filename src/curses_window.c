@@ -205,6 +205,121 @@ void draw_figure_box(Figure *fgr, int mode, int num, int y, int x)
 }
 
 /* ============================================== *
+ * Modes of Perfection report
+ * ============================================== */
+
+void show_overview(bool occu, VecPair *conj, VecPair *muta, VecPair *tran, int y, int x)
+{
+	WINDOW *overw = newwin(12, 17, y, x);
+	mvwaddstr(overw, 0, 2, "Perfections");
+	
+	if (occu)
+	{
+		mvwprintw(overw, 2, 0, "Occupation found");
+	}
+	else
+	{
+		mvwprintw(overw, 2, 0, "No occupation");
+	}
+	
+	if (conj->used)
+	{
+		mvwprintw(overw, 3, 0, "Conjunction found");
+	}
+	else
+	{
+		mvwprintw(overw, 3, 0, "No conjunction");
+	}
+	
+	if (muta->used)
+	{
+		mvwprintw(overw, 4, 0, "Mutation found");
+	}
+	else
+	{
+		mvwprintw(overw, 4, 0, "No mutation");
+	}
+	
+	if (tran->used)
+	{
+		mvwprintw(overw, 5, 0, "Translation found");
+	}
+	else
+	{
+		mvwprintw(overw, 5, 0, "No translation");
+	}
+	
+	wrefresh(overw);
+	delwin(overw);
+}
+
+void show_conjunction(VecPair *vec, int y, int x)
+{
+	WINDOW *repw = newwin(12, 17, y, x);
+	mvwaddstr(repw, 0, 2, "Conjunctions");
+	
+	if (vec->used)
+	{
+		for (unsigned i = 0; i < vec->used; ++i)
+		{
+			mvwprintw(repw, i+2, 1, "%2d moves to %2d\n",
+					vec->array[i].first->number, vec->array[i].second->number);
+		}
+	}
+	else
+	{
+		mvwprintw(repw, 6, 1, "No conjunction");
+	}
+	
+	wrefresh(repw);
+	delwin(repw);
+}
+
+void show_translation(VecPair *vec, int y, int x)
+{
+	WINDOW *repw = newwin(12, 17, y, x);
+	mvwaddstr(repw, 0, 2, "Translations");
+	
+	if (vec->used)
+	{
+		for (unsigned i = 0; i < vec->used; ++i)
+		{
+			mvwprintw(repw, i+2, 1, "%2d moves to %2d\n",
+					vec->array[i].first->number, vec->array[i].second->number);
+		}
+	}
+	else
+	{
+		mvwprintw(repw, 6, 1, "No translation");
+	}
+	
+	wrefresh(repw);
+	delwin(repw);
+}
+
+void show_mutations(VecPair *vec, int y, int x)
+{
+	WINDOW *repw = newwin(12, 17, y, x);
+	mvwaddstr(repw, 0, 8, "Mutations");
+	
+	if (vec->used)
+	{
+		for (unsigned i = 0; i < vec->used; ++i)
+		{
+			mvwprintw(repw, i+2, 8, "%2d and %2d\n",
+					vec->array[i].first->number, vec->array[i].second->number);
+		}
+	}
+	else
+	{
+		mvwprintw(repw, 6, 3, "No mutation");
+	}
+	
+	wrefresh(repw);
+	delwin(repw);
+}
+
+/* ============================================== *
  * Program menu/interface
  * ============================================== */
 

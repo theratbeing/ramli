@@ -16,9 +16,20 @@
 void draw_chart_info(Chart *chart, int mode, const char *dtstr, int y, int x);
 void draw_shield_chart(Chart *chart, int mode, int y, int x);
 void draw_house_chart(Chart *chart, int mode, int y, int x);
-void draw_via_puncti(PNode nodes[15], int y, int x);
 
 void draw_figure_box(Figure *fgr, int mode, int num, int y, int x);
+
+/* ============================================== *
+ * Chart analysis
+ * ============================================== */
+
+void draw_via_puncti(PNode nodes[15], int y, int x);
+
+// Modes of Perfection
+void show_overview(bool occu, VecPair *conj, VecPair *muta, VecPair *tran, int y, int x);
+void show_conjunction(VecPair *vec, int y, int x);
+void show_translation(VecPair *vec, int y, int x);
+void show_mutations(VecPair *vec, int y, int x);
 
 /* ============================================== *
  * Program menu/interface
