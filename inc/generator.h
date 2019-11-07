@@ -85,7 +85,7 @@ void delete_vecpair(VecPair *vec);
 
 bool is_occupied(House *querent, House *quesited);
 void check_conjunction(VecPair *vec, House *querent, House *quesited);
-void check_mutation(VecPair *vec, House *candidate, House *querent, House *quesited);
 void check_translation(VecPair *vec, House *querent, House *quesited);
+void loop_check_mutation(VecPair *vec, House array[12], House *querent, House *quesited);
 
 #endif

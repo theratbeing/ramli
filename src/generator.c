@@ -312,25 +312,28 @@ void check_translation(VecPair *vec, House *querent, House *quesited)
 	}
 }
 
-void check_mutation(VecPair *vec, House *candidate, House *querent, House *quesited)
+void loop_check_mutation(VecPair *vec, House array[12], House *querent, House *quesited)
 {
 	HPair pair;
 	
-	if (candidate->figure == querent->figure
-		&& candidate->number != querent->number)
+	for (int i = 0; i < 12; ++i)
 	{
-		if (candidate->prev->figure == quesited->figure)
+		if (array[i].figure == querent->figure
+			&& array[i].number != querent->number)
 		{
-			pair.first  = candidate->prev;
-			pair.second = candidate;
-			append_vecpair(vec, pair);
-		}
-		
-		if (candidate->next->figure == quesited->figure)
-		{
-			pair.first  = candidate;
-			pair.second = candidate->next;
-			append_vecpair(vec, pair);
+			if (array[i].prev->figure == quesited->figure)
+			{
+				pair.first  = array[i].prev;
+				pair.second = array + i;
+				append_vecpair(vec, pair);
+			}
+			
+			if (array[i].next->figure == quesited->figure)
+			{
+				pair.first  = array + i;
+				pair.second = array[i].next;
+				append_vecpair(vec, pair);
+			}
 		}
 	}
 }
