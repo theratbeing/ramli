@@ -210,7 +210,7 @@ void draw_figure_box(Figure *fgr, int mode, int num, int y, int x)
 
 void show_overview(bool occu, VecPair *conj, VecPair *muta, VecPair *tran, int y, int x)
 {
-	WINDOW *overw = newwin(12, 17, y, x);
+	WINDOW *overw = newwin(12, 17, y+6, x+6);
 	mvwaddstr(overw, 0, 2, "Perfections");
 	
 	if (occu)
@@ -255,7 +255,7 @@ void show_overview(bool occu, VecPair *conj, VecPair *muta, VecPair *tran, int y
 
 void show_conjunction(VecPair *vec, int y, int x)
 {
-	WINDOW *repw = newwin(12, 17, y, x);
+	WINDOW *repw = newwin(12, 17, y+6, x+6);
 	mvwaddstr(repw, 0, 2, "Conjunctions");
 	
 	if (vec->used)
@@ -277,7 +277,7 @@ void show_conjunction(VecPair *vec, int y, int x)
 
 void show_translation(VecPair *vec, int y, int x)
 {
-	WINDOW *repw = newwin(12, 17, y, x);
+	WINDOW *repw = newwin(12, 17, y+6, x+6);
 	mvwaddstr(repw, 0, 2, "Translations");
 	
 	if (vec->used)
@@ -299,7 +299,7 @@ void show_translation(VecPair *vec, int y, int x)
 
 void show_mutations(VecPair *vec, int y, int x)
 {
-	WINDOW *repw = newwin(12, 17, y, x);
+	WINDOW *repw = newwin(12, 17, y+6, x+6);
 	mvwaddstr(repw, 0, 8, "Mutations");
 	
 	if (vec->used)

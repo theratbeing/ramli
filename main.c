@@ -207,6 +207,26 @@ int main()
 	else if (chart_flags & FLAG_HOUSE)
 	{
 		draw_house_chart(&basechart, color_set, 0, 38);
+		
+		House houses[12];
+		init_houses(houses, basechart.figures);
+		House *hquerent  = (houses + querent  - 1);
+		House *hquesited = (houses + quesited - 1);
+		
+		bool occupation = is_occupied(hquerent, hquesited);
+		
+		VecPair perfections[3];
+		for (int i = 0; i < 3; ++i)
+			init_vecpair((perfections + i), 4);
+		
+		check_conjunction(perfections, hquerent, hquesited);
+		check_translation(perfections+1, hquerent, hquesited);
+		loop_check_mutation(perfections+2, houses, hquerent, hquesited);
+		
+		show_overview(occupation, perfections, perfections+2, perfections+1, 0, 38);
+		
+		for (int i = 0; i < 3; ++i)
+			delete_vecpair(perfections+i);
 	}
 	
 	WINDOW *input_box = newwin(1, 1, 23, 0);
