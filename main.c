@@ -32,6 +32,7 @@ int main()
 	int			key_ch;
 	int			querent		= 1;
 	int			quesited	= 7;
+	int			puncti_line = 0;
 	int			color_set   = 0;
 	unsigned	chart_flags = 0;
 	
@@ -193,6 +194,7 @@ int main()
 	
 	// Reserve space for analysis
 	PNode puncti[15];
+	WINDOW *winpuncti = newwin(24, 47, 0, 33);
 	
 	House	houses[12];
 	bool	occupation;
@@ -207,11 +209,11 @@ int main()
 	
 	if (chart_flags & FLAG_SHIELD)
 	{
-		draw_shield_chart(&basechart, color_set, 0, 33);
-		
 		init_pnodes(puncti, basechart.figures);
 		retrace_pnodes(puncti, 0);
-		draw_via_puncti(puncti, 0, 33);
+		// winpuncti would overwrite the chart
+		draw_via_puncti(winpuncti, puncti, puncti_line);
+		draw_shield_chart(&basechart, color_set, 0, 33);
 	}
 	else if (chart_flags & FLAG_HOUSE)
 	{
@@ -251,16 +253,35 @@ int main()
 		
 		if (chart_flags & FLAG_SHIELD)
 		{
-			if (key_ch == '1')
-				retrace_pnodes(puncti, 0);
-			else if (key_ch == '2')
-				retrace_pnodes(puncti, 1);
-			else if (key_ch == '3')
-				retrace_pnodes(puncti, 2);
-			else if (key_ch == '4')
-				retrace_pnodes(puncti, 3);
+			bool redraw = false;
 			
-			draw_via_puncti(puncti, 0, 33);
+			if (key_ch == '1')
+			{
+				puncti_line = 0;
+				redraw = true;
+			}
+			else if (key_ch == '2')
+			{
+				puncti_line = 1;
+				redraw = true;
+			}
+			else if (key_ch == '3')
+			{
+				puncti_line = 2;
+				redraw = true;
+			}
+			else if (key_ch == '4')
+			{
+				puncti_line = 3;
+				redraw = true;
+			}
+			
+			if (redraw)
+			{
+				retrace_pnodes(puncti, puncti_line);
+				draw_via_puncti(winpuncti, puncti, puncti_line);
+				draw_shield_chart(&basechart, color_set, 0, 33);
+			}
 		}
 	}
 	

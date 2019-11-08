@@ -23,7 +23,7 @@ void draw_figure_box(Figure *fgr, int mode, int num, int y, int x);
  * Chart analysis
  * ============================================== */
 
-void draw_via_puncti(PNode nodes[15], int y, int x);
+void draw_via_puncti(WINDOW *pwin, PNode nodes[15], int line);
 
 // Modes of Perfection
 void show_overview(bool occu, VecPair *conj, VecPair *muta, VecPair *tran, int y, int x);

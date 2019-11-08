@@ -86,76 +86,82 @@ void draw_shield_chart(Chart *chart, int mode, int y, int x)
 	}
 }
 
-static void draw_line(int y, int x, char type)
+static void draw_line(WINDOW *lnbox, int y, int x, char type)
 {
-	WINDOW *lnbox;
-	
 	if (type == 'l')
 	{
-		lnbox = newwin(2, 1, y, x+2);
-		mvwaddch(lnbox, 0, 0, ACS_VLINE);
-		mvwaddch(lnbox, 1, 0, ACS_LLCORNER);
+		x += 2;
+		mvwaddch(lnbox, y  , x, ACS_VLINE);
+		mvwaddch(lnbox, y+1, x, ACS_LLCORNER);
 	}
 	else if (type == 'r')
 	{
-		lnbox = newwin(2, 1, y, x+2);
-		mvwaddch(lnbox, 0, 0, ACS_VLINE);
-		mvwaddch(lnbox, 1, 0, ACS_LRCORNER);
+		x += 2;
+		mvwaddch(lnbox, y  , x, ACS_VLINE);
+		mvwaddch(lnbox, y+1, x, ACS_LRCORNER);
 	}
 	else if (type == 'L')
 	{
-		lnbox = newwin(2, 4, y, x+2);
-		mvwaddch(lnbox, 0, 0, ACS_VLINE);
-		mvwaddch(lnbox, 1, 0, ACS_LLCORNER);
-		mvwaddch(lnbox, 1, 1, ACS_HLINE);
-		mvwaddch(lnbox, 1, 2, ACS_HLINE);
-		mvwaddch(lnbox, 1, 3, ACS_HLINE);
+		x += 2;
+		mvwaddch(lnbox, y  , x  , ACS_VLINE);
+		mvwaddch(lnbox, y+1, x  , ACS_LLCORNER);
+		mvwaddch(lnbox, y+1, x+1, ACS_HLINE);
+		mvwaddch(lnbox, y+1, x+2, ACS_HLINE);
+		mvwaddch(lnbox, y+1, x+3, ACS_HLINE);
 	}
 	else if (type == 'R')
 	{
-		lnbox = newwin(2, 4, y, x-1);
-		mvwaddch(lnbox, 0, 3, ACS_VLINE);
-		mvwaddch(lnbox, 1, 3, ACS_LRCORNER);
-		mvwaddch(lnbox, 1, 2, ACS_HLINE);
-		mvwaddch(lnbox, 1, 1, ACS_HLINE);
-		mvwaddch(lnbox, 1, 0, ACS_HLINE);
+		--x;
+		mvwaddch(lnbox, y  , x+3, ACS_VLINE);
+		mvwaddch(lnbox, y+1, x+3, ACS_LRCORNER);
+		mvwaddch(lnbox, y+1, x+2, ACS_HLINE);
+		mvwaddch(lnbox, y+1, x+1, ACS_HLINE);
+		mvwaddch(lnbox, y+1, x  , ACS_HLINE);
 	}
 	else if (type == '<')
 	{
-		lnbox = newwin(2, 10, y, x+2);
-		mvwaddch(lnbox, 0, 0, ACS_VLINE);
-		mvwaddch(lnbox, 1, 0, ACS_LLCORNER);
+		x += 2;
+		mvwaddch(lnbox, y  , x, ACS_VLINE);
+		mvwaddch(lnbox, y+1, x, ACS_LLCORNER);
 		
 		for (int i = 1; i < 10; ++i)
-			mvwaddch(lnbox, 1, i, ACS_HLINE);
+			mvwaddch(lnbox, y+1, x+i, ACS_HLINE);
 	}
 	else if (type == '>')
 	{
-		lnbox = newwin(2, 10, y, x-7);
-		mvwaddch(lnbox, 0, 9, ACS_VLINE);
-		mvwaddch(lnbox, 1, 9, ACS_LRCORNER);
+		x -= 7;
+		mvwaddch(lnbox, y  , x+9, ACS_VLINE);
+		mvwaddch(lnbox, y+1, x+9, ACS_LRCORNER);
 		
 		for (int i = 0; i < 9; ++i)
-			mvwaddch(lnbox, 1, i, ACS_HLINE);
+			mvwaddch(lnbox, y+1, x+i, ACS_HLINE);
 	}
-	
-	wrefresh(lnbox);
-	delwin(lnbox);
 }
 
-void draw_via_puncti(PNode nodes[15], int y, int x)
+void draw_via_puncti(WINDOW *pwin, PNode nodes[15], int line)
 {
-	int wy, wx;
+	int  wy, wx;
 	char tptbl[] = "rlrlrlrlRLRL><";
+	int  attrs[] =
+	{
+		COLOR_PAIR(RED), COLOR_PAIR(YELLOW), COLOR_PAIR(BLUE), COLOR_PAIR(GREEN)
+	};
+	
+	werase(pwin);
+	mvwprintw(pwin, 23, 3, "Tracing line %d", line+1);
+	wattron(pwin, attrs[line]);
 	
 	for (int i = 0; i < 14; ++i)
 	{
-		wy = shield_ypos[i] + y + 6;
-		wx = shield_xpos[i] + x;
+		wy = shield_ypos[i] + 6;
+		wx = shield_xpos[i];
 		
 		if (nodes[i].is_valid)
-			draw_line(wy, wx, tptbl[i]);
+			draw_line(pwin, wy, wx, tptbl[i]);
 	}
+	
+	wattroff(pwin, attrs[line]);
+	wrefresh(pwin);
 }
 
 void draw_house_chart(Chart *chart, int mode, int y, int x)
