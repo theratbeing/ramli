@@ -57,6 +57,9 @@ void shift_menu_item(MenuItem *menui, int diff);
 void draw_item_window(MenuItem *mi);
 void del_menu_item(MenuItem *menui);
 
+void draw_general_info(WINDOW *infow, char *name, char *question, int querent, int quesited);
+void draw_key_info(WINDOW *infow);
+
 void ask_string(char *dest, int len, const char *prompt, int h, int w, int y, int x);
 void ask_house(int *dest, const char *prompt, int y, int x);
 

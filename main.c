@@ -1,5 +1,6 @@
 #include "curses_window.h"
 #include <locale.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
@@ -37,7 +38,7 @@ int main()
 	unsigned	chart_flags = 0;
 	
 	char user_name[40]  = "Anonymous";
-	char user_query[80] = "Not specified";
+	char user_query[100] = "Not specified";
 	
 	char item_label_1[] = "Chart type";
 	char item_label_2[] = "Generation method";
@@ -68,27 +69,38 @@ int main()
 		draw_item_window(choices[i]);
 	}
 	
-	WINDOW *cursorw = newwin(1, 1, 23, 1);
+	WINDOW *infow = newwin(9, 44, 3, 33);
+	draw_general_info(infow, user_name, user_query, querent, quesited);
+	
+	WINDOW *keysw = newwin(11, 74, 13, 3);
+	draw_key_info(keysw);
+	
+	WINDOW *cursorw = newwin(1, 1, 23, 0);
 	keypad(cursorw, TRUE);
 	curs_set(0);
 	
 	while ((key_ch = wgetch(cursorw)) != '\n')
 	{
-		if (key_ch == KEY_F(2))
+		if (key_ch == KEY_F(10))
 		{
-			ask_house(&querent, "Please enter the house of querent", 3, 15);
+			endwin();
+			exit(EXIT_SUCCESS);
 		}
-		else if (key_ch == KEY_F(3))
-		{
-			ask_house(&quesited, "Please enter the house of quesited", 3, 15);
-		}
-		else if (key_ch == KEY_F(5))
+		else if (key_ch == KEY_F(2))
 		{
 			ask_string(user_name, 39, "What is querent's name?", 3, 50, 10, 15);
 		}
+		else if (key_ch == KEY_F(3))
+		{
+			ask_string(user_query, 99, "What is the question?", 4, 50, 10, 15);
+		}
+		else if (key_ch == KEY_F(5))
+		{
+			ask_house(&querent, "Please enter the house of querent", 3, 15);
+		}
 		else if (key_ch == KEY_F(6))
 		{
-			ask_string(user_query, 79, "What is the question?", 3, 50, 10, 15);
+			ask_house(&quesited, "Please enter the house of quesited", 3, 15);
 		}
 		else if (key_ch == KEY_UP)
 		{
@@ -118,6 +130,9 @@ int main()
 		
 		for (int i = 0; i < choice_size; ++i)
 			draw_item_window(choices[i]);
+		
+		draw_general_info(infow, user_name, user_query, querent, quesited);
+		draw_key_info(keysw);
 	}
 	
 	/* ========================================== *
@@ -140,9 +155,10 @@ int main()
 	
 	// no memory leaks
 	for (int i = 0; i < 3; ++i)
-	{
 		del_menu_item(choices[i]);
-	}
+	
+	delwin(infow);
+	delwin(cursorw);
 	
 	/* ========================================== *
 	 * Chart calculations start here
@@ -294,4 +310,6 @@ int main()
 	}
 	
 	endwin();
+	
+	return EXIT_SUCCESS;
 }

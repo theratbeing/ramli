@@ -280,9 +280,8 @@ void show_conjunction(VecPair *vec, int y, int x)
 	{
 		for (unsigned i = 0; i < vec->used; ++i)
 		{
-			mvwprintw(repw, i+2, 1, "%2d %s moves to %2d %s",
-				vec->array[i].first->number,  vec->array[i].first->figure->abbr,
-				vec->array[i].second->number, vec->array[i].second->figure->abbr);
+			mvwprintw(repw, i+2, 0, "%2d. House %2 passes to house %2", i+1,
+				vec->array[i].first->number, vec->array[i].second->number);
 		}
 	}
 	else
@@ -303,9 +302,8 @@ void show_translation(VecPair *vec, int y, int x)
 	{
 		for (unsigned i = 0; i < vec->used; ++i)
 		{
-			mvwprintw(repw, i+2, 1, "%2d %s moves to %2d %s",
-				vec->array[i].first->number,  vec->array[i].first->figure->abbr,
-				vec->array[i].second->number, vec->array[i].second->figure->abbr);
+			mvwprintw(repw, i+2, 0, "%2d. House %d passes to house %d", i+1,
+				vec->array[i].first->number, vec->array[i].second->number);
 		}
 	}
 	else
@@ -326,9 +324,8 @@ void show_mutation(VecPair *vec, int y, int x)
 	{
 		for (unsigned i = 0; i < vec->used; ++i)
 		{
-			mvwprintw(repw, i+2, 0, "%2d %s and %2d %s",
-				vec->array[i].first->number,  vec->array[i].first->figure->abbr,
-				vec->array[i].second->number, vec->array[i].second->figure->abbr);
+			mvwprintw(repw, i+2, 0, "%2d. House %d and house %d", i+1,
+				vec->array[i].first->number, vec->array[i].second->number);
 		}
 	}
 	else
@@ -419,6 +416,39 @@ void draw_item_window(MenuItem *mi)
 	wrefresh(mi->ptrwin);
 }
 
+void draw_general_info(WINDOW *infow, char *name, char *question, int querent, int quesited)
+{
+	werase(infow);
+	wattron(infow, COLOR_PAIR(YELLOW));
+	box(infow, 0, 0);
+	mvwaddstr(infow, 0, 1, "Chart info");
+	wattroff(infow, COLOR_PAIR(YELLOW));
+	
+	mvwprintw(infow, 1, 1, "Name     : %s", name);
+	mvwprintw(infow, 2, 1, "Question : %s", question);
+	
+	mvwprintw(infow, 6, 1, "Querent  : House %d", querent);
+	mvwprintw(infow, 7, 1, "Quesited : House %d", quesited);
+	wrefresh(infow);
+}
+
+void draw_key_info(WINDOW *infow)
+{
+	werase(infow);
+	wattron(infow, COLOR_PAIR(CYAN));
+	box(infow, 0, 0);
+	mvwaddstr(infow, 0, 1, "Instructions");
+	wattroff(infow, COLOR_PAIR(CYAN));
+	
+	mvwaddstr(infow, 1, 1, "Press ARROW keys to set options, press ENTER to proceed.");
+	mvwaddstr(infow, 3, 1, "F2 : Set name");
+	mvwaddstr(infow, 4, 1, "F3 : Set question");
+	mvwaddstr(infow, 6, 1, "F5 : Change house of querent");
+	mvwaddstr(infow, 7, 1, "F6 : Change house of quesited");
+	mvwaddstr(infow, 9, 1, "F10: Quit");
+	
+	wrefresh(infow);
+}
 /* ============================================== *
  * Dialogues
  * ============================================== */
@@ -432,8 +462,10 @@ void ask_string(char *dest, int len, const char *prompt, int h, int w, int y, in
 	int mid_x = (w - textlen) / 2;
 
 	WINDOW *dialbox = newwin(h, w, y, x);
+	wattron(dialbox, COLOR_PAIR(RED));
 	box(dialbox, 0, 0);
 	mvwaddstr(dialbox, 0, mid_x, prompt);
+	wattroff(dialbox, COLOR_PAIR(RED));
 	
 	curs_set(1);
 	echo();

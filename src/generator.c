@@ -321,14 +321,16 @@ void loop_check_mutation(VecPair *vec, House array[12], House *querent, House *q
 		if (array[i].figure == querent->figure
 			&& array[i].number != querent->number)
 		{
-			if (array[i].prev->figure == quesited->figure)
+			if (array[i].prev->figure == quesited->figure
+				&& array[i].prev->number != quesited->number)
 			{
 				pair.first  = array[i].prev;
 				pair.second = array + i;
 				append_vecpair(vec, pair);
 			}
 			
-			if (array[i].next->figure == quesited->figure)
+			if (array[i].next->figure == quesited->figure
+				&& array[i].next->number != quesited->number)
 			{
 				pair.first  = array + i;
 				pair.second = array[i].next;
