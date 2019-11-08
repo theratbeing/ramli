@@ -191,6 +191,16 @@ int main()
 		basechart.figures[i] = ptr_figures[id];
 	}
 	
+	// Reserve space for analysis
+	PNode puncti[15];
+	
+	House	houses[12];
+	bool	occupation;
+	VecPair conjunction;
+	VecPair mutation;
+	VecPair translation;
+	
+	// Screen output
 	erase();
 	refresh();
 	draw_chart_info(&basechart, color_set, tstring, 0, 0);
@@ -199,7 +209,6 @@ int main()
 	{
 		draw_shield_chart(&basechart, color_set, 0, 33);
 		
-		PNode puncti[15];
 		init_pnodes(puncti, basechart.figures);
 		retrace_pnodes(puncti, 0);
 		draw_via_puncti(puncti, 0, 33);
@@ -208,29 +217,60 @@ int main()
 	{
 		draw_house_chart(&basechart, color_set, 0, 38);
 		
-		House houses[12];
 		init_houses(houses, basechart.figures);
 		House *hquerent  = (houses + querent  - 1);
 		House *hquesited = (houses + quesited - 1);
+		occupation		 = is_occupied(hquerent, hquesited);
 		
-		bool occupation = is_occupied(hquerent, hquesited);
+		init_vecpair(&conjunction, 4);
+		init_vecpair(&mutation, 4);
+		init_vecpair(&translation, 4);
 		
-		VecPair perfections[3];
-		for (int i = 0; i < 3; ++i)
-			init_vecpair((perfections + i), 4);
-		
-		check_conjunction(perfections, hquerent, hquesited);
-		check_translation(perfections+1, hquerent, hquesited);
-		loop_check_mutation(perfections+2, houses, hquerent, hquesited);
-		
-		show_overview(occupation, perfections, perfections+2, perfections+1, 0, 38);
-		
-		for (int i = 0; i < 3; ++i)
-			delete_vecpair(perfections+i);
+		check_conjunction(&conjunction, hquerent, hquesited);
+		check_translation(&translation, hquerent, hquesited);
+		loop_check_mutation(&mutation, houses, hquerent, hquesited);
 	}
 	
 	WINDOW *input_box = newwin(1, 1, 23, 0);
-	wgetch(input_box);
+	
+	while ((key_ch = wgetch(input_box)) != 'q')
+	{
+		if (chart_flags & FLAG_HOUSE)
+		{
+			if (key_ch == '1')
+				show_conjunction(&conjunction, 0, 0);
+			else if (key_ch == '2')
+				show_mutation(&mutation, 0, 0);
+			else if (key_ch == '3')
+				show_translation(&translation, 0, 0);
+			else if (key_ch == '9')
+				show_overview(occupation, &conjunction, &mutation, &translation, 0, 0);
+			else if (key_ch == '0')
+				draw_chart_info(&basechart, color_set, tstring, 0, 0);
+		}
+		
+		if (chart_flags & FLAG_SHIELD)
+		{
+			if (key_ch == '1')
+				retrace_pnodes(puncti, 0);
+			else if (key_ch == '2')
+				retrace_pnodes(puncti, 1);
+			else if (key_ch == '3')
+				retrace_pnodes(puncti, 2);
+			else if (key_ch == '4')
+				retrace_pnodes(puncti, 3);
+			
+			draw_via_puncti(puncti, 0, 33);
+		}
+	}
+	
+	// Cleanup
+	if (chart_flags & FLAG_HOUSE)
+	{
+		delete_vecpair(&conjunction);
+		delete_vecpair(&mutation);
+		delete_vecpair(&translation);
+	}
 	
 	endwin();
 }

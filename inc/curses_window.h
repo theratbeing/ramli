@@ -29,7 +29,7 @@ void draw_via_puncti(PNode nodes[15], int y, int x);
 void show_overview(bool occu, VecPair *conj, VecPair *muta, VecPair *tran, int y, int x);
 void show_conjunction(VecPair *vec, int y, int x);
 void show_translation(VecPair *vec, int y, int x);
-void show_mutations(VecPair *vec, int y, int x);
+void show_mutation(VecPair *vec, int y, int x);
 
 /* ============================================== *
  * Program menu/interface

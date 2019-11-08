@@ -210,8 +210,8 @@ void draw_figure_box(Figure *fgr, int mode, int num, int y, int x)
 
 void show_overview(bool occu, VecPair *conj, VecPair *muta, VecPair *tran, int y, int x)
 {
-	WINDOW *overw = newwin(12, 17, y+6, x+6);
-	mvwaddstr(overw, 0, 2, "Perfections");
+	WINDOW *overw = newwin(INFOBOX_H, INFOBOX_W, y, x);
+	mvwaddstr(overw, 0, 7, "Modes of Perfection");
 	
 	if (occu)
 	{
@@ -222,27 +222,39 @@ void show_overview(bool occu, VecPair *conj, VecPair *muta, VecPair *tran, int y
 		mvwprintw(overw, 2, 0, "No occupation");
 	}
 	
-	if (conj->used)
+	if (conj->used == 1)
 	{
-		mvwprintw(overw, 3, 0, "Conjunction found");
+		mvwprintw(overw, 3, 0, "Found 1 conjunction");
+	}
+	else if (conj->used > 1)
+	{
+		mvwprintw(overw, 3, 0, "Found %d conjunctions", conj->used);
 	}
 	else
 	{
 		mvwprintw(overw, 3, 0, "No conjunction");
 	}
 	
-	if (muta->used)
+	if (muta->used == 1)
 	{
-		mvwprintw(overw, 4, 0, "Mutation found");
+		mvwprintw(overw, 4, 0, "Found 1 mutation");
+	}
+	else if (muta->used > 1)
+	{
+		mvwprintw(overw, 4, 0, "Found %d mutations", muta->used);
 	}
 	else
 	{
 		mvwprintw(overw, 4, 0, "No mutation");
 	}
 	
-	if (tran->used)
+	if (tran->used == 1)
 	{
-		mvwprintw(overw, 5, 0, "Translation found");
+		mvwprintw(overw, 5, 0, "Found 1 translation");
+	}
+	else if (tran->used > 1)
+	{
+		mvwprintw(overw, 5, 0, "Found %d translations", tran->used);
 	}
 	else
 	{
@@ -255,20 +267,21 @@ void show_overview(bool occu, VecPair *conj, VecPair *muta, VecPair *tran, int y
 
 void show_conjunction(VecPair *vec, int y, int x)
 {
-	WINDOW *repw = newwin(12, 17, y+6, x+6);
-	mvwaddstr(repw, 0, 2, "Conjunctions");
+	WINDOW *repw = newwin(INFOBOX_H, INFOBOX_W, y, x);
+	mvwaddstr(repw, 0, 11, "Conjunctions");
 	
 	if (vec->used)
 	{
 		for (unsigned i = 0; i < vec->used; ++i)
 		{
-			mvwprintw(repw, i+2, 1, "%2d moves to %2d\n",
-					vec->array[i].first->number, vec->array[i].second->number);
+			mvwprintw(repw, i+2, 1, "%2d %s moves to %2d %s",
+				vec->array[i].first->number,  vec->array[i].first->figure->abbr,
+				vec->array[i].second->number, vec->array[i].second->figure->abbr);
 		}
 	}
 	else
 	{
-		mvwprintw(repw, 6, 1, "No conjunction");
+		mvwprintw(repw, 2, 0, "No conjunction");
 	}
 	
 	wrefresh(repw);
@@ -277,42 +290,44 @@ void show_conjunction(VecPair *vec, int y, int x)
 
 void show_translation(VecPair *vec, int y, int x)
 {
-	WINDOW *repw = newwin(12, 17, y+6, x+6);
-	mvwaddstr(repw, 0, 2, "Translations");
+	WINDOW *repw = newwin(INFOBOX_H, INFOBOX_W, y, x);
+	mvwaddstr(repw, 0, 10, "Translations");
 	
 	if (vec->used)
 	{
 		for (unsigned i = 0; i < vec->used; ++i)
 		{
-			mvwprintw(repw, i+2, 1, "%2d moves to %2d\n",
-					vec->array[i].first->number, vec->array[i].second->number);
+			mvwprintw(repw, i+2, 1, "%2d %s moves to %2d %s",
+				vec->array[i].first->number,  vec->array[i].first->figure->abbr,
+				vec->array[i].second->number, vec->array[i].second->figure->abbr);
 		}
 	}
 	else
 	{
-		mvwprintw(repw, 6, 1, "No translation");
+		mvwprintw(repw, 2, 0, "No translation");
 	}
 	
 	wrefresh(repw);
 	delwin(repw);
 }
 
-void show_mutations(VecPair *vec, int y, int x)
+void show_mutation(VecPair *vec, int y, int x)
 {
-	WINDOW *repw = newwin(12, 17, y+6, x+6);
-	mvwaddstr(repw, 0, 8, "Mutations");
+	WINDOW *repw = newwin(INFOBOX_H, INFOBOX_W, y, x);
+	mvwaddstr(repw, 0, 12, "Mutations");
 	
 	if (vec->used)
 	{
 		for (unsigned i = 0; i < vec->used; ++i)
 		{
-			mvwprintw(repw, i+2, 8, "%2d and %2d\n",
-					vec->array[i].first->number, vec->array[i].second->number);
+			mvwprintw(repw, i+2, 0, "%2d %s and %2d %s",
+				vec->array[i].first->number,  vec->array[i].first->figure->abbr,
+				vec->array[i].second->number, vec->array[i].second->figure->abbr);
 		}
 	}
 	else
 	{
-		mvwprintw(repw, 6, 3, "No mutation");
+		mvwprintw(repw, 2, 0, "No mutation");
 	}
 	
 	wrefresh(repw);
