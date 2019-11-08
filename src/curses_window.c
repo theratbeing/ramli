@@ -445,7 +445,7 @@ void draw_key_info(WINDOW *infow)
 	mvwaddstr(infow, 4, 1, "F3 : Set question");
 	mvwaddstr(infow, 6, 1, "F5 : Change house of querent");
 	mvwaddstr(infow, 7, 1, "F6 : Change house of quesited");
-	mvwaddstr(infow, 9, 1, "F10: Quit");
+	mvwaddstr(infow, 9, 1, "Q  : Quit");
 	
 	wrefresh(infow);
 }

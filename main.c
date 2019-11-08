@@ -81,7 +81,7 @@ int main()
 	
 	while ((key_ch = wgetch(cursorw)) != '\n')
 	{
-		if (key_ch == KEY_F(10))
+		if (key_ch == 'q')
 		{
 			endwin();
 			exit(EXIT_SUCCESS);
@@ -251,53 +251,100 @@ int main()
 	
 	WINDOW *input_box = newwin(1, 1, 23, 0);
 	
+	int left_info_type = 0;
+	
 	while ((key_ch = wgetch(input_box)) != 'q')
 	{
+		if (key_ch == 's')
+		{
+			char filename[50];
+			ask_string(filename, 49, "Please enter file name", 3, 50, 10, 15);
+			FILE *fpout = fopen(filename, "w");
+			
+			if (fpout == NULL)
+			{
+				WINDOW *errw = newwin(3, 50, 10, 15);
+				wattron(errw, COLOR_PAIR(RED));
+				box(errw, 0, 0);
+				mvwaddstr(errw, 1, 12, "ERROR: Unable to write file");
+				wrefresh(errw);
+				wgetch(errw);
+				delwin(errw);
+				continue;
+			}
+			
+			if (chart_flags & FLAG_SHIELD)
+				fprintf(fpout, "Shield");
+			else
+				fprintf(fpout, "House");
+			
+			fprintf(fpout, " chart generated at %s\n\n", tstring);
+			fprintf(fpout, "Name    : %s\nQuestion: %s\n\n", user_name, user_query);
+			
+			if (chart_flags & FLAG_HOUSE)
+				fprintf(fpout, "Querent : %d\nQuesited: %d\n\n", querent, quesited);
+			
+			for (int i = 0; i < 16; ++i)
+			{
+				fprintf(fpout, "%2d. %s\n", i+1, basechart.figures[i]->name);
+			}
+			
+			fclose(fpout);
+		}
+		
 		if (chart_flags & FLAG_HOUSE)
 		{
 			if (key_ch == '1')
-				show_conjunction(&conjunction, 0, 0);
+				left_info_type = 1;
 			else if (key_ch == '2')
-				show_mutation(&mutation, 0, 0);
+				left_info_type = 2;
 			else if (key_ch == '3')
-				show_translation(&translation, 0, 0);
+				left_info_type = 3;
 			else if (key_ch == '9')
-				show_overview(occupation, &conjunction, &mutation, &translation, 0, 0);
+				left_info_type = 9;
 			else if (key_ch == '0')
+				left_info_type = 0;
+			
+			draw_house_chart(&basechart, color_set, 0, 38);
+			
+			if (left_info_type == 0)
 				draw_chart_info(&basechart, color_set, tstring, 0, 0);
+			else if (left_info_type == 1)
+				show_conjunction(&conjunction, 0, 0);
+			else if (left_info_type == 2)
+				show_mutation(&mutation, 0, 0);
+			else if (left_info_type == 3)
+				show_translation(&translation, 0, 0);
+			else if (left_info_type == 9)
+				show_overview(occupation, &conjunction, &mutation, &translation, 0, 0);
 		}
 		
 		if (chart_flags & FLAG_SHIELD)
 		{
-			bool redraw = false;
-			
 			if (key_ch == '1')
 			{
 				puncti_line = 0;
-				redraw = true;
+				retrace_pnodes(puncti, puncti_line);
 			}
 			else if (key_ch == '2')
 			{
 				puncti_line = 1;
-				redraw = true;
+				retrace_pnodes(puncti, puncti_line);
 			}
 			else if (key_ch == '3')
 			{
 				puncti_line = 2;
-				redraw = true;
+				retrace_pnodes(puncti, puncti_line);
 			}
 			else if (key_ch == '4')
 			{
 				puncti_line = 3;
-				redraw = true;
+				retrace_pnodes(puncti, puncti_line);
 			}
 			
-			if (redraw)
-			{
-				retrace_pnodes(puncti, puncti_line);
-				draw_via_puncti(winpuncti, puncti, puncti_line);
-				draw_shield_chart(&basechart, color_set, 0, 33);
-			}
+			draw_chart_info(&basechart, color_set, tstring, 0, 0);
+			draw_via_puncti(winpuncti, puncti, puncti_line);
+			draw_shield_chart(&basechart, color_set, 0, 33);
 		}
 	}
 	
