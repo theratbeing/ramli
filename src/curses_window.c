@@ -12,10 +12,14 @@ void draw_chart_info(Chart *chart, int mode, const char *dtstr, int y, int x)
 	static const char *mode_label[] =
 	{
 		"Elements (Modern)", "Elements (Traditional)", "Planetary",
-		"Zodiac (Agrippa)", "Zodiac (Gerard of Cremona)"
+		"Zodiac (Agrippa)", "Zodiac (Gerardus)"
 	};
 	
 	WINDOW *winbox = newwin(INFOBOX_H, INFOBOX_W, y, x);
+	
+	// prevent artifacts
+	werase(winbox);
+	wrefresh(winbox);
 	
 	int attributes = A_REVERSE;
 	if (mode == ELEMENT_M || mode == ELEMENT_T)
@@ -25,7 +29,7 @@ void draw_chart_info(Chart *chart, int mode, const char *dtstr, int y, int x)
 	else if (mode == ZODIAC_A)
 		attributes |= COLOR_PAIR(YELLOW);
 	else
-		attributes |= COLOR_PAIR(BLUE);
+		attributes |= COLOR_PAIR(YELLOW);
 	
 	wattron(winbox, attributes);
 
@@ -503,10 +507,17 @@ void draw_key_info(WINDOW *infow)
 
 void draw_key_after(WINDOW *infow, char mode)
 {
+	mvwaddch(infow, 0, 1, ACS_LARROW);
+	mvwaddch(infow, 0, 3, ACS_RARROW);
+	mvwaddstr(infow, 0, 5, "Switch correspondences");
+	
+	mvwaddch(infow, 1, 1, ACS_UARROW);
+	mvwaddch(infow, 1, 3, ACS_DARROW);
+	
 	if (mode == 's')
-		mvwaddstr(infow, 1, 1, "1-4 Change via puncti lines");
+		mvwaddstr(infow, 1, 5, "Change via puncti lines");
 	else if (mode == 'h')
-		mvwaddstr(infow, 1, 1, "0-3 See perfection details");
+		mvwaddstr(infow, 1, 5, "See perfection details");
 	
 	mvwaddstr(infow, 2, 1, "S   Save to file");
 	mvwaddstr(infow, 3, 1, "Q   Quit");

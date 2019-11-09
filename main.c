@@ -4,6 +4,9 @@
 #include <string.h>
 #include <time.h>
 
+void add_min_max(int *target, int i_min, int i_max);
+void sub_min_max(int *target, int i_min, int i_max);
+
 int main()
 {
 	setlocale(LC_ALL, "");
@@ -257,6 +260,7 @@ int main()
 	}
 	
 	int left_info_type = 0;
+	keypad(input_box, TRUE);
 	
 	while ((key_ch = wgetch(input_box)) != 'q')
 	{
@@ -297,6 +301,11 @@ int main()
 			fclose(fpout);
 		}
 		
+		if (key_ch == KEY_RIGHT)
+			add_min_max(&color_set, 0, 4);
+		else if (key_ch == KEY_LEFT)
+			sub_min_max(&color_set, 0, 4);
+		
 		if (chart_flags & FLAG_HOUSE)
 		{
 			if (key_ch == '1')
@@ -307,6 +316,10 @@ int main()
 				left_info_type = 3;
 			else if (key_ch == '0')
 				left_info_type = 0;
+			else if (key_ch == KEY_UP)
+				sub_min_max(&left_info_type, 0, 3);
+			else if (key_ch == KEY_DOWN)
+				add_min_max(&left_info_type, 0, 3);
 			
 			draw_house_chart(&basechart, color_set, 0, 36);
 			show_overview(occupation, &conjunction, &mutation, &translation, 0, 36);
@@ -323,26 +336,41 @@ int main()
 		
 		if (chart_flags & FLAG_SHIELD)
 		{
+			bool retrace_nodes = false;
+			
 			if (key_ch == '1')
 			{
 				puncti_line = 0;
-				retrace_pnodes(puncti, puncti_line);
+				retrace_nodes = true;
 			}
 			else if (key_ch == '2')
 			{
 				puncti_line = 1;
-				retrace_pnodes(puncti, puncti_line);
+				retrace_nodes = true;
 			}
 			else if (key_ch == '3')
 			{
 				puncti_line = 2;
-				retrace_pnodes(puncti, puncti_line);
+				retrace_nodes = true;
 			}
 			else if (key_ch == '4')
 			{
 				puncti_line = 3;
-				retrace_pnodes(puncti, puncti_line);
+				retrace_nodes = true;
 			}
+			else if (key_ch == KEY_UP)
+			{
+				sub_min_max(&puncti_line, 0, 3);
+				retrace_nodes = true;
+			}
+			else if (key_ch == KEY_DOWN)
+			{
+				add_min_max(&puncti_line, 0, 3);
+				retrace_nodes = true;
+			}
+			
+			if (retrace_nodes)
+				retrace_pnodes(puncti, puncti_line);
 			
 			draw_chart_info(&basechart, color_set, tstring, 0, 0);
 			draw_via_puncti(winpuncti, puncti, puncti_line);
@@ -361,4 +389,20 @@ int main()
 	endwin();
 	
 	return EXIT_SUCCESS;
+}
+
+void add_min_max(int *target, int i_min, int i_max)
+{
+	*target += 1;
+	
+	if (*target > i_max)
+		*target = i_min;
+}
+
+void sub_min_max(int *target, int i_min, int i_max)
+{
+	*target -= 1;
+	
+	if (*target < i_min)
+		*target = i_max;
 }
