@@ -6,8 +6,6 @@
 /* ============================================== *
  * Visual representation of geomantic objects
  * ============================================== */
-#define INFOBOX_H 20
-#define INFOBOX_W 33
 
 void draw_chart_info(Chart *chart, int mode, const char *dtstr, int y, int x)
 {
@@ -502,6 +500,20 @@ void draw_key_info(WINDOW *infow)
 	
 	wrefresh(infow);
 }
+
+void draw_key_after(WINDOW *infow, char mode)
+{
+	if (mode == 's')
+		mvwaddstr(infow, 1, 1, "1-4 Change via puncti lines");
+	else if (mode == 'h')
+		mvwaddstr(infow, 1, 1, "0-3 See perfection details");
+	
+	mvwaddstr(infow, 2, 1, "S   Save to file");
+	mvwaddstr(infow, 3, 1, "Q   Quit");
+	
+	wrefresh(infow);
+}
+
 /* ============================================== *
  * Dialogues
  * ============================================== */

@@ -9,6 +9,9 @@
 #define TRANSPARENT   -1
 #define COLOR_ORANGE 208
 
+#define INFOBOX_H 20
+#define INFOBOX_W 33
+
 /* ============================================== *
  * Visual representation of geomantic objects
  * ============================================== */
@@ -59,6 +62,7 @@ void del_menu_item(MenuItem *menui);
 
 void draw_general_info(WINDOW *infow, char *name, char *question, int querent, int quesited);
 void draw_key_info(WINDOW *infow);
+void draw_key_after(WINDOW *infow, char mode);
 
 void ask_string(char *dest, int len, const char *prompt, int h, int w, int y, int x);
 void ask_house(int *dest, const char *prompt, int y, int x);

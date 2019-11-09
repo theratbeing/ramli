@@ -223,7 +223,9 @@ int main()
 	// Screen output
 	erase();
 	refresh();
+	
 	draw_chart_info(&basechart, color_set, tstring, 0, 0);
+	WINDOW *input_box = newwin(4, INFOBOX_W, INFOBOX_H, 0);
 	
 	if (chart_flags & FLAG_SHIELD)
 	{
@@ -232,6 +234,7 @@ int main()
 		// winpuncti would overwrite the chart
 		draw_via_puncti(winpuncti, puncti, puncti_line);
 		draw_shield_chart(&basechart, color_set, 0, 33);
+		draw_key_after(input_box, 's');
 	}
 	else if (chart_flags & FLAG_HOUSE)
 	{
@@ -250,9 +253,8 @@ int main()
 		
 		draw_house_chart(&basechart, color_set, 0, 36);
 		show_overview(occupation, &conjunction, &mutation, &translation, 0, 36);
+		draw_key_after(input_box, 'h');
 	}
-	
-	WINDOW *input_box = newwin(1, 1, 23, 0);
 	
 	int left_info_type = 0;
 	
