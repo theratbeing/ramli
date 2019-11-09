@@ -248,8 +248,8 @@ int main()
 		check_translation(&translation, hquerent, hquesited);
 		loop_check_mutation(&mutation, houses, hquerent, hquesited);
 		
-		draw_house_chart(&basechart, color_set, 0, 38);
-		show_overview(occupation, &conjunction, &mutation, &translation, 0, 38);
+		draw_house_chart(&basechart, color_set, 0, 36);
+		show_overview(occupation, &conjunction, &mutation, &translation, 0, 36);
 	}
 	
 	WINDOW *input_box = newwin(1, 1, 23, 0);
@@ -306,8 +306,8 @@ int main()
 			else if (key_ch == '0')
 				left_info_type = 0;
 			
-			draw_house_chart(&basechart, color_set, 0, 38);
-			show_overview(occupation, &conjunction, &mutation, &translation, 0, 38);
+			draw_house_chart(&basechart, color_set, 0, 36);
+			show_overview(occupation, &conjunction, &mutation, &translation, 0, 36);
 			
 			if (left_info_type == 0)
 				draw_chart_info(&basechart, color_set, tstring, 0, 0);
