@@ -202,6 +202,8 @@ int main()
 	process_array_arithmetics(matrix);
 	
 	Chart basechart;
+	basechart.querent  = querent;
+	basechart.quesited = quesited;
 	for (int i = 0; i < 16; ++i)
 	{
 		unsigned id = identify_array(matrix[i]);
@@ -233,8 +235,6 @@ int main()
 	}
 	else if (chart_flags & FLAG_HOUSE)
 	{
-		draw_house_chart(&basechart, color_set, 0, 38);
-		
 		init_houses(houses, basechart.figures);
 		House *hquerent  = (houses + querent  - 1);
 		House *hquesited = (houses + quesited - 1);
@@ -247,6 +247,9 @@ int main()
 		check_conjunction(&conjunction, hquerent, hquesited);
 		check_translation(&translation, hquerent, hquesited);
 		loop_check_mutation(&mutation, houses, hquerent, hquesited);
+		
+		draw_house_chart(&basechart, color_set, 0, 38);
+		show_overview(occupation, &conjunction, &mutation, &translation, 0, 38);
 	}
 	
 	WINDOW *input_box = newwin(1, 1, 23, 0);
@@ -300,12 +303,11 @@ int main()
 				left_info_type = 2;
 			else if (key_ch == '3')
 				left_info_type = 3;
-			else if (key_ch == '9')
-				left_info_type = 9;
 			else if (key_ch == '0')
 				left_info_type = 0;
 			
 			draw_house_chart(&basechart, color_set, 0, 38);
+			show_overview(occupation, &conjunction, &mutation, &translation, 0, 38);
 			
 			if (left_info_type == 0)
 				draw_chart_info(&basechart, color_set, tstring, 0, 0);
@@ -315,8 +317,6 @@ int main()
 				show_mutation(&mutation, 0, 0);
 			else if (left_info_type == 3)
 				show_translation(&translation, 0, 0);
-			else if (left_info_type == 9)
-				show_overview(occupation, &conjunction, &mutation, &translation, 0, 0);
 		}
 		
 		if (chart_flags & FLAG_SHIELD)

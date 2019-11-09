@@ -32,7 +32,8 @@ void draw_chart_info(Chart *chart, int mode, const char *dtstr, int y, int x)
 	wattron(winbox, attributes);
 
 	// Color ribbons
-	for (int i = 0; i < INFOBOX_W; ++i) {
+	for (int i = 0; i < INFOBOX_W; ++i)
+	{
 		mvwaddch(winbox, 0, i, ' ');
 		mvwaddch(winbox, 19, i, ' ');
 	}
@@ -186,6 +187,12 @@ void draw_house_chart(Chart *chart, int mode, int y, int x)
 		xpos[i] += x;
 		draw_figure_box(chart->figures[i], mode, i, ypos[i], xpos[i]);
 	}
+	
+	WINDOW *signifw = newwin(2, 17, y+7, x+7);
+	mvwprintw(signifw, 0, 0, "Querent  in h%2d", chart->querent);
+	mvwprintw(signifw, 1, 0, "Quesited in h%2d", chart->quesited);
+	wrefresh(signifw);
+	delwin(signifw);
 }
 
 void draw_figure_box(Figure *fgr, int mode, int num, int y, int x)
@@ -216,55 +223,64 @@ void draw_figure_box(Figure *fgr, int mode, int num, int y, int x)
 
 void show_overview(bool occu, VecPair *conj, VecPair *muta, VecPair *tran, int y, int x)
 {
-	WINDOW *overw = newwin(INFOBOX_H, INFOBOX_W, y, x);
-	mvwaddstr(overw, 0, 7, "Modes of Perfection");
+	char title[]  = "Perfections";
+	int  mid_x	  = (17 - strlen(title)) / 2;
+	
+	WINDOW *overw = newwin(8, 17, y+10, x+6);
+	wattron(overw, A_REVERSE);
+
+	for (int i = 0; i < 17; ++i)
+		mvwaddch(overw, 0, i, ' ');
+	
+	mvwaddstr(overw, 0, mid_x, title);
+	wattroff(overw, A_REVERSE);
 	
 	if (occu)
 	{
-		mvwprintw(overw, 2, 0, "Occupation found");
+		mvwprintw(overw, 2, 0, "0. 1 occupation");
 	}
 	else
 	{
-		mvwprintw(overw, 2, 0, "No occupation");
+		mvwprintw(overw, 2, 0, "0. No occupation");
 	}
 	
 	if (conj->used == 1)
 	{
-		mvwprintw(overw, 3, 0, "Found 1 conjunction");
+		mvwprintw(overw, 3, 0, "1. 1 conjunction");
 	}
 	else if (conj->used > 1)
 	{
-		mvwprintw(overw, 3, 0, "Found %d conjunctions", conj->used);
+		mvwprintw(overw, 3, 0, "1. %d conjunctions", conj->used);
 	}
 	else
 	{
-		mvwprintw(overw, 3, 0, "No conjunction");
+		mvwprintw(overw, 3, 0, "1. No conjunction");
 	}
 	
 	if (muta->used == 1)
 	{
-		mvwprintw(overw, 4, 0, "Found 1 mutation");
+		mvwprintw(overw, 4, 0, "2. 1 mutation");
 	}
 	else if (muta->used > 1)
 	{
-		mvwprintw(overw, 4, 0, "Found %d mutations", muta->used);
+		mvwprintw(overw, 4, 0, "2. %d mutations", muta->used);
 	}
 	else
 	{
-		mvwprintw(overw, 4, 0, "No mutation");
+		mvwprintw(overw, 4, 0, "2. No mutation");
 	}
 	
 	if (tran->used == 1)
 	{
-		mvwprintw(overw, 5, 0, "Found 1 translation");
+		mvwprintw(overw, 5, 0, "3. 1 translation");
 	}
 	else if (tran->used > 1)
 	{
-		mvwprintw(overw, 5, 0, "Found %d translations", tran->used);
+		mvwprintw(overw, 5, 0, "3. %d translations", tran->used);
 	}
 	else
 	{
-		mvwprintw(overw, 5, 0, "No translation");
+		mvwprintw(overw, 5, 0, "3. No translation");
 	}
 	
 	wrefresh(overw);
@@ -273,14 +289,23 @@ void show_overview(bool occu, VecPair *conj, VecPair *muta, VecPair *tran, int y
 
 void show_conjunction(VecPair *vec, int y, int x)
 {
+	char title[]  = "Conjunctions";
+	int  mid_x	  = (INFOBOX_W - strlen(title)) / 2;
+	
 	WINDOW *repw = newwin(INFOBOX_H, INFOBOX_W, y, x);
-	mvwaddstr(repw, 0, 11, "Conjunctions");
+	wattron(repw, A_REVERSE | COLOR_PAIR(MAGENTA));
+	
+	for (int i = 0; i < INFOBOX_W; ++i)
+		mvwaddch(repw, 0, i, ' ');
+	
+	mvwaddstr(repw, 0, mid_x, title);
+	wattroff(repw, A_REVERSE | COLOR_PAIR(MAGENTA));
 	
 	if (vec->used)
 	{
 		for (unsigned i = 0; i < vec->used; ++i)
 		{
-			mvwprintw(repw, i+2, 0, "%2d. House %2 passes to house %2", i+1,
+			mvwprintw(repw, i+2, 0, "%2d. House %d passes to house %d", i+1,
 				vec->array[i].first->number, vec->array[i].second->number);
 		}
 	}
@@ -295,8 +320,17 @@ void show_conjunction(VecPair *vec, int y, int x)
 
 void show_translation(VecPair *vec, int y, int x)
 {
+	char title[]  = "Translations";
+	int  mid_x	  = (INFOBOX_W - strlen(title)) / 2;
+	
 	WINDOW *repw = newwin(INFOBOX_H, INFOBOX_W, y, x);
-	mvwaddstr(repw, 0, 10, "Translations");
+	wattron(repw, A_REVERSE | COLOR_PAIR(MAGENTA));
+	
+	for (int i = 0; i < INFOBOX_W; ++i)
+		mvwaddch(repw, 0, i, ' ');
+	
+	mvwaddstr(repw, 0, mid_x, title);
+	wattroff(repw, A_REVERSE | COLOR_PAIR(MAGENTA));
 	
 	if (vec->used)
 	{
@@ -317,8 +351,17 @@ void show_translation(VecPair *vec, int y, int x)
 
 void show_mutation(VecPair *vec, int y, int x)
 {
+	char title[]  = "Mutations";
+	int  mid_x	  = (INFOBOX_W - strlen(title)) / 2;
+	
 	WINDOW *repw = newwin(INFOBOX_H, INFOBOX_W, y, x);
-	mvwaddstr(repw, 0, 12, "Mutations");
+	wattron(repw, A_REVERSE | COLOR_PAIR(MAGENTA));
+	
+	for (int i = 0; i < INFOBOX_W; ++i)
+		mvwaddch(repw, 0, i, ' ');
+	
+	mvwaddstr(repw, 0, mid_x, title);
+	wattroff(repw, A_REVERSE | COLOR_PAIR(MAGENTA));
 	
 	if (vec->used)
 	{
