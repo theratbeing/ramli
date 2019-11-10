@@ -60,6 +60,19 @@ void shift_menu_item(MenuItem *menui, int diff);
 void draw_item_window(MenuItem *mi);
 void del_menu_item(MenuItem *menui);
 
+typedef struct menu_button
+{
+	char	 *label;
+	unsigned value;
+	bool	 is_selected;
+	int		 width;
+	WINDOW	 *pwin;
+} Button;
+
+void init_button(Button *btn, char *label, unsigned value, int h, int w, int y, int x);
+void flip_button(Button *btn);
+void draw_button(Button *btn);
+
 void draw_general_info(WINDOW *infow, char *name, char *question, int querent, int quesited);
 void draw_key_info(WINDOW *infow);
 void draw_key_after(WINDOW *infow, char mode);

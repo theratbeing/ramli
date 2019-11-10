@@ -471,6 +471,40 @@ void draw_item_window(MenuItem *mi)
 	wrefresh(mi->ptrwin);
 }
 
+// Button
+
+void init_button(Button *btn, char *label, unsigned value, int h, int w, int y, int x)
+{
+	btn->label = label;
+	btn->value = value;
+	btn->width = w;
+	btn->pwin  = newwin(h, w, y, x);
+	btn->is_selected = false;
+}
+
+void flip_button(Button *btn)
+{
+	btn->is_selected = ! btn->is_selected;
+}
+
+void draw_button(Button *btn)
+{
+	werase(btn->pwin);
+	wrefresh(btn->pwin);
+	
+	if (btn->is_selected)
+		wattrset(btn->pwin, A_STANDOUT);
+	else
+		wattrset(btn->pwin, A_NORMAL);
+	
+	wprintw(btn->pwin, "%-*s", btn->width, btn->label);
+	wrefresh(btn->pwin);
+}
+
+/* ============================================== *
+ * Chart graphics
+ * ============================================== */
+
 void draw_general_info(WINDOW *infow, char *name, char *question, int querent, int quesited)
 {
 	werase(infow);
