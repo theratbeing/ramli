@@ -27,9 +27,15 @@ int main()
 	init_pair(MAGENTA, COLOR_MAGENTA, TRANSPARENT);
 	init_pair(CYAN, COLOR_CYAN, TRANSPARENT);
 	
-	//int max_row, max_col;
-	//getmaxyx(stdscr, max_row, max_col);
+	int max_row, max_col, start_y;
+	getmaxyx(stdscr, max_row, max_col);
 	
+	if (max_row > 24)
+		start_y = 1;
+	else
+		start_y = 0;
+	
+	paint_ribbon(stdscr, "Ramli v0.1", max_col, A_REVERSE | COLOR_PAIR(MAGENTA));
 	/* ========================================== *
 	 * Actual program starts here
 	 * ========================================== */
@@ -72,7 +78,7 @@ int main()
 		draw_item_window(choices[i]);
 	}
 	
-	WINDOW *infow = newwin(9, 44, 3, 33);
+	WINDOW *infow = newwin(9, 44, 3, max_col-44-3);
 	draw_general_info(infow, user_name, user_query, querent, quesited);
 	
 	WINDOW *keysw = newwin(11, 74, 13, 3);
@@ -175,6 +181,7 @@ int main()
 	}
 	else if (chart_flags & FLAG_BY_FIGURE)
 	{
+		int quarter = max_col / 4;
 		int btn_x[16] =
 		{
 			8, 24, 40, 56,
@@ -185,30 +192,33 @@ int main()
 		
 		int btn_y[16] =
 		{
-			4, 4, 4, 4,
 			5, 5, 5, 5,
 			6, 6, 6, 6,
 			7, 7, 7, 7,
+			8, 8, 8, 8,
 		};
 		
 		int btnselect = 0;
 		
 		Button btnar[16];
 		for (unsigned i = 0; i < 16; ++i)
+		{
 			init_button(btnar+i, ptr_figures_alphabetic[i]->name,
 						ptr_figures_alphabetic[i]->id, 1, 16, btn_y[i], btn_x[i]);
+		}
 		
 		flip_button(btnar + btnselect);
 		
 		erase();
 		refresh();
+		paint_ribbon(stdscr, "Ramli v0.1", max_col, A_REVERSE | COLOR_PAIR(MAGENTA));
 		
-		WINDOW *msgbox = newwin(3, 80, 0, 0);
+		WINDOW *msgbox = newwin(3, 80, 1, 0);
 		box(msgbox, 0, 0);
 		mvwprintw(msgbox, 1, 26, "Please select four figures");
 		wrefresh(msgbox);
 		
-		WINDOW *confbox = newwin(3, 80, 21, 0);
+		WINDOW *confbox = newwin(3, 80, max_row-3, 0);
 		box(confbox, 0, 0);
 		mvwprintw(confbox, 0, 32, "Selected figures");
 		wrefresh(confbox);
@@ -220,6 +230,7 @@ int main()
 		keypad(msgbox, TRUE);
 		for (int i = 0; i < 4; ++i)
 		{
+			int quarter_x = i * quarter + ((quarter-5) / 2);
 			while ((key_ch = wgetch(msgbox)) != '\n')
 			{
 				if (key_ch == KEY_RIGHT)
@@ -228,7 +239,6 @@ int main()
 					draw_button(btnar + btnselect);
 					add_min_max(&btnselect, 1, 0, 15);
 					flip_button(btnar + btnselect);
-					draw_button(btnar + btnselect);
 				}
 				else if (key_ch == KEY_LEFT)
 				{
@@ -236,7 +246,6 @@ int main()
 					draw_button(btnar + btnselect);
 					sub_min_max(&btnselect, 1, 0, 15);
 					flip_button(btnar + btnselect);
-					draw_button(btnar + btnselect);
 				}
 				else if (key_ch == KEY_UP)
 				{
@@ -244,7 +253,6 @@ int main()
 					draw_button(btnar + btnselect);
 					sub_min_max(&btnselect, 4, 0, 15);
 					flip_button(btnar + btnselect);
-					draw_button(btnar + btnselect);
 				}
 				else if (key_ch == KEY_DOWN)
 				{
@@ -252,12 +260,14 @@ int main()
 					draw_button(btnar + btnselect);
 					add_min_max(&btnselect, 4, 0, 15);
 					flip_button(btnar + btnselect);
-					draw_button(btnar + btnselect);
 				}
+				
+				draw_button(btnar + btnselect);
+				draw_figure_box(ptr_figures_alphabetic[btnselect], color_set, i, max_row-9, quarter_x);
 			}
 			
 			figure_id[i] = btnar[btnselect].value;
-			mvwaddstr(confbox, 1, i*16+1, ptr_figures[*(figure_id + i)]->name);
+			mvwaddstr(confbox, 1, quarter_x, ptr_figures[*(figure_id + i)]->name);
 			wrefresh(confbox);
 		}
 		
@@ -272,7 +282,9 @@ int main()
 	{
 		erase();
 		refresh();
-		printw("Please randomly type something and press Enter.\n");
+		paint_ribbon(stdscr, "Ramli v0.1", max_col, A_REVERSE | COLOR_PAIR(MAGENTA));
+		
+		mvprintw(2, 0, "Please randomly type something and press Enter.\n");
 		char line[80];
 		for (int i = 0; i < 4; ++i)
 		{
@@ -317,8 +329,11 @@ int main()
 	erase();
 	refresh();
 	
-	draw_chart_info(&basechart, color_set, tstring, 0, 0);
-	WINDOW *input_box = newwin(4, INFOBOX_W, INFOBOX_H, 0);
+	if (max_row > 24)
+		paint_ribbon(stdscr, "Ramli v0.1", max_col, A_REVERSE | COLOR_PAIR(MAGENTA));
+	
+	draw_chart_info(&basechart, color_set, tstring, start_y, 0);
+	WINDOW *input_box = newwin(4, INFOBOX_W, INFOBOX_H + start_y, 0);
 	
 	if (chart_flags & FLAG_SHIELD)
 	{
@@ -326,7 +341,7 @@ int main()
 		retrace_pnodes(puncti, 0);
 		// winpuncti would overwrite the chart
 		draw_via_puncti(winpuncti, puncti, puncti_line);
-		draw_shield_chart(&basechart, color_set, 0, 33);
+		draw_shield_chart(&basechart, color_set, start_y, 33);
 		draw_key_after(input_box, 's');
 	}
 	else if (chart_flags & FLAG_HOUSE)
@@ -344,8 +359,8 @@ int main()
 		check_translation(&translation, hquerent, hquesited);
 		loop_check_mutation(&mutation, houses, hquerent, hquesited);
 		
-		draw_house_chart(&basechart, color_set, 0, 36);
-		show_overview(occupation, &conjunction, &mutation, &translation, 0, 36);
+		draw_house_chart(&basechart, color_set, start_y, 36);
+		show_overview(occupation, &conjunction, &mutation, &translation, start_y, 36);
 		draw_key_after(input_box, 'h');
 	}
 	
@@ -411,17 +426,17 @@ int main()
 			else if (key_ch == KEY_DOWN)
 				add_min_max(&left_info_type, 1, 0, 3);
 			
-			draw_house_chart(&basechart, color_set, 0, 36);
-			show_overview(occupation, &conjunction, &mutation, &translation, 0, 36);
+			draw_house_chart(&basechart, color_set, start_y, 36);
+			show_overview(occupation, &conjunction, &mutation, &translation, start_y, 36);
 			
 			if (left_info_type == 0)
-				draw_chart_info(&basechart, color_set, tstring, 0, 0);
+				draw_chart_info(&basechart, color_set, tstring, start_y, 0);
 			else if (left_info_type == 1)
-				show_conjunction(&conjunction, 0, 0);
+				show_conjunction(&conjunction, start_y, 0);
 			else if (left_info_type == 2)
-				show_mutation(&mutation, 0, 0);
+				show_mutation(&mutation, start_y, 0);
 			else if (left_info_type == 3)
-				show_translation(&translation, 0, 0);
+				show_translation(&translation, start_y, 0);
 		}
 		
 		if (chart_flags & FLAG_SHIELD)
@@ -462,9 +477,9 @@ int main()
 			if (retrace_nodes)
 				retrace_pnodes(puncti, puncti_line);
 			
-			draw_chart_info(&basechart, color_set, tstring, 0, 0);
+			draw_chart_info(&basechart, color_set, tstring, start_y, 0);
 			draw_via_puncti(winpuncti, puncti, puncti_line);
-			draw_shield_chart(&basechart, color_set, 0, 33);
+			draw_shield_chart(&basechart, color_set, start_y, 33);
 		}
 	}
 	

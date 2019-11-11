@@ -396,6 +396,16 @@ void show_mutation(VecPair *vec, int y, int x)
  * Program menu/interface
  * ============================================== */
 
+void paint_ribbon(WINDOW *rbnw, char *text, int col, int attr)
+{
+	wattron(rbnw, attr);
+	for (int i = 0; i < col; ++i)
+		mvwaddch(rbnw, 0, i, ' ');
+	mvwprintw(rbnw, 0, (col-strlen(text))/2, text);
+	wattroff(rbnw, attr);
+	wrefresh(rbnw);
+}
+
 MenuItem * new_menu_item(char *name, size_t size, char **labels)
 {
 	MenuItem *ptr   = malloc(sizeof(MenuItem));
@@ -572,10 +582,10 @@ void ask_string(char *dest, int len, const char *prompt, int h, int w, int y, in
 	int mid_x = (w - textlen) / 2;
 
 	WINDOW *dialbox = newwin(h, w, y, x);
-	wattron(dialbox, COLOR_PAIR(RED));
+	wattron(dialbox, COLOR_PAIR(ORANGE));
 	box(dialbox, 0, 0);
 	mvwaddstr(dialbox, 0, mid_x, prompt);
-	wattroff(dialbox, COLOR_PAIR(RED));
+	wattroff(dialbox, COLOR_PAIR(ORANGE));
 	
 	curs_set(1);
 	echo();

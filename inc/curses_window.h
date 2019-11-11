@@ -38,6 +38,8 @@ void show_mutation(VecPair *vec, int y, int x);
  * Program menu/interface
  * ============================================== */
 
+void paint_ribbon(WINDOW *rbnw, char *text, int col, int attr);
+
 typedef struct menu_item
 {
 	char	*name;
