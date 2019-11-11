@@ -35,7 +35,7 @@ int main()
 	else
 		start_y = 0;
 	
-	paint_ribbon(stdscr, "Ramli v0.1", max_col, A_REVERSE | COLOR_PAIR(MAGENTA));
+	paint_ribbon(stdscr, "Ramli v0.1", max_col, A_REVERSE);
 	/* ========================================== *
 	 * Actual program starts here
 	 * ========================================== */
@@ -211,16 +211,16 @@ int main()
 		
 		erase();
 		refresh();
-		paint_ribbon(stdscr, "Ramli v0.1", max_col, A_REVERSE | COLOR_PAIR(MAGENTA));
+		paint_ribbon(stdscr, "Ramli v0.1", max_col, A_REVERSE);
 		
-		WINDOW *msgbox = newwin(3, 80, 1, 0);
+		WINDOW *msgbox = newwin(3, max_col, 1, 0);
 		box(msgbox, 0, 0);
-		mvwprintw(msgbox, 1, 26, "Please select four figures");
+		mvwprintw(msgbox, 1, (max_col-26)/2, "Please select four figures");
 		wrefresh(msgbox);
 		
-		WINDOW *confbox = newwin(3, 80, max_row-3, 0);
+		WINDOW *confbox = newwin(3, max_col, max_row-3, 0);
 		box(confbox, 0, 0);
-		mvwprintw(confbox, 0, 32, "Selected figures");
+		mvwprintw(confbox, 0, (max_col-16)/2, "Selected figures");
 		wrefresh(confbox);
 		
 		for (int i = 0; i < 16; ++i)
@@ -282,7 +282,7 @@ int main()
 	{
 		erase();
 		refresh();
-		paint_ribbon(stdscr, "Ramli v0.1", max_col, A_REVERSE | COLOR_PAIR(MAGENTA));
+		paint_ribbon(stdscr, "Ramli v0.1", max_col, A_REVERSE);
 		
 		mvprintw(2, 0, "Please randomly type something and press Enter.\n");
 		char line[80];
@@ -317,7 +317,7 @@ int main()
 	
 	// Reserve space for analysis
 	PNode puncti[15];
-	WINDOW *winpuncti = newwin(24, 47, 0, 33);
+	WINDOW *winpuncti = newwin(24, 47, start_y, max_col-47);
 	
 	House	houses[12];
 	bool	occupation;
@@ -330,7 +330,7 @@ int main()
 	refresh();
 	
 	if (max_row > 24)
-		paint_ribbon(stdscr, "Ramli v0.1", max_col, A_REVERSE | COLOR_PAIR(MAGENTA));
+		paint_ribbon(stdscr, "Ramli v0.1", max_col, A_REVERSE);
 	
 	draw_chart_info(&basechart, color_set, tstring, start_y, 0);
 	WINDOW *input_box = newwin(4, INFOBOX_W, INFOBOX_H + start_y, 0);
@@ -341,7 +341,7 @@ int main()
 		retrace_pnodes(puncti, 0);
 		// winpuncti would overwrite the chart
 		draw_via_puncti(winpuncti, puncti, puncti_line);
-		draw_shield_chart(&basechart, color_set, start_y, 33);
+		draw_shield_chart(&basechart, color_set, start_y, max_col-47);
 		draw_key_after(input_box, 's');
 	}
 	else if (chart_flags & FLAG_HOUSE)
@@ -359,8 +359,8 @@ int main()
 		check_translation(&translation, hquerent, hquesited);
 		loop_check_mutation(&mutation, houses, hquerent, hquesited);
 		
-		draw_house_chart(&basechart, color_set, start_y, 36);
-		show_overview(occupation, &conjunction, &mutation, &translation, start_y, 36);
+		draw_house_chart(&basechart, color_set, start_y, max_col-44);
+		show_overview(occupation, &conjunction, &mutation, &translation, start_y, max_col-44);
 		draw_key_after(input_box, 'h');
 	}
 	
@@ -426,8 +426,8 @@ int main()
 			else if (key_ch == KEY_DOWN)
 				add_min_max(&left_info_type, 1, 0, 3);
 			
-			draw_house_chart(&basechart, color_set, start_y, 36);
-			show_overview(occupation, &conjunction, &mutation, &translation, start_y, 36);
+			draw_house_chart(&basechart, color_set, start_y, max_col-44);
+			show_overview(occupation, &conjunction, &mutation, &translation, start_y, max_col-44);
 			
 			if (left_info_type == 0)
 				draw_chart_info(&basechart, color_set, tstring, start_y, 0);
@@ -479,7 +479,7 @@ int main()
 			
 			draw_chart_info(&basechart, color_set, tstring, start_y, 0);
 			draw_via_puncti(winpuncti, puncti, puncti_line);
-			draw_shield_chart(&basechart, color_set, start_y, 33);
+			draw_shield_chart(&basechart, color_set, start_y, max_col-47);
 		}
 	}
 	
