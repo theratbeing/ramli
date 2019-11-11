@@ -4,8 +4,8 @@
 #include <string.h>
 #include <time.h>
 
-void add_min_max(int *target, int i_min, int i_max);
-void sub_min_max(int *target, int i_min, int i_max);
+void add_min_max(int *target, int val, int i_min, int i_max);
+void sub_min_max(int *target, int val, int i_min, int i_max);
 
 int main()
 {
@@ -175,7 +175,92 @@ int main()
 	}
 	else if (chart_flags & FLAG_BY_FIGURE)
 	{
-		unsigned figure_id[4] = {8, 4, 2, 7};
+		int btn_x[16] =
+		{
+			0, 16, 32, 48,
+			0, 16, 32, 48,
+			0, 16, 32, 48,
+			0, 16, 32, 48,
+		};
+		
+		int btn_y[16] =
+		{
+			3, 3, 3, 3,
+			4, 4, 4, 4,
+			5, 5, 5, 5,
+			6, 6, 6, 6,
+		};
+		
+		int btnselect = 0;
+		
+		Button btnar[16];
+		for (unsigned i = 0; i < 16; ++i)
+			init_button(btnar+i, ptr_figures_alphabetic[i]->abbr,
+						ptr_figures_alphabetic[i]->id, 1, 16, btn_y[i], btn_x[i]);
+		
+		flip_button(btnar + btnselect);
+		
+		erase();
+		refresh();
+		
+		WINDOW *msgbox = newwin(3, 80, 0, 0);
+		box(msgbox, 0, 0);
+		mvwprintw(msgbox, 1, 2, "Please select four figures");
+		wrefresh(msgbox);
+		
+		for (int i = 0; i < 16; ++i)
+			draw_button(btnar + i);
+		
+		unsigned figure_id[4];
+		keypad(msgbox, TRUE);
+		for (int i = 0; i < 4; ++i)
+		{
+			while ((key_ch = wgetch(msgbox)) != '\n')
+			{
+				if (key_ch == KEY_RIGHT)
+				{
+					flip_button(btnar + btnselect);
+					draw_button(btnar + btnselect);
+					add_min_max(&btnselect, 1, 0, 15);
+					flip_button(btnar + btnselect);
+					draw_button(btnar + btnselect);
+				}
+				else if (key_ch == KEY_LEFT)
+				{
+					flip_button(btnar + btnselect);
+					draw_button(btnar + btnselect);
+					sub_min_max(&btnselect, 1, 0, 15);
+					flip_button(btnar + btnselect);
+					draw_button(btnar + btnselect);
+				}
+				else if (key_ch == KEY_UP)
+				{
+					flip_button(btnar + btnselect);
+					draw_button(btnar + btnselect);
+					sub_min_max(&btnselect, 4, 0, 15);
+					flip_button(btnar + btnselect);
+					draw_button(btnar + btnselect);
+				}
+				else if (key_ch == KEY_DOWN)
+				{
+					flip_button(btnar + btnselect);
+					draw_button(btnar + btnselect);
+					add_min_max(&btnselect, 4, 0, 15);
+					flip_button(btnar + btnselect);
+					draw_button(btnar + btnselect);
+				}
+			}
+			
+			figure_id[i] = btnar[btnselect].value;
+			werase(msgbox);
+			box(msgbox, 0, 0);
+			mvwprintw(msgbox, 1, 2, "You chose %s (%d/4)", ptr_figures[*(figure_id + i)]->name, i+1);
+		}
+		
+		delwin(msgbox);
+		for (int i = 0; i < 16; ++i)
+			delwin(btnar[i].pwin);
+		
 		fill_array_figure(matrix, figure_id);
 	}
 	else if (chart_flags & FLAG_BY_LINE)
@@ -302,9 +387,9 @@ int main()
 		}
 		
 		if (key_ch == KEY_RIGHT)
-			add_min_max(&color_set, 0, 4);
+			add_min_max(&color_set, 1, 0, 4);
 		else if (key_ch == KEY_LEFT)
-			sub_min_max(&color_set, 0, 4);
+			sub_min_max(&color_set, 1, 0, 4);
 		
 		if (chart_flags & FLAG_HOUSE)
 		{
@@ -317,9 +402,9 @@ int main()
 			else if (key_ch == '0')
 				left_info_type = 0;
 			else if (key_ch == KEY_UP)
-				sub_min_max(&left_info_type, 0, 3);
+				sub_min_max(&left_info_type, 1, 0, 3);
 			else if (key_ch == KEY_DOWN)
-				add_min_max(&left_info_type, 0, 3);
+				add_min_max(&left_info_type, 1, 0, 3);
 			
 			draw_house_chart(&basechart, color_set, 0, 36);
 			show_overview(occupation, &conjunction, &mutation, &translation, 0, 36);
@@ -360,12 +445,12 @@ int main()
 			}
 			else if (key_ch == KEY_UP)
 			{
-				sub_min_max(&puncti_line, 0, 3);
+				sub_min_max(&puncti_line, 1, 0, 3);
 				retrace_nodes = true;
 			}
 			else if (key_ch == KEY_DOWN)
 			{
-				add_min_max(&puncti_line, 0, 3);
+				add_min_max(&puncti_line, 1, 0, 3);
 				retrace_nodes = true;
 			}
 			
@@ -391,18 +476,18 @@ int main()
 	return EXIT_SUCCESS;
 }
 
-void add_min_max(int *target, int i_min, int i_max)
+void add_min_max(int *target, int val, int i_min, int i_max)
 {
-	*target += 1;
+	*target += val;
 	
 	if (*target > i_max)
-		*target = i_min;
+		*target = *target - i_max - 1 + i_min;
 }
 
-void sub_min_max(int *target, int i_min, int i_max)
+void sub_min_max(int *target, int val, int i_min, int i_max)
 {
-	*target -= 1;
+	*target -= val;
 	
 	if (*target < i_min)
-		*target = i_max;
+		*target = *target + i_max + 1;
 }
