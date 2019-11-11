@@ -177,25 +177,25 @@ int main()
 	{
 		int btn_x[16] =
 		{
-			0, 16, 32, 48,
-			0, 16, 32, 48,
-			0, 16, 32, 48,
-			0, 16, 32, 48,
+			8, 24, 40, 56,
+			8, 24, 40, 56,
+			8, 24, 40, 56,
+			8, 24, 40, 56,
 		};
 		
 		int btn_y[16] =
 		{
-			3, 3, 3, 3,
 			4, 4, 4, 4,
 			5, 5, 5, 5,
 			6, 6, 6, 6,
+			7, 7, 7, 7,
 		};
 		
 		int btnselect = 0;
 		
 		Button btnar[16];
 		for (unsigned i = 0; i < 16; ++i)
-			init_button(btnar+i, ptr_figures_alphabetic[i]->abbr,
+			init_button(btnar+i, ptr_figures_alphabetic[i]->name,
 						ptr_figures_alphabetic[i]->id, 1, 16, btn_y[i], btn_x[i]);
 		
 		flip_button(btnar + btnselect);
@@ -205,8 +205,13 @@ int main()
 		
 		WINDOW *msgbox = newwin(3, 80, 0, 0);
 		box(msgbox, 0, 0);
-		mvwprintw(msgbox, 1, 2, "Please select four figures");
+		mvwprintw(msgbox, 1, 26, "Please select four figures");
 		wrefresh(msgbox);
+		
+		WINDOW *confbox = newwin(3, 80, 21, 0);
+		box(confbox, 0, 0);
+		mvwprintw(confbox, 0, 32, "Selected figures");
+		wrefresh(confbox);
 		
 		for (int i = 0; i < 16; ++i)
 			draw_button(btnar + i);
@@ -252,12 +257,12 @@ int main()
 			}
 			
 			figure_id[i] = btnar[btnselect].value;
-			werase(msgbox);
-			box(msgbox, 0, 0);
-			mvwprintw(msgbox, 1, 2, "You chose %s (%d/4)", ptr_figures[*(figure_id + i)]->name, i+1);
+			mvwaddstr(confbox, 1, i*16+1, ptr_figures[*(figure_id + i)]->name);
+			wrefresh(confbox);
 		}
 		
 		delwin(msgbox);
+		delwin(confbox);
 		for (int i = 0; i < 16; ++i)
 			delwin(btnar[i].pwin);
 		
