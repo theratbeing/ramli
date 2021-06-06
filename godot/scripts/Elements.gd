@@ -2,6 +2,7 @@ extends Node
 
 const Power = preload("res://scripts/Power.gd")
 
+# Definition
 class Fire extends Power:
 	func _init():
 		name_string = "Fire"

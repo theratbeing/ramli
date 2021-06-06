@@ -22,4 +22,4 @@ enum Zodiac {
 	SAGITTARIUS, CAPRICORN, AQUARIUS, PISCES
 }
 
-enum ZodiacSystem { AGRIPPA, GERARDO }
+enum System { AGRIPPA, GERARDO }
