@@ -2,7 +2,7 @@ extends TextureButton
 
 var figure = 0
 
-signal selected_figure
+signal selected_figure(figure)
 
 func _ready():
 	connect("pressed", self, "on_pressed")
