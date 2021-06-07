@@ -14,29 +14,18 @@ func _init():
 
 func _ready():
 	figures.shuffle()
-	var cards = []
 	
 	for f in figures:
 		var card = CardButton.instance()
 		card.figure = f
 		card.connect("selected_figure", self, "on_card_select")
-		cards.append(card)
-	
-	for i in range(0, 16):
-		$Selection/Row1.add_child(cards[i])
-	
-	for i in range(16, 32):
-		$Selection/Row2.add_child(cards[i])
-	
-	for i in range(32, 48):
-		$Selection/Row3.add_child(cards[i])
-	
-	for i in range(48, 64):
-		$Selection/Row4.add_child(cards[i])
+		$Selection.add_child(card)
 
 func on_card_select(figure):
 	selection.append(figure)
 	var message = debug_string % figure
 	print_debug(message)
 	if selection.size() == 4:
+		for node in $Selection.get_children():
+			node.disabled = true
 		print_debug("done selecting")
