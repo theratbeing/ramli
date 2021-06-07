@@ -1,6 +1,6 @@
 extends Node
 
-const Figures = preload("res://scripts/Figure.gd")
+var Figures = preload("res://scripts/Figure.gd").new()
 
 func _init():
 	randomize()
@@ -22,6 +22,7 @@ func combine_points(pa, pb):
 	return output
 
 func calculate_chart(mothers):
+	# Expects 4x4 array of int
 	assert(mothers.size() == 4)
 	var daughters = []
 	for _i in range(4):
@@ -45,3 +46,10 @@ func calculate_chart(mothers):
 	chart.append(combine_points(witnesses[0], witnesses[1]))
 	assert(chart.size() == 15)
 	return chart
+
+func convert_to_figures(chart):
+	assert(chart.size() == 15)
+	var output = []
+	for array in chart:
+		output.append(Figures.from_array(array))
+	return output
