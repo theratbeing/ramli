@@ -1,0 +1,95 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://sprites/chart_shield.png" type="Texture" id=1]
+[ext_resource path="res://scenes/FigureHighlight.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/ShieldChart.gd" type="Script" id=3]
+
+[node name="ShieldChart" type="TextureRect"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Mother1" parent="." instance=ExtResource( 2 )]
+margin_left = 560.0
+margin_right = 642.0
+margin_bottom = 102.0
+
+[node name="Mother2" parent="." instance=ExtResource( 2 )]
+margin_left = 480.0
+margin_right = 562.0
+margin_bottom = 102.0
+
+[node name="Mother3" parent="." instance=ExtResource( 2 )]
+margin_left = 400.0
+margin_right = 482.0
+margin_bottom = 102.0
+
+[node name="Mother4" parent="." instance=ExtResource( 2 )]
+margin_left = 320.0
+margin_right = 402.0
+margin_bottom = 102.0
+
+[node name="Daughter1" parent="." instance=ExtResource( 2 )]
+margin_left = 240.0
+margin_right = 322.0
+margin_bottom = 102.0
+
+[node name="Daughter2" parent="." instance=ExtResource( 2 )]
+margin_left = 160.0
+margin_right = 242.0
+margin_bottom = 102.0
+
+[node name="Daughter3" parent="." instance=ExtResource( 2 )]
+margin_left = 80.0
+margin_right = 162.0
+margin_bottom = 102.0
+
+[node name="Daughter4" parent="." instance=ExtResource( 2 )]
+margin_right = 82.0
+margin_bottom = 102.0
+
+[node name="Niece1" parent="." instance=ExtResource( 2 )]
+margin_left = 519.0
+margin_top = 109.0
+margin_right = 601.0
+margin_bottom = 211.0
+
+[node name="Niece2" parent="." instance=ExtResource( 2 )]
+margin_left = 359.0
+margin_top = 109.0
+margin_right = 441.0
+margin_bottom = 211.0
+
+[node name="Niece3" parent="." instance=ExtResource( 2 )]
+margin_left = 198.0
+margin_top = 109.0
+margin_right = 280.0
+margin_bottom = 211.0
+
+[node name="Niece4" parent="." instance=ExtResource( 2 )]
+margin_left = 38.0
+margin_top = 109.0
+margin_right = 120.0
+margin_bottom = 211.0
+
+[node name="Witness1" parent="." instance=ExtResource( 2 )]
+margin_left = 439.0
+margin_top = 219.0
+margin_right = 521.0
+margin_bottom = 321.0
+
+[node name="Witness2" parent="." instance=ExtResource( 2 )]
+margin_left = 120.0
+margin_top = 219.0
+margin_right = 202.0
+margin_bottom = 321.0
+
+[node name="Judge" parent="." instance=ExtResource( 2 )]
+margin_left = 279.0
+margin_top = 270.0
+margin_right = 361.0
+margin_bottom = 372.0
