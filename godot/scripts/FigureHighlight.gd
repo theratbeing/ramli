@@ -1,11 +1,10 @@
 extends TextureRect
 
-var figure_object
 var texture_normal
 var texture_hover
 
-signal highlight_figure(figure)
-signal lowlight_figure(figure)
+signal highlight_figure(index)
+signal lowlight_figure(index)
 
 func _ready():
 	texture_normal = load("res://sprites/border_normal.png")
@@ -15,13 +14,12 @@ func _ready():
 	connect("mouse_exited", self, "on_mouse_exited")
 
 func set_figure(figure):
-	figure_object = figure
 	$FigureTextures.set_figure(figure)
 
 func on_mouse_entered():
 	texture = texture_hover
-	emit_signal("highlight_figure", figure_object)
+	emit_signal("highlight_figure", get_index())
 
 func on_mouse_exited():
 	texture = texture_normal
-	emit_signal("lowlight_figure", figure_object)
+	emit_signal("lowlight_figure", get_index())

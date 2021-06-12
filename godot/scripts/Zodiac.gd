@@ -9,83 +9,83 @@ class Base extends Power:
 class Aries extends Base:
 	func _init():
 		name_string = "Aries"
-		symbol      = load("res://sprites/zodiac/aries.png")
+		symbol      = "A"
 		element     = Elements.Fire.new()
 		color       = element.color
 
 class Leo extends Base:
 	func _init():
 		name_string = "Leo"
-		symbol      = load("res://sprites/zodiac/leo.png")
+		symbol      = "L"
 		element     = Elements.Fire.new()
 		color       = element.color
 
 class Sagittarius extends Base:
 	func _init():
 		name_string = "Sagittarius"
-		symbol      = load("res://sprites/zodiac/sagittarius.png")
+		symbol      = "S"
 		element     = Elements.Fire.new()
 		color       = element.color
 
 class Capricorn extends Base:
 	func _init():
 		name_string = "Capricorn"
-		symbol      = load("res://sprites/zodiac/capricorn.png")
+		symbol      = "C"
 		element     = Elements.Earth.new()
 		color       = element.color
 
 class Taurus extends Base:
 	func _init():
 		name_string = "Taurus"
-		symbol      = load("res://sprites/zodiac/taurus.png")
+		symbol      = "T"
 		element     = Elements.Earth.new()
 		color       = element.color
 
 class Virgo extends Base:
 	func _init():
 		name_string = "Virgo"
-		symbol      = load("res://sprites/zodiac/virgo.png")
+		symbol      = "V"
 		element     = Elements.Earth.new()
 		color       = element.color
 
 class Libra extends Base:
 	func _init():
 		name_string = "Libra"
-		symbol      = load("res://sprites/zodiac/libra.png")
+		symbol      = "L"
 		element     = Elements.Air.new()
 		color       = element.color
 
 class Aquarius extends Base:
 	func _init():
 		name_string = "Aquarius"
-		symbol      = load("res://sprites/zodiac/aquarius.png")
+		symbol      = "A"
 		element     = Elements.Air.new()
 		color       = element.color
 
 class Gemini extends Base:
 	func _init():
 		name_string = "Gemini"
-		symbol      = load("res://sprites/zodiac/gemini.png")
+		symbol      = "G"
 		element     = Elements.Air.new()
 		color       = element.color
 
 class Cancer extends Base:
 	func _init():
 		name_string = "Cancer"
-		symbol      = load("res://sprites/zodiac/cancer.png")
+		symbol      = "C"
 		element     = Elements.Water.new()
 		color       = element.color
 
 class Scorpio extends Base:
 	func _init():
 		name_string = "Scorpio"
-		symbol      = load("res://sprites/zodiac/scorpio.png")
+		symbol      = "S"
 		element     = Elements.Water.new()
 		color       = element.color
 
 class Pisces extends Base:
 	func _init():
 		name_string = "Pisces"
-		symbol      = load("res://sprites/zodiac/pisces.png")
+		symbol      = "P"
 		element     = Elements.Water.new()
 		color       = element.color

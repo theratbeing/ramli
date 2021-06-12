@@ -6,52 +6,52 @@ class Saturn extends Power:
 	func _init():
 		name_string = "Saturn"
 		color  = Color.black
-		symbol = load("res://sprites/planet/saturn.png")
+		symbol = "S"
 
 class Jupiter extends Power:
 	func _init():
 		name_string = "Jupiter"
 		color  = Color.blue
-		symbol = load("res://sprites/planet/jupiter.png")
+		symbol = "J"
 
 class Mars extends Power:
 	func _init():
 		name_string = "Mars"
 		color  = Color.red
-		symbol = load("res://sprites/planet/mars.png")
+		symbol = "M"
 
 class Sun extends Power:
 	func _init():
 		name_string = "Sun"
 		color  = Color.yellow
-		symbol = load("res://sprites/planet/sun.png")
+		symbol = "S"
 
 class Venus extends Power:
 	func _init():
 		name_string = "Venus"
 		color  = Color.green
-		symbol = load("res://sprites/planet/venus.png")
+		symbol = "V"
 
 class Mercury extends Power:
 	func _init():
 		name_string = "Mercury"
 		color  = Color.orange
-		symbol = load("res://sprites/planet/mercury.png")
+		symbol = "M"
 
 class Moon extends Power:
 	func _init():
 		name_string = "Moon"
 		color  = Color.purple
-		symbol = load("res://sprites/planet/moon.png")
+		symbol = "M"
 
 class NorthNode extends Power:
 	func _init():
 		name_string = "North Node"
 		color  = Color.gray
-		symbol = load("res://sprites/planet/north_node.png")
+		symbol = "N"
 
 class SouthNode extends Power:
 	func _init():
 		name_string = "South Node"
 		color  = Color.gray
-		symbol = load("res://sprites/planet/south_node.png")
+		symbol = "S"
