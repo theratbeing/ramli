@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/ShieldChart.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/FigureBarMenu.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/ShieldScreen.gd" type="Script" id=3]
+
+[node name="ShieldScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ShieldChart" parent="." instance=ExtResource( 1 )]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 110.0
+margin_top = -185.0
+margin_right = 750.0
+margin_bottom = 185.0
+
+[node name="Figures" parent="." instance=ExtResource( 2 )]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -362.0
+margin_top = -180.0
+margin_right = -102.0
+margin_bottom = 180.0

@@ -16,6 +16,12 @@ func _ready():
 func set_figure(figure):
 	$FigureTextures.set_figure(figure)
 
+func lowlight():
+	texture = texture_normal
+
+func highlight():
+	texture = texture_hover
+
 func on_mouse_entered():
 	texture = texture_hover
 	emit_signal("highlight_figure", get_index())

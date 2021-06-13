@@ -6,6 +6,8 @@ var selection  = []
 
 var debug_string = "selected figure: %d"
 
+signal done_selecting
+
 func _init():
 	randomize()
 	for i in range(16):
@@ -26,6 +28,8 @@ func on_card_select(figure):
 	var message = debug_string % figure
 	print_debug(message)
 	if selection.size() == 4:
+		print_debug("done selecting")
+		emit_signal("done_selecting")
+		
 		for node in $Selection.get_children():
 			node.disabled = true
-		print_debug("done selecting")
