@@ -65,15 +65,15 @@ margin_right = 441.0
 margin_bottom = 211.0
 
 [node name="Niece3" parent="." instance=ExtResource( 2 )]
-margin_left = 198.0
+margin_left = 199.0
 margin_top = 109.0
-margin_right = 280.0
+margin_right = 281.0
 margin_bottom = 211.0
 
 [node name="Niece4" parent="." instance=ExtResource( 2 )]
-margin_left = 38.0
+margin_left = 39.0
 margin_top = 109.0
-margin_right = 120.0
+margin_right = 121.0
 margin_bottom = 211.0
 
 [node name="Witness1" parent="." instance=ExtResource( 2 )]
