@@ -1,0 +1,26 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://sprites/figure_disabled.png" type="Texture" id=1]
+[ext_resource path="res://sprites/figure_hover.png" type="Texture" id=2]
+[ext_resource path="res://sprites/figure_normal.png" type="Texture" id=3]
+[ext_resource path="res://sprites/figure_pressed.png" type="Texture" id=4]
+[ext_resource path="res://scenes/FigureTextures.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/FigureButton.gd" type="Script" id=6]
+
+[node name="FigureButton" type="TextureButton"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 4 )
+texture_hover = ExtResource( 2 )
+texture_disabled = ExtResource( 1 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FigureTextures" parent="." instance=ExtResource( 5 )]
+margin_left = 11.0
+margin_top = 6.0
+margin_right = 71.0
+margin_bottom = 98.0

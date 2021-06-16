@@ -1,6 +1,6 @@
 extends TextureButton
 
-var figure = 0
+var figure
 
 signal selected_figure(figure)
 
