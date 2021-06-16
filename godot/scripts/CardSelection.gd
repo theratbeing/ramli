@@ -23,7 +23,7 @@ func _ready():
 	for f in figures:
 		var card = CardButton.instance()
 		card.figure = f
-		card.connect("selected_figure", self, "on_card_select")
+		card.connect("selected", self, "on_card_select")
 		$Selection.add_child(card)
 
 func on_card_select(figure):
