@@ -2,11 +2,18 @@
 
 [ext_resource path="res://scripts/FigureBarMenu.gd" type="Script" id=1]
 
-[node name="Figures" type="VBoxContainer"]
+[node name="Figures" type="Panel"]
 margin_right = 460.0
 margin_bottom = 600.0
 rect_min_size = Vector2( 460, 600 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container" type="VBoxContainer" parent="."]
+margin_right = 460.0
+margin_bottom = 600.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

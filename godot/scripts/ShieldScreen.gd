@@ -14,6 +14,11 @@ func setup_chart(chart):
 	$ShieldChart.set_chart(chart)
 	$Figures.set_chart(chart)
 
+func set_info(querent, question, date):
+	$InfoPanel.set_querent(querent)
+	$InfoPanel.set_question(question)
+	$InfoPanel.set_date(date)
+
 func on_highlight(house):
 	$ShieldChart.set_highlight(house)
 	$Figures.set_highlight(house)

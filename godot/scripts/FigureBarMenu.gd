@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends Panel
 
 var show_similar = false
 var children = []
@@ -10,10 +10,11 @@ func _init():
 	var Bar = load("res://scenes/FigureBar.tscn")
 	for _i in range(15):
 		var new_bar = Bar.instance()
-		add_child(new_bar)
+		$Container.add_child(new_bar)
+	
+	children = $Container.get_children()
 
 func _ready():
-	children = get_children()
 	for child in children:
 		child.connect("highlight_figure", self, "on_highlight")
 		child.connect("lowlight_figure", self, "on_lowlight")

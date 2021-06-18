@@ -3,7 +3,7 @@
 [ext_resource path="res://fonts/NotoReg40.tres" type="DynamicFont" id=1]
 [ext_resource path="res://scripts/CardSelection.gd" type="Script" id=2]
 
-[node name="Control" type="Control"]
+[node name="CardSelection" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
