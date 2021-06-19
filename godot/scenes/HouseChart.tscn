@@ -1,11 +1,104 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://sprites/chart_house.png" type="Texture" id=1]
+[ext_resource path="res://scenes/FigureHighlightBorderless.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/HouseChart.gd" type="Script" id=3]
 
 [node name="Chart" type="TextureRect"]
 margin_right = 40.0
 margin_bottom = 40.0
 texture = ExtResource( 1 )
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Mother1" parent="." instance=ExtResource( 2 )]
+margin_left = 44.0
+margin_top = 199.0
+margin_right = 124.0
+margin_bottom = 299.0
+
+[node name="Mother2" parent="." instance=ExtResource( 2 )]
+margin_left = 7.0
+margin_top = 329.0
+margin_right = 87.0
+margin_bottom = 429.0
+
+[node name="Mother3" parent="." instance=ExtResource( 2 )]
+margin_left = 86.0
+margin_top = 394.0
+margin_right = 166.0
+margin_bottom = 494.0
+
+[node name="Mother4" parent="." instance=ExtResource( 2 )]
+margin_left = 212.0
+margin_top = 384.0
+margin_right = 292.0
+margin_bottom = 484.0
+
+[node name="Daughter1" parent="." instance=ExtResource( 2 )]
+margin_left = 338.0
+margin_top = 399.0
+margin_right = 418.0
+margin_bottom = 499.0
+
+[node name="Daughter2" parent="." instance=ExtResource( 2 )]
+margin_left = 422.0
+margin_top = 323.0
+margin_right = 502.0
+margin_bottom = 423.0
+
+[node name="Daughter3" parent="." instance=ExtResource( 2 )]
+margin_left = 377.0
+margin_top = 197.0
+margin_right = 457.0
+margin_bottom = 297.0
+
+[node name="Daughter4" parent="." instance=ExtResource( 2 )]
+margin_left = 423.0
+margin_top = 77.0
+margin_right = 503.0
+margin_bottom = 177.0
+
+[node name="Niece1" parent="." instance=ExtResource( 2 )]
+margin_left = 335.0
+margin_top = 7.0
+margin_right = 415.0
+margin_bottom = 107.0
+
+[node name="Niece2" parent="." instance=ExtResource( 2 )]
+margin_left = 212.0
+margin_top = 22.0
+margin_right = 292.0
+margin_bottom = 122.0
+
+[node name="Niece3" parent="." instance=ExtResource( 2 )]
+margin_left = 87.0
+margin_top = 8.0
+margin_right = 167.0
+margin_bottom = 108.0
+
+[node name="Niece4" parent="." instance=ExtResource( 2 )]
+margin_left = 2.0
+margin_top = 77.0
+margin_right = 82.0
+margin_bottom = 177.0
+
+[node name="Witness1" parent="." instance=ExtResource( 2 )]
+margin_left = 276.0
+margin_top = 147.0
+margin_right = 356.0
+margin_bottom = 247.0
+
+[node name="Witness2" parent="." instance=ExtResource( 2 )]
+margin_left = 148.0
+margin_top = 146.0
+margin_right = 228.0
+margin_bottom = 246.0
+
+[node name="Judge" parent="." instance=ExtResource( 2 )]
+margin_left = 214.0
+margin_top = 255.0
+margin_right = 294.0
+margin_bottom = 355.0

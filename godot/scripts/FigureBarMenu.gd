@@ -6,15 +6,14 @@ var children = []
 signal highlight_figure(index)
 signal lowlight_figure(index)
 
-func _init():
+func _ready():
 	var Bar = load("res://scenes/FigureBar.tscn")
 	for _i in range(15):
 		var new_bar = Bar.instance()
 		$Container.add_child(new_bar)
 	
 	children = $Container.get_children()
-
-func _ready():
+	
 	for child in children:
 		child.connect("highlight_figure", self, "on_highlight")
 		child.connect("lowlight_figure", self, "on_lowlight")
@@ -40,6 +39,14 @@ func set_lowlight(house):
 
 func on_highlight(house):
 	emit_signal("highlight_figure", house)
+	if (show_similar):
+		var number = children[house].figure.number
+		for child in children:
+			if (child.figure.number == number):
+				child.highlight()
 
 func on_lowlight(house):
 	emit_signal("lowlight_figure", house)
+	if (show_similar):
+		for child in children:
+			child.lowlight()

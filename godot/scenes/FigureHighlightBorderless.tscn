@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scripts/FigureHighlightBorderless.gd" type="Script" id=1]
 [ext_resource path="res://scenes/FigureTextures.tscn" type="PackedScene" id=2]
-[ext_resource path="res://sprites/border_normal.png" type="Texture" id=3]
+[ext_resource path="res://sprites/borderless_normal.png" type="Texture" id=3]
 
 [node name="FigureBorderless" type="TextureRect"]
 margin_right = 40.0
