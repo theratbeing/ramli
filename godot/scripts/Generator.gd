@@ -21,6 +21,15 @@ func combine_points(pa, pb):
 		output.append(pa[i] + pb[i] % 2)
 	return output
 
+func make_chart_from_figures(figs):
+	assert(figs.size() == 4)
+	var mothers = []
+	for fig in figs:
+		mothers.append(fig.point_array)
+	
+	var chart = calculate_chart(mothers)
+	return convert_to_figures(chart)
+
 func calculate_chart(mothers):
 	# Expects 4x4 array of int
 	assert(mothers.size() == 4)

@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scripts/FigureHighlightBorderless.gd" type="Script" id=1]
+[ext_resource path="res://scenes/FigureTextures.tscn" type="PackedScene" id=2]
+[ext_resource path="res://sprites/border_normal.png" type="Texture" id=3]
+
+[node name="FigureBorderless" type="TextureRect"]
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 0
+texture = ExtResource( 3 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FigureTextures" parent="." instance=ExtResource( 2 )]
+margin_left = 11.0
+margin_top = 6.0
+margin_right = 71.0
+margin_bottom = 98.0
