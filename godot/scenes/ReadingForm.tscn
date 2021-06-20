@@ -4,7 +4,7 @@
 [ext_resource path="res://scripts/ReadingForm.gd" type="Script" id=2]
 [ext_resource path="res://scenes/GeneratorButtonGroup.tres" type="ButtonGroup" id=3]
 
-[node name="ReadingForm" type="Control"]
+[node name="Form" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
