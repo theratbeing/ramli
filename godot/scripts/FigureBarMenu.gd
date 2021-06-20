@@ -18,6 +18,9 @@ func _ready():
 		child.connect("highlight_figure", self, "on_highlight")
 		child.connect("lowlight_figure", self, "on_lowlight")
 
+func highlight_similar(boolean):
+	show_similar = boolean
+
 func set_chart(chart):
 	var i = 0
 	for child in children:
@@ -30,12 +33,6 @@ func show_house(house):
 func lowlight_all():
 	for child in children:
 		child.lowlight()
-
-func set_highlight(house):
-	children[house].highlight()
-
-func set_lowlight(house):
-	children[house].lowlight()
 
 func on_highlight(house):
 	emit_signal("highlight_figure", house)
