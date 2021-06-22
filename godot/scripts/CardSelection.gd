@@ -4,7 +4,7 @@ const Figure = preload("res://scripts/Figure.gd")
 
 var CardButton = preload("res://scenes/Card.tscn")
 var figures    = []
-var selection  = []
+var selection
 
 var debug_string = "selected figure: %s"
 
@@ -25,6 +25,9 @@ func _ready():
 		card.figure = f
 		card.connect("selected", self, "on_card_select")
 		$Selection.add_child(card)
+
+func set_selection(array):
+	selection = array
 
 func on_card_select(figure):
 	selection.append(figure)

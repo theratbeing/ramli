@@ -1,21 +1,20 @@
 extends Control
 
-const ChartData = preload("res://scripts/ChartData.gd")
-
 signal input_ok
 signal input_cancel
 
 var data
 
 func _ready():
-	data = ChartData.new()
-	
 	for i in range(1, 13):
 		$Panel/House/Number.add_item(str(i))
 	
 	$Panel/Chart/House.connect("toggled", self, "on_house_toggled")
 	$Panel/Continue.connect("pressed", self, "on_continue_pressed")
 	$Panel/Cancel.connect("pressed", self, "on_cancel_pressed")
+
+func set_data(chart_data):
+	data = chart_data
 
 func on_house_toggled(is_on):
 	if (is_on):

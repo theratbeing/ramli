@@ -3,7 +3,7 @@ extends Control
 const Figure    = preload("res://scripts/Figure.gd")
 const Clickable = preload("res://scenes/FigureButton.tscn")
 
-var selection = []
+var selection
 
 signal done_selecting
 
@@ -15,6 +15,9 @@ func _ready():
 		button.set_figure(figure)
 		button.connect("selected", self, "on_figure_selected")
 		$Selection.add_child(button)
+
+func set_selection(array):
+	selection = array
 
 func on_figure_selected(figure):
 	selection.append(figure)
