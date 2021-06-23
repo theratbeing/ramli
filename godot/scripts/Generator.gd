@@ -21,6 +21,14 @@ func combine_points(pa, pb):
 		output.append(pa[i] + pb[i] % 2)
 	return output
 
+func random_mothers():
+	var output = []
+	for _i in range(4):
+		var figure = Figures.from_enum(randi() % 16)
+		output.append(figure)
+	
+	return output
+
 func make_chart_from_figures(figs):
 	assert(figs.size() == 4)
 	var mothers = []
