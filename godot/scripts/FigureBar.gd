@@ -5,6 +5,8 @@ const Constants = preload("res://scripts/Constants.gd")
 signal highlight_figure(index)
 signal lowlight_figure(index)
 
+var figure
+
 func _ready():
 	lowlight()
 	lowlight_house()
@@ -12,12 +14,13 @@ func _ready():
 	connect("mouse_entered", self, "on_mouse_entered")
 	connect("mouse_exited", self, "on_mouse_exited")
 
-func set_figure(figure):
+func set_figure(figure_):
+	figure         = figure_
 	$Name.text     = figure.name_string
 	$Element.text  = figure.element.symbol
 	$Planet.text   = figure.planet.symbol
-	$Zodiac1.text  = figure.planet.zodiac[Constants.System.GERARDO]
-	$Zodiac2.text  = figure.planet.zodiac[Constants.System.AGRIPPA]
+	$Zodiac1.text  = figure.zodiac[Constants.System.GERARDO].symbol
+	$Zodiac2.text  = figure.zodiac[Constants.System.AGRIPPA].symbol
 
 func set_house(num):
 	$House.text = str(num)

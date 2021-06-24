@@ -1,13 +1,11 @@
 extends Control
 
 func _ready():
-	for figure in $Chart.get_children():
-		figure.connect("highlight_figure", self, "on_highlight")
-		figure.connect("lowlight_figure", self, "on_lowlight")
+	$Chart.connect("screen_highlight_figure", self, "on_highlight")
+	$Chart.connect("screen_lowlight_figure", self, "on_lowlight")
 	
-	for figure in $Figures.get_children():
-		figure.connect("highlight_figure", self, "on_highlight")
-		figure.connect("lowlight_figure", self, "on_lowlight")
+	$Figures.connect("screen_highlight_figure", self, "on_highlight")
+	$Figures.connect("screen_lowlight_figure", self, "on_lowlight")
 
 func setup_chart(chart_data):
 	$Chart.set_chart(chart_data.figure_array)

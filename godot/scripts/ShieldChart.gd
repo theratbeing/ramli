@@ -2,8 +2,8 @@ extends TextureRect
 
 var children = []
 
-signal highlight_figure(index)
-signal lowlight_figure(index)
+signal screen_highlight_figure(index)
+signal screen_lowlight_figure(index)
 
 func _ready():
 	children = get_children()
@@ -19,7 +19,15 @@ func set_chart(chart):
 		i += 1
 
 func on_highlight(house):
+	emit_signal("screen_highlight_figure", house)
+	set_highlight(house)
+
+func set_highlight(house):
 	children[house].highlight()
 
 func on_lowlight(house):
+	emit_signal("screen_lowlight_figure", house)
+	set_lowlight(house)
+
+func set_lowlight(house):
 	children[house].lowlight()

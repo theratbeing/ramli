@@ -18,7 +18,7 @@ func combine_points(pa, pb):
 	assert(pa.size() == 4 and pb.size() == 4)
 	var output = []
 	for i in range(4):
-		output.append(pa[i] + pb[i] % 2)
+		output.append((pa[i] + pb[i]) % 2)
 	return output
 
 func random_mothers():

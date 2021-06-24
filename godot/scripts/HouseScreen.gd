@@ -14,6 +14,7 @@ func _ready():
 func setup_chart(chart_data):
 	$Chart.set_chart(chart_data.figure_array)
 	$Figures.set_chart(chart_data.figure_array)
+	$Figures.show_house(chart_data.house_number)
 	$InfoPanel.set_querent(chart_data.querent_name)
 	$InfoPanel.set_question(chart_data.question_text)
 	

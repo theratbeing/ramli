@@ -14,6 +14,7 @@ __meta__ = {
 [node name="Container" type="VBoxContainer" parent="."]
 margin_right = 460.0
 margin_bottom = 600.0
+rect_min_size = Vector2( 460, 30 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
