@@ -27,9 +27,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -409.0
+margin_left = -449.0
 margin_top = -200.0
-margin_right = -59.0
+margin_right = -99.0
 margin_bottom = 208.0
 rect_min_size = Vector2( 60, 80 )
 columns = 4
@@ -37,12 +37,58 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Selected" type="HBoxContainer" parent="."]
+[node name="Selected" type="Panel" parent="."]
+margin_left = 629.0
+margin_top = 227.0
+margin_right = 1129.0
+margin_bottom = 477.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Figures" type="HBoxContainer" parent="Selected"]
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -505.0
-margin_top = -51.0
-margin_right = -177.0
-margin_bottom = 51.0
+margin_left = -413.0
+margin_top = -84.0
+margin_right = -85.0
+margin_bottom = 18.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Clear" type="Button" parent="Selected"]
+margin_left = 95.0
+margin_top = 206.0
+margin_right = 175.0
+margin_bottom = 231.0
+disabled = true
+text = "Clear"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Remove" type="Button" parent="Selected"]
+margin_left = 214.0
+margin_top = 206.0
+margin_right = 294.0
+margin_bottom = 231.0
+disabled = true
+text = "Remove"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OK" type="Button" parent="Selected"]
+margin_left = 332.0
+margin_top = 206.0
+margin_right = 412.0
+margin_bottom = 231.0
+disabled = true
+text = "OK"
+__meta__ = {
+"_edit_use_anchors_": false
+}
